@@ -98,3 +98,27 @@
 .currentBlog span {
 	cursor: pointer;
 }
+
+.btn-hide {
+	float: right;
+	margin-top: 15px;
+	cursor: pointer;
+}
+
+.fade-leave-active {
+	left: 0px;
+  	transition: left .5s
+}
+
+.fade-leave-to /* .fade-leave-active in below version 2.1.8 */ {
+  	left: -350px
+}
+
+.fade-enter-active {
+	left: -350px;
+  	transition: left .5s
+}
+
+.fade-enter-to /* .fade-leave-active in below version 2.1.8 */ {
+  	left: 0px
+}

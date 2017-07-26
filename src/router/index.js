@@ -11,12 +11,34 @@ export default new Router({
     {
       path: '/',
       name: 'Home',
-      component: Home
+      component: Home,
     },
     {
-    	path: '/article',
+    	path: '/',
     	name: 'Article',
     	component: Article,
+    	children: [
+    		{
+    			path: 'blog',
+    			name: 'Blog',
+    			component: resolve => require(['@/components/page/Blog'], resolve)
+    		},
+    		{
+    			path: 'about',
+    			name: 'About',
+    			component: resolve => require(['@/components/page/About'], resolve)
+    		},
+    		{
+    			path: 'comment',
+    			name: 'Comment',
+    			conponent: resolve => require(['@/components/page/Comment'], resolve)
+    		},
+    		{
+    			path: 'contact',
+    			name: 'Contact',
+    			component: resolve => require(['@/components/page/Contact'], resolve)
+    		}
+    	]
     }
   ]
 })

@@ -1,12 +1,10 @@
-body,
-html,
-#app {
-    margin: 0;
-    padding: 0;
-    height: 100%;
+body, html, #app{
+	margin: 0;
+	padding: 0;
+	height: 100%;
 }
 
 .iconfont {
-    margin-right: 10px;
-    cursor: pointer
+	margin-right: 10px;
+	cursor: pointer;
 }

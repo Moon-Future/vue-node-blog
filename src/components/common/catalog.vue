@@ -1,41 +1,48 @@
 <template>
-	<div class="blog-catalog">
-		<div class="catalog-search">
-			<el-input placeholder="blog search" icon="search" @click="searchBlog" @keyup.enter.native="searchBlog"></el-input>
-		</div>
-		<div class="catalog-tags">
-			<el-switch v-model="tagOn" on-color="#13ce66" off-color="#ff4949" @change="changeTag"></el-switch>
-			<div class="tag-list" v-show="tagOn">
-				<template v-for="tag in tags">
-					<el-tag @click.native="tagSelect(tag)" :style="{background: tag.bgColor}">{{ tag.name }}</el-tag>
-				</template>
+	<transition name="fade">
+		<div class="blog-catalog" v-if="catalogDisplay">
+			<div class="catalog-search">
+				<el-input placeholder="blog search" icon="search" @click="searchBlog" @keyup.enter.native="searchBlog"></el-input>
+			</div>
+			<div class="btn-hide">
+				<!-- <i class="el-icon-caret-left" @click="hiddenPanel"></i> -->
+				<i class="iconfont icon-zhankai-copy" @click="hiddenPanel"></i>
+			</div>
+			<div class="catalog-tags">
+				<el-switch v-model="tagOn" on-color="#13ce66" off-color="#ff4949" @change="changeTagStatus"></el-switch>
+				<div class="tag-list" v-show="tagOn">
+					<template v-for="tag in tags">
+						<el-tag @click.native="tagSelect(tag)" :style="{background: tag.bgColor}">{{ tag.name }}</el-tag>
+					</template>
+				</div>
+			</div>
+			<el-breadcrumb separator="/" class="catalog-breadcrumb">
+				<el-breadcrumb-item @click.native="clickBread(0)">目录</el-breadcrumb-item>
+				<el-breadcrumb-item v-if="crumbFlag[1] && crumbFlag[0]" @click.native="clickBread(1)">{{ crumbFlag[1] }}</el-breadcrumb-item>
+				<el-breadcrumb-item v-if="crumbFlag[2] && crumbFlag[0]">{{ crumbFlag[2] }}</el-breadcrumb-item>
+			</el-breadcrumb>
+			<p class="currentBlog" v-if="currentBlog.flag">当前正在阅读：<span @click="gotoCurrentBlog">{{ currentBlog.title }}</span></p>
+			<div class="catalog-list" v-if="!crumbFlag[2]">
+				<ul>
+					<li v-for="(blog, i) in fileterBlog">
+						<router-link to=""><p class="title" @click="blogSel(blog)">{{ i+1 }}、{{ blog.title }}</p></router-link>
+						<p class="mes">
+							<span>{{ blog.postTime }}</span>
+							<span><i class="el-icon-search"></i>{{ blog.view }}</span>
+							<span v-for="tag in blog.tagName">{{ tag }}</span>
+						</p>
+					</li>
+				</ul>
+			</div>
+			<div class="blog-chapter" v-if="crumbFlag[2]">
+				{{ crumbFlag[2] }}
 			</div>
 		</div>
-		<el-breadcrumb separator="/" class="catalog-breadcrumb">
-			<el-breadcrumb-item @click.native="clickBread(0)">目录</el-breadcrumb-item>
-			<el-breadcrumb-item v-if="crumbFlag[1] && crumbFlag[0]" @click.native="clickBread(1)">{{ crumbFlag[1] }}</el-breadcrumb-item>
-			<el-breadcrumb-item v-if="crumbFlag[2] && crumbFlag[0]">{{ crumbFlag[2] }}</el-breadcrumb-item>
-		</el-breadcrumb>
-		<p class="currentBlog" v-if="currentBlog.flag">当前正在阅读：<span @click="gotoCurrentBlog">{{ currentBlog.title }}</span></p>
-		<div class="catalog-list" v-if="!crumbFlag[2]">
-			<ul>
-				<li v-for="(blog, i) in fileterBlog">
-					<router-link to=""><p class="title" @click="blogSel(blog)">{{ i+1 }}、{{ blog.title }}</p></router-link>
-					<p class="mes">
-						<span>{{ blog.postTime }}</span>
-						<span><i class="el-icon-search"></i>{{ blog.view }}</span>
-						<span v-for="tag in blog.tagName">{{ tag }}</span>
-					</p>
-				</li>
-			</ul>
-		</div>
-		<div class="blog-chapter" v-if="crumbFlag[2]">
-			{{ crumbFlag[2] }}
-		</div>
-	</div>
+	</transition>
 </template>
 
 <script>
+	import {mapState, mapActions} from 'vuex'
 	export default {
 		data() {
 			return {
@@ -67,7 +74,7 @@
 						'updTime': '2018-08-26',
 						'view': '159628',
 						'start': '666',
-						'summary': '通话录音软件论坛已经'
+						'summary': 'ͨ通话录音软件论坛已经'
 					},
 					{
 						'title': '入门到放弃',
@@ -93,7 +100,7 @@
 				this.crumbFlag.splice(1, 1, tagObj.name);
 				this.crumbFlag.splice(2, 1, false);
 			},
-			changeTag() {
+			changeTagStatus() {
 				this.tags.map(function(tag){
 					delete tag.bgColor;
 				});
@@ -125,7 +132,14 @@
 				if(this.currentBlog.tag){
 					this.crumbFlag.splice(1, 1, this.currentBlog.tag);
 				}
-			}
+			},
+			hiddenPanel() {
+				this.$store.dispatch('changeCatalogDiaplay');
+				
+			},
+//			...mapActions({
+//				hiddenPanel: 'changeCatalogDiaplay'
+//			})
 		},
 		computed: {
 			fileterBlog() {
@@ -141,7 +155,8 @@
 						return blog;
 					}
 				})
-			}
+			},
+			...mapState(['catalogDisplay']),
 		}
 	}
 </script>
