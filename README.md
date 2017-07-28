@@ -8,7 +8,7 @@ Vue + Node + MySql 搭建个人博客，一步一个脚印
 ## 安装node，这是必须的
 新版node自带npm，安装Node.js时会一起安装，npm的作用就是对Node.js依赖的包进行管理，也可以理解为用来安装/卸载Node.js需要装的东西。
 验证是否安装成功：  
-![验证是否安装成功](https://otr9a8wg0.bkt.clouddn.com/17-7-28/48974756.jpg)  
+![验证是否安装成功](http://otr9a8wg0.bkt.clouddn.com/17-7-28/48974756.jpg)  
 推荐windows下终端工具：[cmder](http://cmder.net/)
 
 ## npm安装vue-cli
@@ -74,7 +74,7 @@ dev: {
 Compiled successfully in 2057ms 
 > Listening at http://localhost:8080
 ``` 
-![启动成功](https://otr9a8wg0.bkt.clouddn.com/17-7-28/73659113.jpg)
+![启动成功](http://otr9a8wg0.bkt.clouddn.com/17-7-28/73659113.jpg)
 
 
 # 2、前段页面搭建

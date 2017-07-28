@@ -27,9 +27,9 @@
 					<li v-for="(blog, i) in fileterBlog">
 						<router-link to=""><p class="title" @click="blogSel(blog)">{{ i+1 }}、{{ blog.title }}</p></router-link>
 						<p class="mes">
-							<span>{{ blog.postTime }}</span>
+							<span>{{ blog.post_time }}</span>
 							<span><i class="el-icon-search"></i>{{ blog.view }}</span>
-							<span v-for="tag in blog.tagName">{{ tag }}</span>
+							<span v-for="tag in blog.tags">{{ tag.name }}</span>
 						</p>
 					</li>
 				</ul>
@@ -43,11 +43,12 @@
 
 <script>
 	import {mapState, mapActions} from 'vuex'
+	import axios from 'axios'
 	export default {
 		data() {
 			return {
-				'tagOn': false,
-				'tags': [
+				tagOn: false,
+				tags: [
 					{'name':'Vue2', 'id':'0'},
 					{'name':'HTML5', 'id':'1'},
 					{'name':'Javascript', 'id':'2'},
@@ -57,30 +58,30 @@
 					{'name':'CSS', 'id':'6'},
 					{'name':'MySql', 'id':'7'}
 				],
-				'blogs': [
+				blogs: [
 					{
 						'title': 'Vue+MySql从0搭建个人博客',
-						'tagName': ['vue2', 'mysql'],
-						'postTime': '2017-07-25',
-						'updTime': '2017-08-26',
+						'tags': [{'id': 0, 'name': 'vue2'}, {'id': 1, 'name': 'mysql'}],
+						'post_time': '2017-07-25',
+						'upd_time': '2017-08-26',
 						'view': '666',
 						'start': '555',
 						'summary': 'nskgbgbtgbgnior'
 					},
 					{
 						'title': '个人博客数据表设计',
-						'tagName': ['mysql'],
-						'postTime': '2016-07-25',
-						'updTime': '2018-08-26',
+						'tags': [{'id': 1, 'name': 'mysql'}],
+						'post_time': '2016-07-25',
+						'upd_time': '2018-08-26',
 						'view': '159628',
 						'start': '666',
 						'summary': 'ͨ通话录音软件论坛已经'
 					},
 					{
 						'title': '入门到放弃',
-						'tagName': ['Javascript'],
-						'postTime': '2017-03-25',
-						'updTime': '2017-06-26',
+						'tags': [{'id': 2, 'name': 'Javascript'}],
+						'post_time': '2017-03-25',
+						'upd_time': '2017-06-26',
 						'view': '865921',
 						'start': '85961',
 						'summary': '钢铁行业调节阀的海能翻'
@@ -99,6 +100,13 @@
 				this.crumbFlag.splice(0, 1, true);
 				this.crumbFlag.splice(1, 1, tagObj.name);
 				this.crumbFlag.splice(2, 1, false);
+				axios.get('/api/blog/getBlogAll')
+					.then((res) => {
+						console.log(res);
+					})
+					.catch((err) => {
+						throw err;
+					})
 			},
 			changeTagStatus() {
 				this.tags.map(function(tag){
