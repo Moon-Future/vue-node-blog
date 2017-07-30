@@ -19,7 +19,6 @@ var jsonWrite = function (res, data) {
             msg: '操作失败'
         });
     } else {
-        console.log('data', data);
         res.json(data);
     }
 };
@@ -27,10 +26,19 @@ var jsonWrite = function (res, data) {
 module.exports = {
 	getBlogAll(req, res, next) {
 		pool.getConnection((err, connection) => {
-			connection.query(sqlMap.queryAll, (err, result) => {
+			connection.query(sqlMap.blog.queryAll, (err, result) => {
 				jsonWrite(res, result);
 				connection.release();
 			})
 		})
 	},
+	getTagAll(req, res, next) {
+		pool.getConnection((err, connection) => {
+			connection.query(sqlMap.tag.queryAll, (err, result) => {
+				jsonWrite(res, result);
+				connection.release();
+			})
+		})
+	},
+
 }

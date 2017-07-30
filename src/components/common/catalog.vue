@@ -91,6 +91,21 @@
 				currentBlog: {flag: false, title: '', tag: ''}
 			}
 		},
+		created() {
+			var self = this;
+			axios.get('/api/blog/getBlogAll')
+				.then((res) => {
+					console.log('res', res);
+					self.blogs = res.data;
+					self.blogs.map((obj) => {
+						obj.post_time = self.timeFormat(obj.post_time);
+					});
+				})
+				.catch((err) => {
+					throw err;
+				})
+			console.log(this.timeFormat(1501260407904));
+		},
 		methods: {
 			tagSelect(tagObj) {
 				this.tags.map(function(tag){

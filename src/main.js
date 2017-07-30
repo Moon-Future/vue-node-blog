@@ -10,6 +10,16 @@ import store from './store/index'
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
+Vue.prototype.timeFormat = function (timestamp) {
+	var time = new Date(timestamp);
+	var year = time.getFullYear(), month = time.getMonth(), day = time.getDay(), hour = time.getHours(), minute = time.getMinutes();
+	month = month < 10 ? '0' + month : month;
+	day = day < 10 ? '0' + day : day;
+	hour = hour < 10 ? '0' + hour : hour;
+	minute = minute < 10 ? '0' + minute : minute;
+	return year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
+}
+
 /* eslint-disable no-new */
 new Vue({
 	el: '#app',
