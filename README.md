@@ -207,7 +207,6 @@ export default new Router({
 
 
 
-
 # Express后端配置，MySql数据库连接
 >先说明为什么选用MySql数据库，网上大多都是关于mongodb的教程，我原本也是想使用mongodb，无奈公司网络限制，没有权限安装任何东西（github上不了，各种网站打不开，好苦逼的，好在npm可以使用），mongodb也是无法安装，压缩包版又缺少什么dll文件，电脑上只有MySql数据库，并且有可视化工具Navicat for MySQL操作起来也是很方便。 之前MySql基本没怎么用过，所以现在也是边学边用，一些sql语句还是找同事帮忙的，在此只为能完成功能即可，优化什么的以后再慢慢搞。
 
