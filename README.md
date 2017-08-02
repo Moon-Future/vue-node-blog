@@ -39,7 +39,7 @@ npm run dev 执行的命令即是package.json里 scripts下的dev：node build/d
     "build": "node build/build.js"
   },
 ```
-![构建项目](https://otr9a8wg0.bkt.clouddn.com/17-8-2/419050.jpg) 
+![构建项目](http://otr9a8wg0.bkt.clouddn.com/17-8-2/419050.jpg) 
 
 默认端口为8080，若此时8080端口被占用则会出错
 ```
@@ -263,7 +263,7 @@ module.exports = {
 }
 ```
 user、password视自己数据库的连接信息配置，不懂的百度哈，后面也可以测试看是否连接成功，我的数据库连接信息如下：  
-![连接信息](https://otr9a8wg0.bkt.clouddn.com/17-8-2/84026052.jpg)  
+![连接信息](http://otr9a8wg0.bkt.clouddn.com/17-8-2/84026052.jpg)  
 
 ## 4、sql语句 sqlMap.js
 ```

@@ -11,7 +11,7 @@
 				</el-breadcrumb>
 				<i class="switch-type iconfont" :class="switchType ? 'icon-zhanshiguanli01' : 'icon-show'" @click="switchHandle"></i>
 			</div>
-			<router-view :key="$route.path"></router-view>
+			<router-view></router-view>
 		</div>
 	</div>
 </template>
@@ -19,6 +19,7 @@
 <script>
 	import Catalog from '../common/Catalog'
 	import Leftnav from '../common/Leftnav'
+	import mHeader from '../common/Header'
 	import {mapState, mapActions} from 'vuex'
 	export default {
 		name: 'blog',
@@ -29,7 +30,8 @@
 		},
 		components: {
 			Catalog,
-			Leftnav
+			Leftnav,
+			mHeader
 		},
 		methods: {
 			switchHandle() {

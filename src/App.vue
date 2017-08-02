@@ -11,7 +11,6 @@ export default {
 </script>
 
 <style>
-@import url("../static/css/main.css");
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -20,4 +19,21 @@ export default {
   color: #2c3e50;
   /*margin-top: 60px;*/
 }
+body, html, #app{
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+.iconfont {
+	margin-right: 10px;
+	cursor: pointer;
+}
+.catalog-search input {
+  background-color: transparent;
+  color: #fff;
+}
+.left-search input {
+		background-color: transparent;
+		color: #fff;
+	}
 </style>

@@ -41,7 +41,7 @@
     }
 </script>
 
-<style scoped>
+<style>
     .m-header {
         height: 60px;
     }

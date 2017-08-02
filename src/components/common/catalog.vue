@@ -174,7 +174,7 @@
 	}
 </script>
 
-<style>
+<style scoped>
 	.blog-catalog {
 		position: fixed;
 		width: 20%;
@@ -197,10 +197,10 @@
 		}
 	}
 	
-	.catalog-search input {
+	/* .catalog-search input {
 		background-color: transparent;
 		color: #fff;
-	}
+	} */
 	
 	.catalog-search i {
 		cursor: pointer;
@@ -211,7 +211,7 @@
 	}
 	
 	.catalog-breadcrumb span {
-		color: #fff;
+		 color: #fff; 
 	}
 	
 	.catalog-tags {
@@ -288,7 +288,7 @@
 	}
 	
 	.fade-leave-to /* .fade-leave-active in below version 2.1.8 */ {
-	  	left: -350px
+	  	left: -400px
 	}
 	
 	.fade-enter-active {

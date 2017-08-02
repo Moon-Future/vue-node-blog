@@ -74,10 +74,10 @@
 		cursor: pointer;
 	}
 
-	.left-search input {
+	/* .left-search input {
 		background-color: transparent;
 		color: #fff;
-	}
+	} */
 
 	.left-header {
 		position: relative;
