@@ -20,6 +20,21 @@ Vue.prototype.timeFormat = function (timestamp) {
 	return year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
 }
 
+router.beforeEach ((to, from, next) => {
+	const toData = to.params;
+	const fromData = from.params;
+	if(fromData.id && !toData.id){
+		store.state.currentArticle.title = '';
+		store.state.crumbFlag.splice(2, 1, '');
+	}
+	if(toData.id && !fromData.id){
+		store.state.currentArticle.title = toData.title;
+		store.state.currentArticle.id = toData.id;
+		store.state.crumbFlag.splice(2, 1, toData.title);
+	}
+	next();
+})
+
 /* eslint-disable no-new */
 new Vue({
 	el: '#app',

@@ -1,6 +1,6 @@
 var mysql = require('mysql');
 var mysqlConf = require('./db');
-var sqlMap = require('./sqlMapping');
+var sqlMap = require('./sqlMap');
 
 // 连接数据库
 var pool = mysql.createPool({
@@ -23,11 +23,39 @@ var jsonWrite = function (res, data) {
     }
 };
 
+// 数据处理
+var mergeData = function(data) {
+	var obj = {}, arr = [], tmp;
+	for(let i = 0, len = data.length; i < len; i++){
+		tmp = data[i];
+		if(obj[tmp.aid]){
+			obj[tmp.aid].tags.push({'id':tmp.tid, 'name':tmp.name});
+		}else{
+			obj[tmp.aid] = {};
+			obj[tmp.aid].id = tmp.aid;
+			obj[tmp.aid].user_id = tmp.user_id;
+			obj[tmp.aid].title = tmp.title;
+			obj[tmp.aid].type = tmp.type;
+			obj[tmp.aid].loadURL = tmp.loadURL;
+			obj[tmp.aid].tags = [{'id':tmp.tid, 'name':tmp.name}];
+			obj[tmp.aid].summary = tmp.summary;
+			obj[tmp.aid].post_time = tmp.post_time;
+			obj[tmp.aid].upd_time = tmp.upd_time;
+			obj[tmp.aid].view = tmp.view;
+			obj[tmp.aid].start = tmp.start;
+		}
+	}
+	for(let i in obj){
+		arr.push(obj[i]);
+	}
+	return arr;
+}
+
 module.exports = {
-	getBlogAll(req, res, next) {
+	getArticleAll(req, res, next) {
 		pool.getConnection((err, connection) => {
-			connection.query(sqlMap.blog.queryAll, (err, result) => {
-				jsonWrite(res, result);
+			connection.query(sqlMap.article.queryAll, (err, result) => {
+				jsonWrite(res, mergeData(result));
 				connection.release();
 			})
 		})
@@ -40,5 +68,12 @@ module.exports = {
 			})
 		})
 	},
-
+	getTagById(req, res, next) {
+		pool.getConnection((err, connection) => {
+			connection.query(sqlMap.tag.queryById, (err, result) => {
+				jsonWrite(res, result);
+				connection.release();
+			})
+		})
+	},
 }

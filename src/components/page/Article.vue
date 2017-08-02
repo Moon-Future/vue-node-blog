@@ -1,25 +1,43 @@
 <template>
-	<div>
-		<leftNav></leftNav>
-		<!--<catalog></catalog>-->
-		<!--<mHeader></mHeader>-->
-		<router-view></router-view>
+	<div class="article-detail" v-html="article">
 	</div>
 </template>
 
 <script>
-	import leftNav from '../common/leftNav'
-//	import catalog from '../common/catalog'
-//	import mHeader from '../common/Header'
+	import marked from 'marked'
+	import axios from 'axios'
+	marked.setOptions({
+	  highlight: function (code) {
+	    return require('highlight.js').highlightAuto(code).value;
+	  },
+	});
 	export default {
-		name: 'Article',
-		components: {
-			leftNav
+		name: 'article',
+		data() {
+			return {
+				article: ''
+			}
 		},
+		created() {
+			axios.get('../../../static/README.md')
+				.then((res) => {
+					var mdData = res.data;
+					this.article = marked(mdData);
+				})
+				.catch((err) => {
+					console.log(err);
+				})
+		}
 	}
-	
 </script>
 
 <style scoped>
-	/*@import url("../../../static/css/article.css");*/
+	.article-detail{
+		padding: 20px;
+		background: #fff;
+		text-align: left;
+	}
+	.article-detail pre {
+		background: #f0f0f0;
+	}
 </style>

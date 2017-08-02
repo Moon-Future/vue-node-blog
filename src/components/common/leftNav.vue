@@ -49,5 +49,73 @@
 </script>
 
 <style scoped>
-	@import url("../../../static/css/leftnav.css");
+	.left-nav {
+		position: fixed;
+		height: 100%;
+		background: #324157;
+		float: left;
+		color: #fff;
+	}
+
+	@media only screen and (max-width: 992px) {
+		.left-nav {
+			display: none;
+		}
+	}
+
+	@media only screen and (min-width: 992px) {
+		.left-nav {
+			width: 20%;
+		}
+	}
+
+	.left-search {
+		margin: 10px;
+		cursor: pointer;
+	}
+
+	.left-search input {
+		background-color: transparent;
+		color: #fff;
+	}
+
+	.left-header {
+		position: relative;
+		padding: 30px;
+	}
+
+	.left-avatar {
+		width: 30%;
+		border-radius: 50%;
+		cursor: pointer;
+	}
+
+	.left-social {
+		position: relative;
+		top: 100px;
+		padding: 10px;
+	}
+
+	.left-social i {
+		font-size: 32px;
+		cursor: pointer;
+	}
+
+	.left-social .icon-github:hover {
+		color: #f66;
+	}
+
+	.left-social .icon-weibo:hover {
+		color: #f08787;
+	}
+
+	.left-social .icon-weixin:hover {
+		color: #46af35;
+	}
+
+	.btn-show {
+		width: 45px;
+		cursor: pointer;
+		margin-top: 15px;
+	}
 </style>

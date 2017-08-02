@@ -5,14 +5,13 @@
 				<el-input placeholder="blog search" icon="search" @click="searchBlog" @keyup.enter.native="searchBlog"></el-input>
 			</div>
 			<div class="btn-hide">
-				<!-- <i class="el-icon-caret-left" @click="hiddenPanel"></i> -->
 				<i class="iconfont icon-zhankai-copy" @click="hiddenPanel"></i>
 			</div>
 			<div class="catalog-tags">
 				<el-switch v-model="tagOn" on-color="#13ce66" off-color="#ff4949" @change="changeTagStatus"></el-switch>
 				<div class="tag-list" v-show="tagOn">
-					<template v-for="tag in tags">
-						<el-tag @click.native="tagSelect(tag)" :style="{background: tag.bgColor}">{{ tag.name }}</el-tag>
+					<template v-for="(tag, i) in tags">
+						<el-tag @click.native="tagSelect(tag)" :style="{background: tag.bgColor}" :key="i">{{ tag.name }}</el-tag>
 					</template>
 				</div>
 			</div>
@@ -21,15 +20,15 @@
 				<el-breadcrumb-item v-if="crumbFlag[1] && crumbFlag[0]" @click.native="clickBread(1)">{{ crumbFlag[1] }}</el-breadcrumb-item>
 				<el-breadcrumb-item v-if="crumbFlag[2] && crumbFlag[0]">{{ crumbFlag[2] }}</el-breadcrumb-item>
 			</el-breadcrumb>
-			<p class="currentBlog" v-if="currentBlog.flag">当前正在阅读：<span @click="gotoCurrentBlog">{{ currentBlog.title }}</span></p>
+			<p class="currentBlog" v-if="currentArticle.title">当前正在阅读：<span @click="gotoCurrentArticle">{{ currentArticle.title }}</span></p>
 			<div class="catalog-list" v-if="!crumbFlag[2]">
 				<ul>
 					<li v-for="(blog, i) in fileterBlog">
-						<router-link to=""><p class="title" @click="blogSel(blog)">{{ i+1 }}、{{ blog.title }}</p></router-link>
+						<router-link to="" @click.native="blogSelect(blog)"><p class="title">{{ i+1 }}、{{ blog.title }}</p></router-link>
 						<p class="mes">
 							<span>{{ blog.post_time }}</span>
 							<span><i class="el-icon-search"></i>{{ blog.view }}</span>
-							<span v-for="tag in blog.tags">{{ tag.name }}</span>
+							<span v-for="tag in blog.tags" :data-id="tag.id">{{ tag.name }}</span>
 						</p>
 					</li>
 				</ul>
@@ -47,9 +46,9 @@
 	export default {
 		data() {
 			return {
-				tagOn: false,
-				tags: [
-					{'name':'Vue2', 'id':'0'},
+				'tagOn': false,
+				'tags': [
+					{'name':'Vue', 'id':'0'},
 					{'name':'HTML5', 'id':'1'},
 					{'name':'Javascript', 'id':'2'},
 					{'name':'Python', 'id':'3'},
@@ -58,10 +57,10 @@
 					{'name':'CSS', 'id':'6'},
 					{'name':'MySql', 'id':'7'}
 				],
-				blogs: [
+				'blogs': [
 					{
 						'title': 'Vue+MySql从0搭建个人博客',
-						'tags': [{'id': 0, 'name': 'vue2'}, {'id': 1, 'name': 'mysql'}],
+						'tags': [{'id':0,'name':'vue'}, {'id':1,'name':'mysql'}],
 						'post_time': '2017-07-25',
 						'upd_time': '2017-08-26',
 						'view': '666',
@@ -70,16 +69,16 @@
 					},
 					{
 						'title': '个人博客数据表设计',
-						'tags': [{'id': 1, 'name': 'mysql'}],
+						'tags': [{'id':1,'name':'mysql'}],
 						'post_time': '2016-07-25',
 						'upd_time': '2018-08-26',
 						'view': '159628',
 						'start': '666',
-						'summary': 'ͨ通话录音软件论坛已经'
+						'summary': '通话录音软件论坛已经'
 					},
 					{
 						'title': '入门到放弃',
-						'tags': [{'id': 2, 'name': 'Javascript'}],
+						'tags': [{'id':2,'name':'javascript'}],
 						'post_time': '2017-03-25',
 						'upd_time': '2017-06-26',
 						'view': '865921',
@@ -87,24 +86,29 @@
 						'summary': '钢铁行业调节阀的海能翻'
 					}
 				],
-				crumbFlag: [true, false, false], // 三级面包屑	// 目录/标签/文章标题		crumbCata/crumbSub/crumbTitle
-				currentBlog: {flag: false, title: '', tag: ''}
+//				crumbFlag: [true, false, false], // 三级面包屑	// 目录/标签/文章标题		crumbCata/crumbSub/crumbTitle
+//				currentArticle: {title: '', tag: ''}
 			}
 		},
 		created() {
 			var self = this;
-			axios.get('/api/blog/getBlogAll')
+			axios.get('/api/article/getArticleAll')
 				.then((res) => {
-					console.log('res', res);
 					self.blogs = res.data;
-					self.blogs.map((obj) => {
-						obj.post_time = self.timeFormat(obj.post_time);
-					});
+					self.blogs.map((blog) => {
+						blog.post_time = self.timeFormat(blog.post_time);
+					})
 				})
 				.catch((err) => {
-					throw err;
+					console.log('err', err);
+				});
+			axios.get('/api/tag/getTagAll')
+				.then((res) => {
+					self.tags = res.data;
 				})
-			console.log(this.timeFormat(1501260407904));
+				.catch((err) => {
+					console.log('err', err);
+				});	
 		},
 		methods: {
 			tagSelect(tagObj) {
@@ -112,65 +116,51 @@
 					delete tag.bgColor;
 				})
 				tagObj.bgColor = '#1D8CE0';
-				this.crumbFlag.splice(0, 1, true);
-				this.crumbFlag.splice(1, 1, tagObj.name);
-				this.crumbFlag.splice(2, 1, false);
-				axios.get('/api/blog/getBlogAll')
-					.then((res) => {
-						console.log(res);
-					})
-					.catch((err) => {
-						throw err;
-					})
+				this.crumbFlagHanle([{'index':0,'newValue':true},{'index':1,'newValue':tagObj.name},{'index':2,'newValue':false}]);
 			},
 			changeTagStatus() {
 				this.tags.map(function(tag){
 					delete tag.bgColor;
 				});
-				this.crumbFlag.splice(1, 1, false);
+				this.crumbFlagHanle([{'index':1,'newValue':false}]);
 			},
 			searchBlog() {
 				
 			},
 			clickBread(index) {
 				if(index == 0 && this.crumbFlag[0]){
-					this.crumbFlag.splice(1, 1, false);
-					this.crumbFlag.splice(2, 1, false);
+					this.crumbFlagHanle([{'index':1,'newValue':false},{'index':2,'newValue':false}]);
 					this.tags.map(function(tag){
 						delete tag.bgColor;
 					})
 				}else if(index ==1 && this.crumbFlag[2]){
-					this.crumbFlag.splice(2, 1, false);
+					this.crumbFlagHanle([{'index':2,'newValue':false}]);
 				}
 			},
-			blogSel(blog) {
-				this.crumbFlag.splice(2, 1, blog.title);
-				this.currentBlog.flag = true;
-				this.currentBlog.title = blog.title;
-				this.currentBlog.tag = this.crumbFlag[1];
+			blogSelect(blog) {
+				this.crumbFlagHanle([{'index':2,'newValue':blog.title}]);
+				this.currentArticleHanle({'flag':true,'title':blog.title,'tag':this.crumbFlag[1]});
+				this.$router.push({name: 'Article', params: {id: blog.id, title: blog.title}});
 			},
-			gotoCurrentBlog() {
-				this.crumbFlag.splice(2, 1, this.currentBlog.title);
-				this.crumbFlag.splice(1, 1, false);
-				if(this.currentBlog.tag){
-					this.crumbFlag.splice(1, 1, this.currentBlog.tag);
+			gotoCurrentArticle() {
+				this.crumbFlagHanle([{'index':2,'newValue':this.currentArticle.title},{'index':1,'newValue':false}]);
+				if(this.currentArticle.tag){
+					this.crumbFlagHanle([{'index':1,'newValue':this.currentArticle.tag}]);
 				}
 			},
-			hiddenPanel() {
-				this.$store.dispatch('changeCatalogDiaplay');
-				
-			},
-//			...mapActions({
-//				hiddenPanel: 'changeCatalogDiaplay'
-//			})
+			...mapActions({
+				hiddenPanel: 'changeCatalogDiaplay',
+				crumbFlagHanle: 'crumbFlag',
+				currentArticleHanle: 'currentArticle'
+			})
 		},
 		computed: {
 			fileterBlog() {
 				var self = this;
 				return this.blogs.filter(function(blog){
 					if(self.crumbFlag[1]){
-						for(let i = 0, len = blog.tagName.length; i < len; i++){
-							if(blog.tagName[i].toLowerCase()  == self.crumbFlag[1].toLowerCase() ){
+						for(let i = 0, len = blog.tags.length; i < len; i++){
+							if(blog.tags[i].name.toLowerCase()  == self.crumbFlag[1].toLowerCase() ){
 								return blog;
 							}
 						}
@@ -179,11 +169,134 @@
 					}
 				})
 			},
-			...mapState(['catalogDisplay']),
+			...mapState(['catalogDisplay', 'crumbFlag', 'currentArticle']),
 		}
 	}
 </script>
 
 <style>
-	@import url("../../../static/css/catalog.css");
+	.blog-catalog {
+		position: fixed;
+		width: 20%;
+		height: 100%;
+		background: #324157;
+		color: #fff;
+		opacity: 0.9;
+		padding: 10px;
+		box-sizing: border-box;
+		overflow: auto;
+	}
+	
+	.blog-catalog a {
+		text-decoration: none;
+	}
+	
+	@media only screen and (max-width: 992px) {
+		.blog-catalog {
+			display: none;
+		}
+	}
+	
+	.catalog-search input {
+		background-color: transparent;
+		color: #fff;
+	}
+	
+	.catalog-search i {
+		cursor: pointer;
+	}
+	
+	.catalog-breadcrumb {
+		padding-top: 20px;
+	}
+	
+	.catalog-breadcrumb span {
+		color: #fff;
+	}
+	
+	.catalog-tags {
+		margin-top: 10px;
+	    text-align: left;
+	}
+	
+	.tag-list {
+		margin-top: 10px;
+	}
+	
+	.tag-list span {
+		margin: 0 10px 10px 0;
+		cursor: pointer;
+	}
+	
+	.tag-list span:hover {
+		color: #FFFF00;
+	}
+	
+	.catalog-list ul {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		text-align: left;
+	}
+	
+	.catalog-list .title {
+		margin-bottom: 2px;
+		white-space: nowrap;
+	    text-overflow: ellipsis;
+	    overflow: hidden;
+	    color: #fff;
+	}
+	
+	.catalog-list .mes {
+	    color: #97a8be;
+	    font-size: 13px;
+	    margin: 0;
+	}
+	
+	.catalog-list .mes span {
+		margin-right: 10px;
+		cursor: pointer;
+	}
+	
+	.catalog-list .mes span:hover{
+		text-decoration: underline;
+	}
+	
+	.catalog-list .mes i {
+		margin-right: 5px;
+	}
+	
+	.currentBlog {
+		margin: 3px 0 0 0;
+		text-align: left;
+		font-size: 13px;
+		color: #FFFF00;
+	}
+	.currentBlog span {
+		cursor: pointer;
+	}
+	
+	.btn-hide {
+		float: right;
+		margin-top: 15px;
+		cursor: pointer;
+	}
+	
+	.fade-leave-active {
+		left: 0px;
+	  	transition: left .5s
+	}
+	
+	.fade-leave-to /* .fade-leave-active in below version 2.1.8 */ {
+	  	left: -350px
+	}
+	
+	.fade-enter-active {
+		left: -350px;
+	  	transition: left .5s
+	}
+	
+	.fade-enter-to /* .fade-leave-active in below version 2.1.8 */ {
+	  	left: 0px
+	}
 </style>

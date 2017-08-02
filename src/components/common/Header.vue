@@ -41,6 +41,66 @@
     }
 </script>
 
-<style>
-@import url("../../../static/css/header.css");
+<style scoped>
+    .m-header {
+        height: 60px;
+    }
+
+    .m-avatar {
+        width: 200px;
+        margin-left: 30px;
+        float: left;
+    }
+
+    .m-avatar img {
+        float: left;
+    }
+
+    .m-avatar p {
+        line-height: 60px;
+        margin: 0;
+        text-align: left;
+        text-indent: 10px;
+    }
+
+    .md-menu {
+        margin-right: 30px;
+        float: right;
+        display: none;
+    }
+
+    .md-menu ul {
+        background: #fff;
+    }
+
+    .xs-menu {
+        line-height: 60px;
+        float: right;
+        margin-right: 30px;
+    }
+
+    .m-detail {
+        position: absolute;
+        width: 100%;
+        opacity: 0.8;
+        color: #fff;
+        z-index: 99;
+        margin-top: 60px;
+    }
+
+    @media only screen and (min-width: 992px) {
+        .m-header {
+            display: none;
+        }
+    }
+
+    @media only screen and (min-width: 768px) {
+        .xs-menu,
+        .m-detail {
+            display: none;
+        }
+        .md-menu {
+            display: block;
+        }
+    }
 </style>
