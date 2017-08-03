@@ -23,12 +23,12 @@
 			<p class="currentBlog" v-if="currentArticle.title">当前正在阅读：<span @click="gotoCurrentArticle">{{ currentArticle.title }}</span></p>
 			<div class="catalog-list" v-if="!crumbFlag[2]">
 				<ul>
-					<li v-for="(blog, i) in fileterBlog">
+					<li v-for="(blog, i) in fileterBlog" :key="blog.id">
 						<router-link to="" @click.native="blogSelect(blog)"><p class="title">{{ i+1 }}、{{ blog.title }}</p></router-link>
 						<p class="mes">
 							<span>{{ blog.post_time }}</span>
 							<span><i class="el-icon-search"></i>{{ blog.view }}</span>
-							<span v-for="tag in blog.tags" :data-id="tag.id">{{ tag.name }}</span>
+							<span v-for="tag in blog.tags" :key="tag.id">{{ tag.name }}</span>
 						</p>
 					</li>
 				</ul>

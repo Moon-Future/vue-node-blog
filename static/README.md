@@ -281,7 +281,7 @@ module.exports = sqlMap;
 ```
 
 ## 5、数据库连接、api接口 api.js
-```
+```javascript
 var mysql = require('mysql');
 var mysqlConf = require('./db');
 var sqlMap = require('./sqlMapping');

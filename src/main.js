@@ -6,6 +6,8 @@ import router from './router/index'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 import store from './store/index'
+import 'github-markdown-css/github-markdown.css'
+import 'highlight.js/styles/vs.css'
 
 Vue.use(ElementUI)
 Vue.config.productionTip = false

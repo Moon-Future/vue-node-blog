@@ -1,5 +1,5 @@
 <template>
-	<div class="article-detail" v-html="article">
+	<div class="article-detail markdown-body" v-html="article">
 	</div>
 </template>
 
@@ -7,9 +7,9 @@
 	import marked from 'marked'
 	import axios from 'axios'
 	marked.setOptions({
-	  highlight: function (code) {
-	    return require('highlight.js').highlightAuto(code).value;
-	  },
+	  	highlight: function (code) {
+			return require('highlight.js').highlightAuto(code).value;
+		}
 	});
 	export default {
 		name: 'article',
@@ -35,9 +35,6 @@
 	.article-detail{
 		padding: 20px;
 		background: #fff;
-		text-align: left;
-	}
-	.article-detail pre {
-		background: #f0f0f0;
+		text-align: left; 
 	}
 </style>

@@ -2,14 +2,14 @@
 	<div class="box-catalog">
 		<el-row :gutter="10">
 			<template v-for="blog in blogs">
-				<el-col :md="boxCol">
+				<el-col :md="boxCol" :key="blog.id">
 					<el-card class="box-card">
 						<div class="blog-title">
 							<router-link to="" @click.native="readAll(blog.id, blog.title)"><h2>{{ blog.title }}</h2></router-link>
 							<span class="blog-postdata">{{ blog.post_time }}</span>
 							<span class="blog-view"><i class="el-icon-search title-icon"></i>{{ blog.view }}</span>
 							<span class="blog-start"><i class="title-icon el-icon-star-on"></i>{{ blog.start }}</span>
-							<span class="blog-tags" v-for="tag in blog.tags">
+							<span class="blog-tags" v-for="tag in blog.tags" :key="tag.id">
 								<el-tag type="primary">{{ tag.name }}</el-tag>
 							</span>
 						</div>
