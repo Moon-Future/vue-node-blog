@@ -55,6 +55,7 @@
 		background: #324157;
 		float: left;
 		color: #fff;
+		text-align: center;
 	}
 
 	@media only screen and (max-width: 992px) {

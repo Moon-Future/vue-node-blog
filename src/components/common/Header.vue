@@ -110,6 +110,7 @@
 		float: left;
 		width: 30%;
 		margin-right: 10px;
+        border-radius: 50%;
 	}
 	
 	.m-avatar p {

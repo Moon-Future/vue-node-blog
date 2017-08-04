@@ -35,7 +35,7 @@
 		name: 'article',
 		data() {
 			return {
-				imageDefault: '../../../static/images/pic3.jpg',
+				imageDefault: '../../../static/images/pic9.jpg',
 				blogs: [
 					{
 						id: 0,
@@ -110,17 +110,19 @@
 
 <style scoped>
 	.box-card {
+		text-align: center;
 		margin-bottom: 10px;
 	}
 	
 	.box-card-image {
-		width: 60%;
+		/* width: 60%; */
+		max-width: 100%;
 	}
-	@media only screen and (min-width: 992px) {
+	/* @media only screen and (min-width: 992px) {
 		.box-card-image {
 			height: 250px;
 		}
-	}
+	} */
 	
 	.box-card:hover {
 		background: #EFF2F7;

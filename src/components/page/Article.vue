@@ -1,11 +1,14 @@
 <template>
-	<div class="article-detail markdown-body" v-html="article">
+	<div>
+		<article class="article-detail markdown-body" v-html="article"></article>
+		<Comment></Comment>
 	</div>
 </template>
 
 <script>
 	import marked from 'marked'
 	import axios from 'axios'
+	import Comment from './Comment'
 	marked.setOptions({
 	  	highlight: function (code) {
 			return require('highlight.js').highlightAuto(code).value;
@@ -13,6 +16,9 @@
 	});
 	export default {
 		name: 'article',
+		components: {
+			Comment
+		},
 		data() {
 			return {
 				article: ''
