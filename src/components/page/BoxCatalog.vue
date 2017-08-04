@@ -5,13 +5,15 @@
 				<el-col :md="boxCol" :key="blog.id">
 					<el-card class="box-card">
 						<div class="blog-title">
-							<router-link to="" @click.native="readAll(blog.id, blog.title)"><h2>{{ blog.title }}</h2></router-link>
-							<span class="blog-postdata">{{ blog.post_time }}</span>
-							<span class="blog-view"><i class="el-icon-search title-icon"></i>{{ blog.view }}</span>
-							<span class="blog-start"><i class="title-icon el-icon-star-on"></i>{{ blog.start }}</span>
-							<span class="blog-tags" v-for="tag in blog.tags" :key="tag.id">
-								<el-tag type="primary">{{ tag.name }}</el-tag>
-							</span>
+							<router-link to="" @click.native="readAll(blog.id, blog.title)"><h2 :title="blog.title">{{ blog.title }}</h2></router-link>
+							<div class="blog-mes">
+								<span class="blog-postdata">{{ blog.post_time }}</span>
+								<span class="blog-view"><i class="el-icon-search title-icon"></i>{{ blog.view }}</span>
+								<span class="blog-start"><i class="title-icon el-icon-star-on"></i>{{ blog.start }}</span>
+								<span class="blog-tags" v-for="tag in blog.tags" :key="tag.id">
+									<el-tag type="primary">{{ tag.name }}</el-tag>
+								</span>
+							</div>
 						</div>
 						<img v-if="blog.image" :src="blog.image" class="box-card-image">
 						<img v-else :src="imageDefault" class="box-card-image">
@@ -127,10 +129,21 @@
 	.blog-title {
 		margin-bottom: 10px;
 	}
+
+	.blog-title h2 {
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+	}
 	
 	.blog-title a {
 		text-decoration: none;
 		color: #000;
+	}
+
+	.blog-mes {
+		height: 60px;
+    	line-height: 30px;
 	}
 	
 	.blog-title span {

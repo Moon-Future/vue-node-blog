@@ -3,14 +3,7 @@
 		<Leftnav></Leftnav>
 		<Catalog></Catalog>
 		<div class="blog-content">
-			<div class="blog-header">
-				<el-breadcrumb separator="/" class="breadcrumb">
-					<el-breadcrumb-item :to="{ path: '/' }">Home</el-breadcrumb-item>
-					<el-breadcrumb-item :to="{ path: '/blog' }" @click.native="backBlog">Blog</el-breadcrumb-item>
-					<el-breadcrumb-item to="">{{ currentArticle.title }}</el-breadcrumb-item>
-				</el-breadcrumb>
-				<i class="switch-type iconfont" :class="switchType ? 'icon-zhanshiguanli01' : 'icon-show'" @click="switchHandle"></i>
-			</div>
+			<mHeader></mHeader>
 			<router-view></router-view>
 		</div>
 	</div>
@@ -76,7 +69,7 @@
 	@media only screen and (min-width: 992px) {
 		.blog-content {
 			width: 80%;
-			height: 100%;
+		    height: 100%;
 		}
 	}
 	.blog-header {
