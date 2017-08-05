@@ -1,6 +1,6 @@
 var sqlMap = {
 	article: {
-//		insert:'INSERT INTO user(user_id,author,title,tyep,loadURL,tag,summary,posy_time,upd_time) VALUES(8023,陈亮,?,0,$,tag,?,?,?)',
+//		insert:'INSERT INTO user(user_id,author,title,tyep,loadURL,tag,summary,posy_time,upd_time) VALUES (8023,陈亮,?,0,$,tag,?,?,?)',
 //		update:'update articles set name=?, age=? where id=?',
 //		delete: 'delete from articles where id=?',
 //		queryById: 'select * from articles where id=?',
@@ -11,6 +11,9 @@ var sqlMap = {
 	tag: {
 		queryById: 'select * from articles where id=?',
 		queryAll: 'select * from tags'
+	},
+	comments: {
+		insert: 'INSERT INTO comments(name,eamil,reminder,text,aid,time) VALUES (?,?,?,?,?,?)',
 	}
 }
 

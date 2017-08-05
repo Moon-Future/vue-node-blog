@@ -1,17 +1,18 @@
 <template>
 	<div class="article-comment">
-        <el-form :model="ruleForm" :rules="rules" label-position="top" class="from-comment">
+        <el-form :model="ruleForm" :rules="rules" label-position="top" ref="commentForm" class="from-comment">
             <el-form-item label="大名" prop="name">
                 <el-input v-model="ruleForm.name"></el-input>
             </el-form-item>
             <el-form-item label="邮箱" prop="email">
                 <el-input v-model="ruleForm.email"></el-input>
+                <el-checkbox v-model="ruleForm.reminder">收到回复邮件提醒</el-checkbox>
             </el-form-item>
             <el-form-item label="留言" prop="comment" class="comment-item">
                 <el-input type="textarea" spellcheck="false" :rows="5" v-model="ruleForm.comment"></el-input>
             </el-form-item>
         </el-form>
-        <el-button type="success">提交</el-button>
+        <el-button type="success" @click="submitHandle('commentForm')">提交</el-button>
         <div class="comment-detail">
             评论
         </div>
@@ -19,6 +20,7 @@
 </template>
 
 <script>
+    import axios from 'axios'
 	export default {
         name: 'comment',
         data() {
@@ -26,6 +28,7 @@
                 ruleForm: {
                     name: '',
                     email: '',
+                    reminder: false,
                     comment: ''
                 },
                 rules: {
@@ -41,6 +44,33 @@
                     ]
                 }
             }
+        },
+        methods: {
+            submitHandle(formName) {
+                var self = this;
+                this.$refs[formName].validate((valid) => {
+                    if(valid) {
+                        axios.post('/api/comment/writeComment', {
+                            name: self.ruleForm.name,
+                            email: self.ruleForm.email,
+                            reminder: self.ruleForm.email ? (self.ruleForm.reminder ? 1 : 0) : 0,
+                            text: self.ruleForm.comment,
+                            aid: 2
+                        }).then((res) => {
+                            this.$message.success('提交成功');
+                        }).catch((err) => {
+                            throw err;
+                        })
+                    }else {
+                        this.$message({
+                            showClose: true,
+                            message: '数据有误，提交失败',
+                            type: 'error'
+                        });
+                        return false;
+                    }
+                })
+            },
         }
 	}
 </script>

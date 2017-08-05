@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<article class="article-detail markdown-body" v-html="article"></article>
+		<article class="article-detail markdown-body" v-html="article"></article> 
 		<Comment></Comment>
 	</div>
 </template>

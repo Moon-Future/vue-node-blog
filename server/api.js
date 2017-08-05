@@ -76,4 +76,12 @@ module.exports = {
 			})
 		})
 	},
+	writeComment(req, res, next) {
+		pool.getConnection((err, connection) => {
+			var postData = req.body, time = new Date().getTime();
+			connection.query(sqlMap.comments.insert, [postData.name, postData.email, postData.reminder, postData.text, postData.aid, time], (err, result) => {
+				connection.release();
+			})
+		})
+	}
 }

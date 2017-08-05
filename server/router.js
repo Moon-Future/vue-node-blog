@@ -14,4 +14,9 @@ router.get('/comment/getComment', function(req, res, next) {
 	res.send('express 陈亮 getComment');
 })
 
+router.post('/comment/writeComment', function(req, res, next) {
+	res.send('OK');
+	api.writeComment(req, res, next);
+})
+
 module.exports = router;
