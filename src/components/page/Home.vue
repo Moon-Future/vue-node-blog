@@ -2,7 +2,9 @@
 	<div class="blog-home">
 		<div class="blog-main">
 			<div class="blog-avatar">
-				<img src="../../../static/images/head1.jpg" alt="" />
+				<router-link to="/login">
+					<img src="../../../static/images/head1.jpg" alt="" />
+				</router-link>
 			</div>
 			<div class="blog-nav">
 				<ul>

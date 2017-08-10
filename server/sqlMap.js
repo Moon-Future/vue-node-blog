@@ -12,8 +12,9 @@ var sqlMap = {
 		queryById: 'select * from articles where id=?',
 		queryAll: 'select * from tags'
 	},
-	comments: {
+	comment: {
 		insert: 'INSERT INTO comments(name,eamil,reminder,text,aid,time) VALUES (?,?,?,?,?,?)',
+		queryAll: 'select * from comments'
 	}
 }
 

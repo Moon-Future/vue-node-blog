@@ -3,7 +3,7 @@
 		<Leftnav></Leftnav>
 		<Catalog></Catalog>
 		<div class="blog-content">
-			<mHeader></mHeader>
+			<vHeader></vHeader>
 			<router-view></router-view>
 		</div>
 	</div>
@@ -12,7 +12,7 @@
 <script>
 	import Catalog from '../common/Catalog'
 	import Leftnav from '../common/Leftnav'
-	import mHeader from '../common/Header'
+	import vHeader from '../common/Header'
 	import {mapState, mapActions} from 'vuex'
 	export default {
 		name: 'blog',
@@ -24,7 +24,7 @@
 		components: {
 			Catalog,
 			Leftnav,
-			mHeader
+			vHeader
 		},
 		methods: {
 			switchHandle() {

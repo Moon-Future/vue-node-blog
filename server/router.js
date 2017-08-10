@@ -11,7 +11,7 @@ router.get('/tag/getTagAll', function(req, res, next) {
 })
 
 router.get('/comment/getComment', function(req, res, next) {
-	res.send('express 陈亮 getComment');
+	api.getComment(req, res, next);
 })
 
 router.post('/comment/writeComment', function(req, res, next) {

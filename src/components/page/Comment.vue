@@ -14,7 +14,15 @@
         </el-form>
         <el-button type="success" @click="submitHandle('commentForm')">提交</el-button>
         <div class="comment-detail">
-            评论
+            <div class="comment-count">评论：（共{{ comments.length }}条）</div>
+            <div class="comment-list">
+                <div class="comment-area">
+                    <div><img src="" alt="头像"></div>
+                    <div>
+                        22
+                    </div>
+                </div>
+            </div>
         </div>
 	</div>
 </template>
@@ -42,8 +50,20 @@
                     comment: [
                         { required: true, message: '亲输入你的见解', trigger: 'blur' },
                     ]
-                }
+                },
+                comments: ''
             }
+        },
+        created() {
+            var self = this;
+            axios.get('/api/comment/getComment')
+				.then((res) => {
+                    console.log('comment', res);
+					self.comments = res.data;
+				})
+				.catch((err) => {
+					console.log('err', err);
+				});
         },
         methods: {
             submitHandle(formName) {
@@ -100,5 +120,19 @@
         border-top: 1px solid #ccc;
         margin-top: 60px; 
         padding-top: 20px
+    }
+
+    .comment-count {
+        margin-bottom: 20px;
+    }
+
+    .comment-list {
+        /* border: 1px solid #ccc; */
+        /* height: 50px; */
+    }
+
+    .comment-area {
+        border: 1px solid #ccc;
+        height: 200px;
     }
 </style>

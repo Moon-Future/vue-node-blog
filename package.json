@@ -16,6 +16,9 @@
     "github-markdown-css": "^2.8.0",
     "marked": "^0.3.6",
     "mysql": "^2.14.0",
+    "node-sass": "^4.5.3",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.18.2",
     "vue": "^2.3.3",
     "vue-router": "^2.5.3",
     "vuex": "^2.3.1"

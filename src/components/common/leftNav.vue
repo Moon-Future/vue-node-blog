@@ -9,7 +9,11 @@
 		</div>
 		<div class="left-header">
 			<el-row>
-				<el-col :span="24"><img class="left-avatar" src="../../../static/images/head1.jpg"/></el-col>
+				<el-col :span="24">
+					<router-link to="/login">
+						<img class="left-avatar" src="../../../static/images/head1.jpg"/>
+					</router-link>
+				</el-col>
 			</el-row>
 			<div class="left-mes">
 				<p>I am chenliang</p>
