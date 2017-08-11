@@ -33,7 +33,7 @@
 			<el-breadcrumb separator="/" class="breadcrumb">
 				<el-breadcrumb-item :to="{ path: '/' }">Home</el-breadcrumb-item>
 				<el-breadcrumb-item :to="{ path: '/blog' }" @click.native="backBlog">Blog</el-breadcrumb-item>
-				<el-breadcrumb-item to="">{{ currentArticle.title }}</el-breadcrumb-item>
+				<el-breadcrumb-item to="" v-if="currentArticle.title">{{ currentArticle.title }}</el-breadcrumb-item>
 			</el-breadcrumb>
 			<i class="switch-type iconfont" :class="switchType ? 'icon-zhanshiguanli01' : 'icon-show'" @click="switchHandle"></i>
 		</div>

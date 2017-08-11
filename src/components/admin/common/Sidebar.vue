@@ -90,7 +90,7 @@
 </script>
 
 <style scoped>
-    .sidebar{
+    .sidebar {
         display: block;
         position: absolute;
         width: 250px;
@@ -98,8 +98,17 @@
         top: 70px;
         bottom:0;
         background: #2E363F;
+        z-index: 10;
     }
     .sidebar > ul {
         height:100%;
     }
+    @media only screen and (max-width: 768px) {
+		.box-card-image {
+			height: 250px;
+		}
+        .sidebar {
+            display: none;
+        }
+	} 
 </style>

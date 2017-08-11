@@ -211,7 +211,7 @@
 	}
 	
 	.catalog-breadcrumb span {
-		 color: #fff; 
+		  color: #fff;  
 	}
 	
 	.catalog-tags {

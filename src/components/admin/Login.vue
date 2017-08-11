@@ -9,7 +9,7 @@
                     <el-input></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="success">登录</el-button>
+                    <el-button type="success" @click="login">登录</el-button>
                     <el-button type="primary">注册</el-button>
                 </el-form-item>
             </el-form>
@@ -19,7 +19,17 @@
 
 <script>
     export default {
-    
+        name: 'Login',
+        data() {
+            return {
+
+            }
+        },
+        methods: {
+            login() {
+                this.$router.push('/admin');
+            }
+        }
     }
 </script>
 

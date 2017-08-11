@@ -20,3 +20,25 @@
     }
 </script>
 
+<style>
+    .content {
+        background: none repeat scroll 0 0 #fff;
+        position: absolute;
+        left: 250px;
+        right: 0;
+        top: 70px;
+        bottom:0;
+        width: auto;
+        padding:40px;
+        box-sizing: border-box;
+        overflow-y: scroll;
+    }
+    .crumbs{
+        margin-bottom: 20px;
+    }
+    @media only screen and (max-width: 768px) {
+		.content {
+            left: 0;
+        }
+	}
+</style>
