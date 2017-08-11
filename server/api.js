@@ -40,9 +40,10 @@ var mergeData = function(data) {
 			obj[tmp.aid].tags = [{'id':tmp.tid, 'name':tmp.name}];
 			obj[tmp.aid].summary = tmp.summary;
 			obj[tmp.aid].post_time = tmp.post_time;
-			obj[tmp.aid].upd_time = tmp.upd_time;
+			obj[tmp.aid].upd_time = tmp.upd_time ? tmp.upd_time : '';
 			obj[tmp.aid].view = tmp.view;
 			obj[tmp.aid].start = tmp.start;
+			obj[tmp.aid].state = tmp.state;
 		}
 	}
 	for(let i in obj){

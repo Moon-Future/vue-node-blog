@@ -24,8 +24,9 @@
                     </el-dropdown-menu>
                 </el-dropdown>
                 <el-dropdown trigger="click" class="user-infor">
-                    <img src="../../../../static/images/head2.jpg" alt="">
+                    <img :src="imgDataUrl" alt="">
                     <el-dropdown-menu>
+                        <el-dropdown-item @click.native="dialogVisible = true">更改头像</el-dropdown-item>
                         <el-dropdown-item>退出</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown> 
@@ -37,14 +38,32 @@
 <script>
     export default {
         name: 'Header',
+        components: {
+            myUpload
+        },
         data() {
             return {
                 name: '假面',
-                time: '2017-08-09'
+                time: '2017-08-09',
+                imgDataUrl: '../../../../static/images/head2.jpg',
+                show: true,
+                params: {
+                    token: '123456798',
+                    name: 'avatar'
+                },
+                headers: {
+                    smail: '*_~'
+                },
             }
         },
         methods:{
-            
+            handleClose(done) {
+                this.$confirm('确认关闭？')
+                .then(_ => {
+                    done();
+                })
+                .catch(_ => {});
+            }
         },
         computed: {
             currentTime() {
@@ -59,7 +78,7 @@
         box-sizing: border-box;
         width: 100%;
         font-size: 14px;
-        background-color:#324157;
+        background-color:#00cccc;
         box-shadow:2px 0 3px rgba(0,0,0,.5);
         color: #fff;
         padding: 0 40px;
@@ -125,6 +144,9 @@
         .notice {
             /* font-size: 16px; */
             margin-right: 10px;
+        }
+        .header {
+            padding: 0 20px;
         }
 	}
 </style>

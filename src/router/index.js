@@ -57,7 +57,17 @@ export default new Router({
 				{
 					path: '/markdown',
 					name: 'Markdown',
-					component: resolve => require(['@/components/admin/markdown'], resolve),
+					component: resolve => require(['@/components/admin/Markdown'], resolve),
+				},
+				{
+					path: '/articles',
+					name: 'Articles',
+					component: resolve => require(['@/components/admin/ArticleList'], resolve),
+				},
+				{
+					path: '/user',
+					name: 'User',
+					component: resolve => require(['@/components/admin/User'], resolve),
 				}
 			]
 		}

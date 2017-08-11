@@ -27,21 +27,21 @@
                 items: [
                     {
                         icon: 'el-icon-setting',
-                        index: 'readme',
+                        index: 'admin',
                         title: '自述'
                     },
                     {
                         icon: 'el-icon-menu',
                         index: '2',
-                        title: '表格',
+                        title: '文章',
                         subs: [
                             {
-                                index: 'basetable',
-                                title: '基础表格'
+                                index: 'articles',
+                                title: '列表'
                             },
                             {
-                                index: 'vuetable',
-                                title: 'Vue表格组件'
+                                index: 'markdown',
+                                title: 'markdown'
                             }
                         ]
                     },
@@ -59,10 +59,6 @@
                                 title: '编辑器'
                             },
                             {
-                                index: 'markdown',
-                                title: 'markdown'
-                            },
-                            {
                                 index: 'upload',
                                 title: '文件上传'
                             }
@@ -77,6 +73,11 @@
                         icon: 'el-icon-upload2',
                         index: 'drag',
                         title: '拖拽'
+                    },
+                    {
+                        icon: 'el-icon-setting',
+                        index: 'user',
+                        title: '用户'
                     }
                 ]
             }
