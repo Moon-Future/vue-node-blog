@@ -15,6 +15,10 @@ var sqlMap = {
 	comment: {
 		insert: 'INSERT INTO comments(name,eamil,reminder,text,aid,time) VALUES (?,?,?,?,?,?)',
 		queryAll: 'select * from comments'
+	},
+	user: {
+		update:'update users set avatar=? where username=236338364',
+		queryAll: 'select * from users'
 	}
 }
 

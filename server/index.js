@@ -1,5 +1,4 @@
 const routerApi = require('./router');
-const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
 const express = require('express');

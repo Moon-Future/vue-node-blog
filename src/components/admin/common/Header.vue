@@ -24,9 +24,9 @@
                     </el-dropdown-menu>
                 </el-dropdown>
                 <el-dropdown trigger="click" class="user-infor">
-                    <img :src="imgDataUrl" alt="">
+                    <img :src="imgAvatar" alt="">
                     <el-dropdown-menu>
-                        <el-dropdown-item @click.native="dialogVisible = true">更改头像</el-dropdown-item>
+                        <el-dropdown-item @click.native="uploadDisplay">更改头像</el-dropdown-item>
                         <el-dropdown-item>退出</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown> 
@@ -38,37 +38,22 @@
 <script>
     export default {
         name: 'Header',
-        components: {
-            myUpload
-        },
+        props: ['imgAvatar'],
         data() {
             return {
                 name: '假面',
                 time: '2017-08-09',
-                imgDataUrl: '../../../../static/images/head2.jpg',
-                show: true,
-                params: {
-                    token: '123456798',
-                    name: 'avatar'
-                },
-                headers: {
-                    smail: '*_~'
-                },
             }
         },
         methods:{
-            handleClose(done) {
-                this.$confirm('确认关闭？')
-                .then(_ => {
-                    done();
-                })
-                .catch(_ => {});
+            uploadDisplay() {
+                this.$emit('uploadDisplay', true);
             }
         },
         computed: {
             currentTime() {
                 return this.timeFormat(new Date().getTime());
-            }
+            },
         }
     }
 </script>

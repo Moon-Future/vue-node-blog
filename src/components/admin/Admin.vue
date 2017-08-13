@@ -1,16 +1,19 @@
 <template>
     <div>
-        <vHeader></vHeader>
+        <vHeader :imgAvatar="imgDataUrl" @uploadDisplay="uploadHandle"></vHeader>
         <vSidebar></vSidebar>
         <div class="content">
             <transition name="move" mode="out-in"><router-view></router-view></transition>
         </div>
-        <my-upload field="img"
-            v-model="show"
-            url="/upload"
+        <my-upload field="avatar"
+            :width="200"
+            :height="200"
+            v-model="uploadShow"
+            url="api/picture/avatar"
             :params="params"
             :headers="headers"
-            img-format="png"></my-upload>
+            @crop-upload-success="cropUploadSuccess"
+            img-format="jpg"></my-upload>
     </div>
 </template>
 
@@ -29,8 +32,8 @@
             return {
                 name: '假面',
                 time: '2017-08-09',
-                imgDataUrl: '../../../../static/images/head2.jpg',
-                show: true,
+                uploadShow: false,
+                imgDataUrl: '../../../../static/images/avatar/head2.jpg',
                 params: {
                     token: '123456798',
                     name: 'avatar'
@@ -39,6 +42,25 @@
                     smail: '*_~'
                 },
             }
+        },
+        methods: {
+            uploadHandle(data) {
+                this.uploadShow = data;
+            },
+            cropUploadSuccess(jsonData, field) {
+                console.log('-------- upload success --------');
+                this.imgDataUrl = jsonData;
+            }
+        },
+        created() {
+            this.$http.get('/api/user/getUserAll')
+				.then((res) => {
+                    console.log('res', res);
+                    this.imgDataUrl = '../../../../static/images/avatar/' + res.data[0].avatar
+				})
+				.catch((err) => {
+					console.log('err', err);
+				});	
         }
     }
 </script>

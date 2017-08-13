@@ -1,6 +1,9 @@
 var mysql = require('mysql');
 var mysqlConf = require('./db');
 var sqlMap = require('./sqlMap');
+var formidable = require('formidable');
+var fs = require('fs');
+var uuid = require('node-uuid');
 
 // 连接数据库
 var pool = mysql.createPool({
@@ -9,7 +12,7 @@ var pool = mysql.createPool({
 	password: mysqlConf.mysql.password,
 	database: mysqlConf.mysql.database,
 	port: mysqlConf.mysql.port
-})
+});
 
 // 向前台返回JSON方法的简单封装
 var jsonWrite = function (res, data) {
@@ -53,6 +56,7 @@ var mergeData = function(data) {
 }
 
 module.exports = {
+	// 文章
 	getArticleAll(req, res, next) {
 		pool.getConnection((err, connection) => {
 			connection.query(sqlMap.article.queryAll, (err, result) => {
@@ -69,6 +73,7 @@ module.exports = {
 			})
 		})
 	},
+	// 标签
 	getTagById(req, res, next) {
 		pool.getConnection((err, connection) => {
 			connection.query(sqlMap.tag.queryById, (err, result) => {
@@ -77,6 +82,7 @@ module.exports = {
 			})
 		})
 	},
+	// 评论
 	writeComment(req, res, next) {
 		pool.getConnection((err, connection) => {
 			var postData = req.body, time = new Date().getTime();
@@ -93,4 +99,32 @@ module.exports = {
 			})
 		})
 	},
+	// 上传图片
+	uploadPic(req, res, next) {
+		var form = new formidable.IncomingForm();
+		form.uploadDir = '../static/images/avatar/';
+		form.parse(req, (error, fields, files) => {
+			for(let key in files){
+				var file = files[key];
+				var fileName = uuid.v1() + '_' + file.name;
+				var newPath = form.uploadDir + fileName;
+				jsonWrite(res, newPath);
+				fs.renameSync(file.path, newPath);
+				pool.getConnection((err, connection) => {
+					connection.query(sqlMap.user.update, fileName, (err, result) => {
+						connection.release();
+					})
+				})
+			}
+		});
+	},
+	// 用户
+	getUserAll(req, res, next) {
+		pool.getConnection((err, connection) => {
+			connection.query(sqlMap.user.queryAll, (err, result) => {
+				jsonWrite(res, result);
+				connection.release();
+			})
+		})
+	}
 }
