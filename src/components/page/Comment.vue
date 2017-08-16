@@ -15,12 +15,14 @@
         <el-button type="success" @click="submitHandle('commentForm')">提交</el-button>
         <div class="comment-detail">
             <div class="comment-count">评论：（共{{ comments.length }}条）</div>
-            <div class="comment-list">
-                <div class="comment-area">
-                    <div><img src="" alt="头像"></div>
-                    <div>
-                        22
-                    </div>
+            <div class="comment-list clearfix" v-for="(comment, i) in comments" :key="i">
+                <div class="comment-avatar">
+                    <img src="../../../static/images/avatar/head1.jpg" alt="">
+                </div>
+                <div class="comment-avatar">
+                    <div>陈亮</div>
+                    <p>{{ comment.txt }}</p>
+                    <div>回复</div>
                 </div>
             </div>
         </div>
@@ -51,19 +53,41 @@
                         { required: true, message: '亲输入你的见解', trigger: 'blur' },
                     ]
                 },
-                comments: ''
+                comments: [
+                    {
+                        time: '',
+                        imgSrc: '../../../static/images/avatar/head1.jpg',
+                        txt: '很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！',
+                    },
+                    {
+                        imgSrc: '../../../static/images/avatar/head1.jpg',
+                        txt: ''
+                    },
+                    {
+                        imgSrc: '../../../static/images/avatar/head1.jpg',
+                        txt: ''
+                    },
+                    {
+                        imgSrc: '../../../static/images/avatar/head1.jpg',
+                        txt: ''
+                    },
+                    {
+                        imgSrc: '../../../static/images/avatar/head1.jpg',
+                        txt: ''
+                    }
+                ]
             }
         },
         created() {
             var self = this;
-            axios.get('/api/comment/getComment')
-				.then((res) => {
-                    console.log('comment', res);
-					self.comments = res.data;
-				})
-				.catch((err) => {
-					console.log('err', err);
-				});
+            // axios.get('/api/comment/getComment')
+			// 	.then((res) => {
+            //         console.log('comment', res);
+			// 		self.comments = res.data;
+			// 	})
+			// 	.catch((err) => {
+			// 		console.log('err', err);
+			// 	});
         },
         methods: {
             submitHandle(formName) {
@@ -96,6 +120,12 @@
 </script>
 
 <style scoped>
+    .clearfix::after {
+        content: '';
+        display: block;
+        clear: both;
+    }
+
 	.article-comment{
         margin-top: 10px;
 		padding: 20px;
@@ -127,12 +157,22 @@
     }
 
     .comment-list {
-        /* border: 1px solid #ccc; */
-        /* height: 50px; */
+        border: 1px solid #0db1ff;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+
+    .comment-avatar {
+        float: left;
+        margin-right: 10px;
+    }
+
+    .comment-avatar img {
+        width: 50px;
+        height: 50px
     }
 
     .comment-area {
-        border: 1px solid #ccc;
-        height: 200px;
+        float: left
     }
 </style>
