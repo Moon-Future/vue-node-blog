@@ -24,6 +24,12 @@ Vue.prototype.timeFormat = function (timestamp) {
 	return year + '-' + month + '-' + day + ' ' + hour + ':' + minute + (secondShow ? ':' + second : '');
 }
 
+Date.prototype.format = function(format) {
+	var data = {
+		'M+': this.getMonth() + 1,
+	}
+}
+
 Vue.prototype.$http = axios;
 
 router.beforeEach ((to, from, next) => {
