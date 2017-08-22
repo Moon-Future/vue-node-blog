@@ -16,13 +16,18 @@
         <div class="comment-detail">
             <div class="comment-count">评论：（共{{ comments.length }}条）</div>
             <div class="comment-list clearfix" v-for="(comment, i) in comments" :key="i">
-                <div class="comment-avatar">
-                    <img src="../../../static/images/avatar/head1.jpg" alt="">
+                <div class="clearfix">
+                    <div class="comment-avatar">
+                        <img src="../../../static/images/avatar/head1.jpg" alt="">
+                    </div>
+                    <div class="comment-area">
+                        <div>陈亮</div>
+                        <p>{{ comment.txt }}</p>
+                        <div>回复</div>
+                    </div>
                 </div>
-                <div class="comment-avatar">
-                    <div>陈亮</div>
-                    <p>{{ comment.txt }}</p>
-                    <div>回复</div>
+                <div>
+                    dede
                 </div>
             </div>
         </div>
@@ -173,6 +178,11 @@
     }
 
     .comment-area {
-        float: left
+        float: left;
+        width: 94%;
+        color: #526072;
+    }
+    .comment-area p {
+        color: #000;
     }
 </style>

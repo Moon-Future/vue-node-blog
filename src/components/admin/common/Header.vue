@@ -27,7 +27,7 @@
                     <img :src="imgAvatar" alt="">
                     <el-dropdown-menu>
                         <el-dropdown-item @click.native="uploadDisplay">更改头像</el-dropdown-item>
-                        <el-dropdown-item>退出</el-dropdown-item>
+                        <el-dropdown-item @click.native="logoutAdmin">退出</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown> 
             </el-col>
@@ -48,11 +48,14 @@
         methods:{
             uploadDisplay() {
                 this.$emit('uploadDisplay', true);
+            },
+            logoutAdmin() {
+                this.$router.push('/');
             }
         },
         computed: {
             currentTime() {
-                return this.timeFormat(new Date().getTime());
+                return new Date().format('yyyy-MM-dd hh:mm');;
             },
         }
     }
