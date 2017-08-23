@@ -8,7 +8,7 @@
                 <el-input v-model="ruleForm.email"></el-input>
                 <el-checkbox v-model="ruleForm.reminder">收到回复邮件提醒</el-checkbox>
             </el-form-item>
-            <el-form-item label="留言" prop="comment" class="comment-item">
+            <el-form-item label="留言" prop="comment" class="comment-text">
                 <el-input type="textarea" spellcheck="false" :rows="5" v-model="ruleForm.comment"></el-input>
             </el-form-item>
         </el-form>
@@ -16,18 +16,26 @@
         <div class="comment-detail">
             <div class="comment-count">评论：（共{{ comments.length }}条）</div>
             <div class="comment-list clearfix" v-for="(comment, i) in comments" :key="i">
-                <div class="clearfix">
-                    <div class="comment-avatar">
-                        <img src="../../../static/images/avatar/head1.jpg" alt="">
-                    </div>
-                    <div class="comment-area">
-                        <div>陈亮</div>
-                        <p>{{ comment.txt }}</p>
-                        <div>回复</div>
+                <div class="comment-psn">
+                    <img src="../../../static/images/avatar/head1.jpg" alt="">
+                    <div class="psn-mes">
+                        <p>陈亮</p>
+                        <p>2017-08-23 08:18</p>
                     </div>
                 </div>
-                <div>
-                    dede
+                <p>{{ comment.txt }}</p>
+                <div class="comment-btn">
+                    <span>支持</span>
+                    <span>回复</span>
+                </div>
+                <div class="reply">
+                    <p v-for="(reply, i) in replys" :key="i">
+                        <span class="reply-psn">陈亮 </span>
+                        <span v-if="reply.nam2">回复
+                            <span class="reply-psn">魏茹月</span>
+                        </span>: 
+                        {{ reply.txt }}
+                    </p>
                 </div>
             </div>
         </div>
@@ -79,6 +87,28 @@
                     {
                         imgSrc: '../../../static/images/avatar/head1.jpg',
                         txt: ''
+                    }
+                ],
+                replys: [
+                    {
+                        txt: '很不错哟，继续努力哟！',
+                        nam1: '陈亮',
+                        // nam2: '魏茹月'
+                    },
+                    {
+                        txt: '很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！',
+                        nam1: '陈亮',
+                        nam2: '魏茹月'
+                    },
+                    {
+                        txt: '很不错哟，继续努力哟！',
+                        nam1: '陈亮',
+                        // nam2: '魏茹月'
+                    },
+                    {
+                        txt: '很不错哟，继续努力哟！',
+                        nam1: '陈亮',
+                        nam2: '魏茹月'
                     }
                 ]
             }
@@ -141,12 +171,12 @@
         width: 300px;
     }
 
-    .comment-item {
+    .comment-text {
         width: 600px;
     }
 
     @media only screen and (max-width: 768px) {
-		.from-comment, .comment-item {
+		.from-comment, .comment-text {
             width: 100%;
         }
 	}
@@ -167,22 +197,44 @@
         margin-bottom: 20px;
     }
 
-    .comment-avatar {
+
+    .comment-psn img {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
         float: left;
+    }
+
+    .comment-psn .psn-mes {
+        height: 35px;
+        line-height: 20px;
+        margin-left: 45px;
+    }
+
+    .comment-psn .psn-mes p, .comment-btn {
+        padding: 0;
+        margin: 0;
+        font-size: .5em;
+    }
+    
+    .comment-btn span {
         margin-right: 10px;
+        cursor: pointer;
     }
 
-    .comment-avatar img {
-        width: 50px;
-        height: 50px
+    .reply {
+        background: #C0CCDA;
+        padding: 10px;
+        margin-top: 5px;
     }
 
-    .comment-area {
-        float: left;
-        width: 94%;
-        color: #526072;
+    .reply p {
+        margin: 0;
+        font-size: .5em;
+        padding: 3px 0;
     }
-    .comment-area p {
-        color: #000;
+    .reply .reply-psn {
+        color: #1D8CE0;
+        cursor: pointer;
     }
 </style>
