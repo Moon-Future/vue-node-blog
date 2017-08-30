@@ -13,8 +13,9 @@ var sqlMap = {
 		queryAll: 'select * from tags'
 	},
 	comment: {
-		insert: 'INSERT INTO comments(name,eamil,reminder,text,aid,time) VALUES (?,?,?,?,?,?)',
-		queryAll: 'select * from comments'
+		insert: 'INSERT INTO comments(article_id, user_id, user_name, reply_id, reply_name, content, time, reminder, email) VALUES (?,?,?,?,?,?,?,?,?)',
+		queryAll: 'select * from comments',
+		queryByActicleId: 'select * from comments where article_id = ?'
 	},
 	user: {
 		update:'update users set avatar=? where username=236338364',

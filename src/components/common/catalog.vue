@@ -94,7 +94,6 @@
 			var self = this;
 			axios.get('/api/article/getArticleAll')
 				.then((res) => {
-					console.log('res', res);
 					self.blogs = res.data;
 					self.blogs.map((blog) => {
 						blog.post_time = self.timeFormat(blog.post_time);

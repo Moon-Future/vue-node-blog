@@ -60,11 +60,12 @@ module.exports = {
 	getArticleAll(req, res, next) {
 		pool.getConnection((err, connection) => {
 			connection.query(sqlMap.article.queryAll, (err, result) => {
-				jsonWrite(res, mergeData(result));
+				jsonWrite(res, result ? mergeData(result) : result);
 				connection.release();
 			})
 		})
 	},
+	// 标签
 	getTagAll(req, res, next) {
 		pool.getConnection((err, connection) => {
 			connection.query(sqlMap.tag.queryAll, (err, result) => {
@@ -73,7 +74,6 @@ module.exports = {
 			})
 		})
 	},
-	// 标签
 	getTagById(req, res, next) {
 		pool.getConnection((err, connection) => {
 			connection.query(sqlMap.tag.queryById, (err, result) => {
@@ -85,16 +85,43 @@ module.exports = {
 	// 评论
 	writeComment(req, res, next) {
 		pool.getConnection((err, connection) => {
-			var postData = req.body, time = new Date().getTime();
-			connection.query(sqlMap.comment.insert, [postData.name, postData.email, postData.reminder, postData.text, postData.aid, time], (err, result) => {
+			let postData = req.body, time = new Date().getTime();
+			console.log('postData', postData);
+			connection.query(sqlMap.comment.insert, [postData.aid, postData.uid, postData.uname, postData.rid, postData.rname, postData.content, time, postData.reminder, postData.email], (err, result) => {
+				jsonWrite(res, 'ok');
 				connection.release();
 			})
 		})
 	},
 	getComment(req, res, next) {
 		pool.getConnection((err, connection) => {
-			connection.query(sqlMap.comment.queryAll, (err, result) => {
-				jsonWrite(res, result);
+			let params = req.query, obj = {};
+			connection.query(sqlMap.comment.queryByActicleId, [params.articleID], (err, result) => {
+				for(let i = 0, len = result.length; i < len; i++){
+					let tmp = result[i], replys, tmpObj = {};
+					if(!tmp.reply_id){
+						obj[tmp.id] ? false : obj[tmp.id] = {};
+						obj[tmp.id].article_id = tmp.article_id;
+						obj[tmp.id].user_id = tmp.user_id;
+						obj[tmp.id].user_name = tmp.user_name;
+						obj[tmp.id].content = tmp.content;
+						obj[tmp.id].time = tmp.time;
+					}else{
+						replys = tmp.reply_id.split(',');
+						obj[replys[0]] ? false : obj[replys[0]] = {};
+						obj[replys[0]].replys ? false : obj[replys[0]].replys = [];
+						tmpObj.user_id = tmp.user_id;
+						tmpObj.user_name = tmp.user_name;
+						tmpObj.content = tmp.content;
+						tmpObj.time = tmp.time;
+						if(replys.length > 1){
+							tmpObj.reply_id = replys[1];
+							tmpObj.reply_name = tmp.reply_name;
+						}
+						obj[replys[0]].replys.push(tmpObj);
+					}
+				}
+				jsonWrite(res, obj);
 				connection.release();
 			})
 		})

@@ -19,22 +19,22 @@
                 <div class="comment-psn">
                     <img src="../../../static/images/avatar/head1.jpg" alt="">
                     <div class="psn-mes">
-                        <p>陈亮</p>
-                        <p>2017-08-23 08:18</p>
+                        <p>{{ comment.user_name }}</p>
+                        <p>{{ comment.time }}</p>
                     </div>
                 </div>
-                <p>{{ comment.txt }}</p>
+                <p>{{ comment.content }}</p>
                 <div class="comment-btn">
                     <span>支持</span>
                     <span>回复</span>
                 </div>
-                <div class="reply">
-                    <p v-for="(reply, i) in replys" :key="i">
-                        <span class="reply-psn">陈亮 </span>
-                        <span v-if="reply.nam2">回复
-                            <span class="reply-psn">魏茹月</span>
+                <div class="reply" v-if="comment.replys">
+                    <p v-for="(reply, i) in comment.replys" :key="i">
+                        <span class="reply-psn">{{ reply.user_name }} </span>
+                        <span v-if="reply.reply_name">回复
+                            <span class="reply-psn">{{ reply.reply_name }}</span>
                         </span>: 
-                        {{ reply.txt }}
+                        {{ reply.content }}
                     </p>
                 </div>
             </div>
@@ -67,62 +67,35 @@
                     ]
                 },
                 comments: [
-                    {
-                        time: '',
-                        imgSrc: '../../../static/images/avatar/head1.jpg',
-                        txt: '很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！',
-                    },
-                    {
-                        imgSrc: '../../../static/images/avatar/head1.jpg',
-                        txt: ''
-                    },
-                    {
-                        imgSrc: '../../../static/images/avatar/head1.jpg',
-                        txt: ''
-                    },
-                    {
-                        imgSrc: '../../../static/images/avatar/head1.jpg',
-                        txt: ''
-                    },
-                    {
-                        imgSrc: '../../../static/images/avatar/head1.jpg',
-                        txt: ''
-                    }
-                ],
-                replys: [
-                    {
-                        txt: '很不错哟，继续努力哟！',
-                        nam1: '陈亮',
-                        // nam2: '魏茹月'
-                    },
-                    {
-                        txt: '很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！很不错哟，继续努力哟！',
-                        nam1: '陈亮',
-                        nam2: '魏茹月'
-                    },
-                    {
-                        txt: '很不错哟，继续努力哟！',
-                        nam1: '陈亮',
-                        // nam2: '魏茹月'
-                    },
-                    {
-                        txt: '很不错哟，继续努力哟！',
-                        nam1: '陈亮',
-                        nam2: '魏茹月'
-                    }
+                    // {
+                    //     article_id: '111',
+                    //     user_id: '222',
+                    //     user_name: 'name',
+                    //     content: '很不错哟，继续努力哟！',
+                    //     time: '111',
+                    //     replys: [
+                    //         {
+                    //             user_id: '222',
+                    //             user_name: 'name',
+                    //             content: '很不错哟，继续努力哟！',
+                    //             time: '111',
+                    //             reply_id: '333',
+                    //             reply_name: 'reply_name'
+                    //         }
+                    //     ]
+                    // }
                 ]
             }
         },
         created() {
-            var self = this;
-            // axios.get('/api/comment/getComment')
-			// 	.then((res) => {
-            //         console.log('comment', res);
-			// 		self.comments = res.data;
-			// 	})
-			// 	.catch((err) => {
-			// 		console.log('err', err);
-			// 	});
+            var self = this, articleID = this.$route.params.id;
+            axios.get('/api/comment/getComment', { 
+                params: {articleID: articleID}
+            }).then((res) => {
+                self.comments = res.data;
+            }).catch((err) => {
+                console.log('err', err);
+            });
         },
         methods: {
             submitHandle(formName) {
@@ -130,11 +103,14 @@
                 this.$refs[formName].validate((valid) => {
                     if(valid) {
                         axios.post('/api/comment/writeComment', {
-                            name: self.ruleForm.name,
+                            aid: self.$route.params.id,
+                            uid: 8023,
+                            uname: self.ruleForm.name,
+                            rid: '',
+                            rname: '',
                             email: self.ruleForm.email,
                             reminder: self.ruleForm.email ? (self.ruleForm.reminder ? 1 : 0) : 0,
-                            text: self.ruleForm.comment,
-                            aid: 2
+                            content: self.ruleForm.comment
                         }).then((res) => {
                             this.$message.success('提交成功');
                         }).catch((err) => {
