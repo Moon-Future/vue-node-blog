@@ -1,42 +1,31 @@
 <template>
 	<div class="article-comment">
-        <el-form :model="ruleForm" :rules="rules" label-position="top" ref="commentForm" class="from-comment">
-            <el-form-item label="大名" prop="name">
-                <el-input v-model="ruleForm.name"></el-input>
-            </el-form-item>
-            <el-form-item label="邮箱" prop="email">
-                <el-input v-model="ruleForm.email"></el-input>
-                <el-checkbox v-model="ruleForm.reminder">收到回复邮件提醒</el-checkbox>
-            </el-form-item>
-            <el-form-item label="留言" prop="comment" class="comment-text">
-                <el-input type="textarea" spellcheck="false" :rows="5" v-model="ruleForm.comment"></el-input>
-            </el-form-item>
-        </el-form>
-        <el-button type="success" @click="submitHandle('commentForm')">提交</el-button>
+        <commentForm v-if="commentFormShow"></commentForm>
         <div class="comment-detail">
             <div class="comment-count">评论：（共{{ comments.length }}条）</div>
-            <div class="comment-list clearfix" v-for="(comment, i) in comments" :key="i">
+            <div class="comment-list clearfix" v-for="(comment, key) in comments" :key="key">
                 <div class="comment-psn">
                     <img src="../../../static/images/avatar/head1.jpg" alt="">
                     <div class="psn-mes">
-                        <p>{{ comment.user_name }}</p>
+                        <p :class="{highlight:isHighLight}">{{ comment.user_name }}</p>
                         <p>{{ comment.time }}</p>
                     </div>
                 </div>
                 <p>{{ comment.content }}</p>
                 <div class="comment-btn">
                     <span>支持</span>
-                    <span>回复</span>
+                    <span @click="replyHandle(key, comment.user_id, comment.user_name)">回复</span>
                 </div>
                 <div class="reply" v-if="comment.replys">
                     <p v-for="(reply, i) in comment.replys" :key="i">
-                        <span class="reply-psn">{{ reply.user_name }} </span>
+                        <span class="reply-psn" :class="{highlight:isHighLight}" @click="replyHandle(key, reply.user_id, reply.user_name, $event)">{{ reply.user_name }} </span>
                         <span v-if="reply.reply_name">回复
-                            <span class="reply-psn">{{ reply.reply_name }}</span>
+                            <span class="reply-psn" :class="{highlight:isHighLight}" @click="replyHandle(key, reply.reply_id, reply.reply_name, $event)">{{ reply.reply_name }}</span>
                         </span>: 
                         {{ reply.content }}
                     </p>
                 </div>
+                <commentForm :replyUserId="replyUserId" :replyUserName="replyUserName" @formHanle="formShowState" v-if="comment.replyFormShow" style="padding: 10px;margin: 10px 0;border: 1px dotted #ccc;background: #fff;"></commentForm>
             </div>
         </div>
 	</div>
@@ -44,28 +33,18 @@
 
 <script>
     import axios from 'axios'
+    import commentForm from '../common/CommentForm'
 	export default {
         name: 'comment',
+        components: {
+            commentForm
+        },
         data() {
             return {
-                ruleForm: {
-                    name: '',
-                    email: '',
-                    reminder: false,
-                    comment: ''
-                },
-                rules: {
-                    name: [
-                        { required: true, message: '亲输入大名', trigger: 'blur' },
-                        { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
-                    ],
-                    email: [
-                        { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
-                    ],
-                    comment: [
-                        { required: true, message: '亲输入你的见解', trigger: 'blur' },
-                    ]
-                },
+                replyUserId: '',
+                replyUserName: '',
+                commentFormShow: true,
+                isHighLight: false,
                 comments: [
                     // {
                     //     article_id: '111',
@@ -93,39 +72,39 @@
                 params: {articleID: articleID}
             }).then((res) => {
                 self.comments = res.data;
+                for(let key in self.comments){
+                    self.comments[key].replyFormShow = false;
+                }
             }).catch((err) => {
                 console.log('err', err);
             });
         },
         methods: {
-            submitHandle(formName) {
-                var self = this;
-                this.$refs[formName].validate((valid) => {
-                    if(valid) {
-                        axios.post('/api/comment/writeComment', {
-                            aid: self.$route.params.id,
-                            uid: 8023,
-                            uname: self.ruleForm.name,
-                            rid: '',
-                            rname: '',
-                            email: self.ruleForm.email,
-                            reminder: self.ruleForm.email ? (self.ruleForm.reminder ? 1 : 0) : 0,
-                            content: self.ruleForm.comment
-                        }).then((res) => {
-                            this.$message.success('提交成功');
-                        }).catch((err) => {
-                            throw err;
-                        })
-                    }else {
-                        this.$message({
-                            showClose: true,
-                            message: '数据有误，提交失败',
-                            type: 'error'
-                        });
-                        return false;
-                    }
-                })
+            replyHandle(key, replyId, replyName, event) {
+                for(let i in this.comments){
+                    // this.comments[i].replyFormShow = i == key ? true : false;
+                    // this.$set(this.comments[i], 'replyFormShow', i == key ? true : false);
+                    // 对象更改检测注意事项 https://cn.vuejs.org/v2/guide/list.html#对象更改检测注意事项
+                    this.comments[i] = Object.assign({}, this.comments[i], {
+                        replyFormShow: i == key ? true : false
+                    })
+                    i == key ? (this.replyUserId = replyId, this.replyUserName = replyName) : false;
+                }
+                this.commentFormShow = false;
             },
+            formShowState(flag) {
+                if(!flag){
+                    for(let i in this.comments){
+                        this.comments[i] = Object.assign({}, this.comments[i], {
+                            replyFormShow: false
+                        })
+                    }
+                    this.commentFormShow = true;
+                }
+            }
+        },
+        computed: {
+           
         }
 	}
 </script>
@@ -141,20 +120,6 @@
         margin-top: 10px;
 		padding: 20px;
 		background: #fff;
-	}
-
-    .from-comment {
-        width: 300px;
-    }
-
-    .comment-text {
-        width: 600px;
-    }
-
-    @media only screen and (max-width: 768px) {
-		.from-comment, .comment-text {
-            width: 100%;
-        }
 	}
 
     .comment-detail {
@@ -212,5 +177,10 @@
     .reply .reply-psn {
         color: #1D8CE0;
         cursor: pointer;
+    }
+
+    .comment-list span.highlight, p.highlight {
+        color: red;
+        font-weight: bold;
     }
 </style>
