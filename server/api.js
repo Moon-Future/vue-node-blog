@@ -31,22 +31,24 @@ var mergeData = function(data) {
 	var obj = {}, arr = [], tmp;
 	for(let i = 0, len = data.length; i < len; i++){
 		tmp = data[i];
-		if(obj[tmp.aid]){
-			obj[tmp.aid].tags.push({'id':tmp.tid, 'name':tmp.name});
+		if(obj[tmp.id]){
+			tmp.tid ? obj[tmp.id].tags.push({'id':tmp.tid, 'name':tmp.name}) : false;
 		}else{
-			obj[tmp.aid] = {};
-			obj[tmp.aid].id = tmp.aid;
-			obj[tmp.aid].user_id = tmp.user_id;
-			obj[tmp.aid].title = tmp.title;
-			obj[tmp.aid].type = tmp.type;
-			obj[tmp.aid].loadURL = tmp.loadURL;
-			obj[tmp.aid].tags = [{'id':tmp.tid, 'name':tmp.name}];
-			obj[tmp.aid].summary = tmp.summary;
-			obj[tmp.aid].post_time = tmp.post_time;
-			obj[tmp.aid].upd_time = tmp.upd_time ? tmp.upd_time : '';
-			obj[tmp.aid].view = tmp.view;
-			obj[tmp.aid].start = tmp.start;
-			obj[tmp.aid].state = tmp.state;
+			obj[tmp.id] = {};
+			obj[tmp.id].id = tmp.id;
+			obj[tmp.id].user_id = tmp.user_id;
+			obj[tmp.id].title = tmp.title;
+			obj[tmp.id].type = tmp.type;
+			obj[tmp.id].loadURL = tmp.loadURL;
+			obj[tmp.id].tags = [];
+			tmp.tid ? obj[tmp.id].tags.push({'id':tmp.tid, 'name':tmp.name}) : false;
+			obj[tmp.id].summary = tmp.summary;
+			obj[tmp.id].post_time = tmp.post_time;
+			obj[tmp.id].upd_time = tmp.upd_time ? tmp.upd_time : '';
+			obj[tmp.id].view = tmp.view;
+			obj[tmp.id].start = tmp.start;
+			obj[tmp.id].state = tmp.state;
+			obj[tmp.id].image = tmp.image;
 		}
 	}
 	for(let i in obj){
@@ -86,7 +88,6 @@ module.exports = {
 	writeComment(req, res, next) {
 		pool.getConnection((err, connection) => {
 			let postData = req.body, time = new Date().getTime();
-			console.log('postData', postData);
 			connection.query(sqlMap.comment.insert, [postData.aid, postData.uid, postData.uname, postData.rid, postData.rname, postData.content, time, postData.reminder, postData.email], (err, result) => {
 				jsonWrite(res, 'ok');
 				connection.release();
@@ -121,7 +122,7 @@ module.exports = {
 						obj[replys[0]].replys.push(tmpObj);
 					}
 				}
-				jsonWrite(res, obj);
+				jsonWrite(res, {data: obj, len: result.length});
 				connection.release();
 			})
 		})

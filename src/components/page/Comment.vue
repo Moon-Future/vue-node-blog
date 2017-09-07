@@ -2,7 +2,7 @@
 	<div class="article-comment">
         <commentForm v-if="commentFormShow"></commentForm>
         <div class="comment-detail">
-            <div class="comment-count">评论：（共{{ comments.length }}条）</div>
+            <div class="comment-count">评论：（共 {{ commentLen }} 条）</div>
             <div class="comment-list clearfix" v-for="(comment, key) in comments" :key="key">
                 <div class="comment-psn">
                     <img src="../../../static/images/avatar/head1.jpg" alt="">
@@ -63,7 +63,8 @@
                     //         }
                     //     ]
                     // }
-                ]
+                ],
+                commentLen: 0
             }
         },
         created() {
@@ -71,7 +72,8 @@
             axios.get('/api/comment/getComment', { 
                 params: {articleID: articleID}
             }).then((res) => {
-                self.comments = res.data;
+                self.comments = res.data.data;
+                self.commentLen = res.data.len;
                 for(let key in self.comments){
                     self.comments[key].replyFormShow = false;
                 }

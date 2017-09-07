@@ -16,7 +16,7 @@
 							</div>
 						</div>
 						<img v-if="blog.image" :src="blog.image" class="box-card-image">
-						<img v-else :src="imageDefault" class="box-card-image">
+						<!-- <img v-else :src="imageDefault" class="box-card-image"> -->
 						<div class="blog-summary">
 							<p :title="blog.summary">{{ blog.summary }}</p>
 							<el-button type="primary" @click="readAll(blog.id, blog.title)">阅读全文</el-button>
@@ -84,6 +84,7 @@
 			var self = this;
 			axios.get('/api/article/getArticleAll')
 				.then((res) => {
+					console.log('res', res);
 					self.blogs = res.data;
 					self.blogs.map((blog) => {
 						blog.post_time = self.timeFormat(blog.post_time);
@@ -109,6 +110,13 @@
 </script>
 
 <style scoped>
+	.clearfix:after {
+		content: '';
+		display: block;
+		overflow: hidden;
+		clear: both;
+	}
+
 	.box-card {
 		text-align: center;
 		margin-bottom: 10px;

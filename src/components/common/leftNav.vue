@@ -31,14 +31,16 @@
 			</el-menu>
 		</div>
 		<div class="left-social">
-			<el-col :span="24"><i class="iconfont icon-github"></i></el-col>
+			<i class="iconfont icon-github"></i>
+			<i class="iconfont icon-weibo"></i>
+			<i class="iconfont icon-weixin"></i>
 		</div>
-		<div class="left-social">
+		<!-- <div class="left-social">
 			<el-col :span="24"><i class="iconfont icon-weibo"></i></el-col>
 		</div>
 		<div class="left-social">
 			<el-col :span="24"><i class="iconfont icon-weixin"></i></el-col>
-		</div>
+		</div> -->
 	</div>
 </template>
 
@@ -96,8 +98,8 @@
 	}
 
 	.left-social {
-		position: relative;
-		top: 100px;
+		position: absolute;
+		bottom: 50px;
 		padding: 10px;
 	}
 
