@@ -19,7 +19,8 @@ var sqlMap = {
 	},
 	user: {
 		update:'update users set avatar=? where username=236338364',
-		queryAll: 'select * from users'
+		queryAll: 'select * from users',
+		queryByEmail: 'select * from users where email=?',
 	}
 }
 

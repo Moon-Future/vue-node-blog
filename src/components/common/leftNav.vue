@@ -97,10 +97,14 @@
 		cursor: pointer;
 	}
 
+	.tabs-menu {
+		background: transparent;
+	}
+
 	.left-social {
-		position: absolute;
-		bottom: 50px;
-		padding: 10px;
+		/* position: absolute;
+		bottom: 50px; */
+		padding: 50px 10px;
 	}
 
 	.left-social i {

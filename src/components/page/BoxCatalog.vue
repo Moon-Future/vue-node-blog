@@ -19,7 +19,8 @@
 						<!-- <img v-else :src="imageDefault" class="box-card-image"> -->
 						<div class="blog-summary">
 							<p :title="blog.summary">{{ blog.summary }}</p>
-							<el-button type="primary" @click="readAll(blog.id, blog.title)">阅读全文</el-button>
+							<!-- <el-button type="primary" @click="readAll(blog.id, blog.title)">阅读全文</el-button> -->
+							<a type="primary" @click="readAll(blog.id, blog.title)">阅读全文</a>
 						</div>
 					</el-card>
 				</el-col>
@@ -185,8 +186,14 @@
 		-webkit-box-orient: vertical;
 	}
 	
-	.blog-summary button {
+	.blog-summary a {
 		float: right;
 		margin-bottom: 20px;
+		cursor: pointer;
+		color: #64b5f6;
+		text-decoration: none;
+	}
+	.blog-summary a:hover {
+		text-decoration: underline
 	}
 </style>

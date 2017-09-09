@@ -53,10 +53,13 @@
 		position: absolute;
 		right: 0;
 		box-sizing: border-box;
-		padding: 20px;
+		padding: 20px 80px;
 		width: 80%;
-		background: #EBEBEB;
+		height: 100%;
+		/* background: #EBEBEB; */
 		overflow-y: auto;
+		background: url(../../../static/images/bg1.jpg) no-repeat;
+   		background-size: cover;
 	}
 	@media only screen and (max-width: 992px) {
 		.blog-content {

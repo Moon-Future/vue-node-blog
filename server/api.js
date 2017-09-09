@@ -18,7 +18,7 @@ var pool = mysql.createPool({
 var jsonWrite = function (res, data) {
     if(typeof data === 'undefined') {
         res.json({
-            code:'1',
+            status: false,
             msg: '操作失败'
         });
     } else {
@@ -152,6 +152,31 @@ module.exports = {
 			connection.query(sqlMap.user.queryAll, (err, result) => {
 				jsonWrite(res, result);
 				connection.release();
+			})
+		})
+	},
+	// 登陆
+	userLogin(req, res, next) {
+		pool.getConnection((err, connection) => {
+			let postData = req.body;
+			console.log('loginData', postData);
+			connection.query(sqlMap.user.queryByEmail, [postData.email], (err, result) => {
+				if(result.length === 0) {
+					res.json({
+						status: false,
+						msg: '用户不存在'
+					});
+				}else{
+					if(result[0].password !== postData.password){
+						res.json({
+							status: false,
+							msg: '密码错误'
+						});
+					}else{
+						jsonWrite(res, result[0]);
+						connection.release();
+					}
+				}
 			})
 		})
 	}
