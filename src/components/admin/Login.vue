@@ -51,7 +51,7 @@
                                 return;
                             }
                             this.$message.success('登陆成功');
-                            // this.$router.push('/admin');
+                            this.$router.push('/admin');
                         }).catch((err) => {
                             throw err;
                         })
