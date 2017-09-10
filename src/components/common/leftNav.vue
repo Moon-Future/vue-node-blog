@@ -31,9 +31,9 @@
 			</el-menu>
 		</div>
 		<div class="left-social">
-			<i class="iconfont icon-github"></i>
-			<i class="iconfont icon-weibo"></i>
-			<i class="iconfont icon-weixin"></i>
+			<a href="https://github.com/Moon-Future" target="_blank"><i class="iconfont icon-github"></i></a>
+			<a href="http://weibo.com/1768475582/profile?rightmod=1&wvr=6&mod=personinfo" target="_blank"><i class="iconfont icon-weibo"></i></a>
+			<a href="javascript:;"><i class="iconfont icon-weixin"></i></a>
 		</div>
 		<!-- <div class="left-social">
 			<el-col :span="24"><i class="iconfont icon-weibo"></i></el-col>
@@ -107,9 +107,14 @@
 		padding: 50px 10px;
 	}
 
+	.left-social a {
+		text-decoration: none
+	}
+	
 	.left-social i {
 		font-size: 32px;
 		cursor: pointer;
+		color: #fff
 	}
 
 	.left-social .icon-github:hover {

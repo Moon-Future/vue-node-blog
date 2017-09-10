@@ -159,7 +159,7 @@ module.exports = {
 	userLogin(req, res, next) {
 		pool.getConnection((err, connection) => {
 			let postData = req.body;
-			console.log('loginData', postData);
+			console.log('session', req.session);
 			connection.query(sqlMap.user.queryByEmail, [postData.email], (err, result) => {
 				if(result.length === 0) {
 					res.json({

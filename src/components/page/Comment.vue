@@ -32,7 +32,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
     import commentForm from '../common/CommentForm'
 	export default {
         name: 'comment',
@@ -69,7 +68,7 @@
         },
         created() {
             var self = this, articleID = this.$route.params.id;
-            axios.get('/api/comment/getComment', { 
+            this.$http.get('/api/comment/getComment', { 
                 params: {articleID: articleID}
             }).then((res) => {
                 self.comments = res.data.data;

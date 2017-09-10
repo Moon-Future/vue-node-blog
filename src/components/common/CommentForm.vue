@@ -49,7 +49,7 @@
                 var self = this;
                 this.$refs[formName].validate((valid) => {
                     if(valid) {
-                        axios.post('/api/comment/writeComment', {
+                        this.$http.post('/api/comment/writeComment', {
                             aid: self.$route.params.id,
                             uid: 8023,
                             uname: self.ruleForm.name,
