@@ -62,6 +62,7 @@
 		float: left;
 		color: #fff;
 		text-align: center;
+    overflow: auto;
 	}
 
 	@media only screen and (max-width: 992px) {
@@ -104,13 +105,13 @@
 	.left-social {
 		/* position: absolute;
 		bottom: 50px; */
-		padding: 50px 10px;
+		padding: 10px;
 	}
 
 	.left-social a {
 		text-decoration: none
 	}
-	
+
 	.left-social i {
 		font-size: 32px;
 		cursor: pointer;
