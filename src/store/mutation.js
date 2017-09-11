@@ -15,5 +15,5 @@ export default {
 	},
 	[types.BOX_SWITCH](state) {
 		state.boxCol = state.boxCol == 12 ? 24 : 12;
-	}
+  }
 }

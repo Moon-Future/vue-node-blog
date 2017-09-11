@@ -20,6 +20,11 @@ router.get('/comment/getComment', (req, res, next) => {
 router.get('/user/getUserAll', (req, res, next) => {
 	api.getUserAll(req, res, next);
 })
+// 获取session
+router.get('/getSession', (req, res, next) => {
+  req.session.isLogin ? res.send(req.session.userData) : res.send('false');
+  res.end();
+})
 
 
 // post
@@ -36,4 +41,11 @@ router.post('/picture/avatar', (req, res, next) => {
 router.post('/user/login', (req, res, next) => {
 	api.userLogin(req, res, next);
 })
+// 退出
+router.post('/user/logout', (req, res, next) => {
+  delete req.session.isLogin;
+  delete req.session.userData;
+  res.end();
+})
+
 module.exports = router;

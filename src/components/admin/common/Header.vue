@@ -29,7 +29,7 @@
                         <el-dropdown-item @click.native="uploadDisplay">更改头像</el-dropdown-item>
                         <el-dropdown-item @click.native="logoutAdmin">退出</el-dropdown-item>
                     </el-dropdown-menu>
-                </el-dropdown> 
+                </el-dropdown>
             </el-col>
         </el-row>
     </div>
@@ -51,6 +51,13 @@
             },
             logoutAdmin() {
                 this.$router.push('/');
+                this.$http.post('/api/user/logout')
+                  .then((res) => {
+                    console.log('success');
+                  })
+                  .catch((err) => {
+                    throw err;
+                  })
             }
         },
         computed: {
@@ -118,7 +125,7 @@
 		.search {
 			display: block
 		}
-	} 
+	}
     @media only screen and (min-width: 768px) {
 		.hello {
 			display: block

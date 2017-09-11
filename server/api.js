@@ -173,11 +173,13 @@ module.exports = {
 							msg: '密码错误'
 						});
 					}else{
+            req.session.isLogin = true;
+            req.session.userData = result[0];
 						jsonWrite(res, result[0]);
 						connection.release();
 					}
 				}
 			})
 		})
-	}
+  }
 }

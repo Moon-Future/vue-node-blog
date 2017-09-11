@@ -2,9 +2,9 @@
 	<div class="blog-home">
 		<div class="blog-main">
 			<div class="blog-avatar">
-				<router-link to="/login">
+				<div @click="gotoAdmin">
 					<img src="../../../static/images/head1.jpg" alt="" />
-				</router-link>
+				</div>
 			</div>
 			<div class="blog-nav">
 				<ul>
@@ -23,7 +23,18 @@
 
 <script>
 	export default {
-		name: 'Home'
+    name: 'Home',
+    methods: {
+      gotoAdmin() {
+        this.$http.get('/api/getSession')
+          .then((res) => {
+            res.data === false ? this.$router.push('/login') : this.$router.push('/admin');
+          })
+          .catch((err) => {
+            throw err;
+          })
+      }
+    }
 	}
 </script>
 

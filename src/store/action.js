@@ -12,5 +12,5 @@ export default {
 	},
 	boxSwitchType({commit}) {
 		commit(types.BOX_SWITCH);
-	}
+  }
 }

@@ -14,7 +14,7 @@
                 </el-form-item>
             </el-form>
         </div>
-    </div>    
+    </div>
 </template>
 
 <script>
@@ -35,6 +35,18 @@
                     ],
                 },
             }
+        },
+        created() {
+          this.$http.get('/api/getSession')
+            .then((res) => {
+              console.log('res', res);
+              if(res.data !== false) {
+                this.$router.push('/admin');
+              }
+            })
+            .catch((err) => {
+              throw err;
+            })
         },
         methods: {
             login(formName) {
@@ -79,7 +91,7 @@
 
     .panel {
         width: 300px;
-        height: 224px; 
+        height: 224px;
         position: absolute;
         left: 50%;
         top: 50%;
