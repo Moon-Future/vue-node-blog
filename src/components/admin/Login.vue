@@ -39,13 +39,13 @@
         created() {
           this.$http.get('/api/getSession')
             .then((res) => {
-              console.log('res', res);
-              if(res.data !== false) {
-                this.$router.push('/admin');
-              }
+                console.log('res', res);
+                if(res.data !== false) {
+                    this.$router.push('/admin');
+                }
             })
             .catch((err) => {
-              throw err;
+                throw err;
             })
         },
         methods: {

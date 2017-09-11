@@ -22,8 +22,8 @@ router.get('/user/getUserAll', (req, res, next) => {
 })
 // 获取session
 router.get('/getSession', (req, res, next) => {
-  req.session.isLogin ? res.send(req.session.userData) : res.send('false');
-  res.end();
+	req.session.isLogin ? res.send(req.session.userData) : res.send('false');
+	res.end();
 })
 
 
@@ -43,9 +43,9 @@ router.post('/user/login', (req, res, next) => {
 })
 // 退出
 router.post('/user/logout', (req, res, next) => {
-  delete req.session.isLogin;
-  delete req.session.userData;
-  res.end();
+	delete req.session.isLogin;
+	delete req.session.userData;
+	res.end();
 })
 
 module.exports = router;

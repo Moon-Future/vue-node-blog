@@ -52,12 +52,12 @@
             logoutAdmin() {
                 this.$router.push('/');
                 this.$http.post('/api/user/logout')
-                  .then((res) => {
-                    console.log('success');
-                  })
-                  .catch((err) => {
-                    throw err;
-                  })
+                    .then((res) => {
+                        console.log('success');
+                    })
+                    .catch((err) => {
+                        throw err;
+                    })
             }
         },
         computed: {

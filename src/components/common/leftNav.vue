@@ -53,10 +53,10 @@
             gotoAdmin() {
               this.$http.get('/api/getSession')
                 .then((res) => {
-                  res.data === false ? this.$router.push('/login') : this.$router.push('/admin');
+                    res.data === false ? this.$router.push('/login') : this.$router.push('/admin');
                 })
                 .catch((err) => {
-                  throw err;
+                    throw err;
                 })
             }
         }
