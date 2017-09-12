@@ -57,28 +57,28 @@
         },
         created() {
             this.$http.get('/api/article/getArticleAll')
-				.then((res) => {
-					this.articles = res.data;
-					this.articles.map((article) => {
+                .then((res) => {
+                    this.articles = res.data;
+                    this.articles.map((article) => {
                         article.post_time = new Date(article.post_time).format('yyyy/MM/dd hh:mm');
                         article.upd_time = article.upd_time == '' ? '暂无修改' : new Date(article.upd_time).format('yyyy/MM/dd hh:mm');
                     })
                     console.log('11', this.articles);
-				})
-				.catch((err) => {
-					console.log('err', err);
+                })
+                .catch((err) => {
+                    console.log('err', err);
                 });
             this.$http.get('/api/tag/getTagAll')
-				.then((res) => {
+                .then((res) => {
                     this.tags = res.data;
                     this.tags.map((tag) => {
                         tag.text = tag.name;
                         tag.value = tag.id;
                     })
-				})
-				.catch((err) => {
-					console.log('err', err);
-				});	
+                })
+                .catch((err) => {
+                    console.log('err', err);
+                }); 
         },
         methods: {
             filterTag(value, row) {

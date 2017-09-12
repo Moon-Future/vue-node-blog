@@ -1,5 +1,5 @@
 <template>
-	<div class="article-comment">
+    <div class="article-comment">
         <commentForm v-if="commentFormShow"></commentForm>
         <div class="comment-detail">
             <div class="comment-count">评论：（共 {{ commentLen }} 条）</div>
@@ -28,12 +28,12 @@
                 <commentForm :replyUserId="replyUserId" :replyUserName="replyUserName" @formHanle="formShowState" v-if="comment.replyFormShow" style="padding: 10px;margin: 10px 0;border: 1px dotted #ccc;background: #fff;"></commentForm>
             </div>
         </div>
-	</div>
+    </div>
 </template>
 
 <script>
     import commentForm from '../common/CommentForm'
-	export default {
+    export default {
         name: 'comment',
         components: {
             commentForm
@@ -107,7 +107,7 @@
         computed: {
            
         }
-	}
+    }
 </script>
 
 <style scoped>
@@ -117,11 +117,11 @@
         clear: both;
     }
 
-	.article-comment{
+    .article-comment{
         margin-top: 10px;
-		padding: 20px;
-		background: #fff;
-	}
+        padding: 20px;
+        background: #fff;
+    }
 
     .comment-detail {
         border-top: 1px solid #ccc;

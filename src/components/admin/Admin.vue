@@ -54,13 +54,13 @@
         },
         created() {
             this.$http.get('/api/user/getUserAll')
-				.then((res) => {
+                .then((res) => {
                     console.log('res', res);
                     this.imgDataUrl = '../../../../static/images/avatar/' + res.data[0].avatar
-				})
-				.catch((err) => {
-					console.log('err', err);
-				});
+                })
+                .catch((err) => {
+                    console.log('err', err);
+                });
         }
     }
 </script>
@@ -82,9 +82,9 @@
         margin-bottom: 20px;
     }
     @media only screen and (max-width: 768px) {
-		.content {
+        .content {
             left: 0;
             padding: 20px;
         }
-	}
+    }
 </style>

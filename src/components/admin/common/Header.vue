@@ -122,17 +122,17 @@
     }
 
     @media only screen and (min-width: 992px) {
-		.search {
-			display: block
-		}
-	}
+        .search {
+            display: block
+        }
+    }
     @media only screen and (min-width: 768px) {
-		.hello {
-			display: block
-		}
-	}
+        .hello {
+            display: block
+        }
+    }
     @media only screen and (max-width: 768px) {
-		.logo i {
+        .logo i {
             font-size: 30px;
             float: left
         }
@@ -143,5 +143,5 @@
         .header {
             padding: 0 20px;
         }
-	}
+    }
 </style>

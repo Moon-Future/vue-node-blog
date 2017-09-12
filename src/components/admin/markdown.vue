@@ -65,12 +65,12 @@
         },
         created() {
             axios.get('/api/tag/getTagAll')
-				.then((res) => {
-					this.tags = res.data;
-				})
-				.catch((err) => {
-					console.log('err', err);
-				});
+                .then((res) => {
+                    this.tags = res.data;
+                })
+                .catch((err) => {
+                    console.log('err', err);
+                });
         },
         methods: {
             handleTagSel(tag) {

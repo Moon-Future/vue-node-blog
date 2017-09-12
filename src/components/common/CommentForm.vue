@@ -101,8 +101,8 @@
     }
 
     @media only screen and (max-width: 768px) {
-		.from-comment, .comment-text {
+        .from-comment, .comment-text {
             width: 100%;
         }
-	}
+    }
 </style>

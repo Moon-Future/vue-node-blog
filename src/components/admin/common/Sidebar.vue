@@ -105,11 +105,11 @@
         height:100%;
     }
     @media only screen and (max-width: 768px) {
-		.box-card-image {
-			height: 250px;
-		}
+        .box-card-image {
+            height: 250px;
+        }
         .sidebar {
             display: none;
         }
-	}
+    }
 </style>
