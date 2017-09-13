@@ -2,7 +2,7 @@
     <div class="header">
         <el-row>
             <el-col class="logo" :md="5" :sm="8" :xs="12">
-                <i class="iconfont icon-diannaoyushouji"></i>
+                <router-link to="/"><i class="iconfont icon-diannaoyushouji"></i></router-link>
                 <p>后台管理</p>
             </el-col>
 
@@ -50,10 +50,9 @@
                 this.$emit('uploadDisplay', true);
             },
             logoutAdmin() {
-                this.$router.push('/');
                 this.$http.post('/api/user/logout')
                     .then((res) => {
-                        console.log('success');
+                        this.$router.push('/login');
                     })
                     .catch((err) => {
                         throw err;
@@ -62,7 +61,7 @@
         },
         computed: {
             currentTime() {
-                return new Date().format('yyyy-MM-dd hh:mm');;
+                return new Date().format('yyyy-MM-dd hh:mm');
             },
         }
     }
@@ -85,7 +84,8 @@
     }
     .logo i {
         font-size: 60px;
-        float: left
+        float: left;
+        color: #fff
     }
     .logo p {
         font-size: 20px;

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <!-- <article class="article-detail markdown-body" v-html="article"></article> -->
+        <article class="article-detail markdown-body" v-html="article"></article>
         <Comment></Comment>
     </div>
 </template>
@@ -25,7 +25,8 @@
             }
         },
         created() {
-            axios.get('../../../static/README.md')
+            // axios.get('../../../static/README.md')
+            axios.get('../../../static/README-VUE.md')
                 .then((res) => {
                     var mdData = res.data;
                     this.article = marked(mdData);

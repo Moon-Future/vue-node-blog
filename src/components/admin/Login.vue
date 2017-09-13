@@ -11,6 +11,7 @@
                 <el-form-item>
                     <el-button type="success" @click="login('loginForm')">登录</el-button>
                     <el-button type="primary">注册</el-button>
+                    <router-link to="/" class="goHome">Go Home</router-link>
                 </el-form-item>
             </el-form>
         </div>
@@ -109,5 +110,14 @@
     .panel input {
         background: transparent;
         color: #000
+    }
+
+    .goHome {
+        text-decoration: none;
+        float: right;
+        padding: 0 5px;
+    }
+    .goHome:hover {
+        border-bottom: 2px solid red
     }
 </style>

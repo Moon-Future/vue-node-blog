@@ -85,7 +85,6 @@
             var self = this;
             axios.get('/api/article/getArticleAll')
                 .then((res) => {
-                    console.log('res', res);
                     self.blogs = res.data;
                     self.blogs.map((blog) => {
                         blog.post_time = self.timeFormat(blog.post_time);
@@ -107,7 +106,7 @@
             ...mapActions(['crumbFlag', 'currentArticle'])
         }
     }
-    
+
 </script>
 
 <style scoped>
@@ -122,7 +121,7 @@
         text-align: center;
         margin-bottom: 10px;
     }
-    
+
     .box-card-image {
         /* width: 60%; */
         max-width: 100%;
@@ -132,11 +131,11 @@
             height: 250px;
         }
     } */
-    
+
     .box-card:hover {
         background: #EFF2F7;
     }
-    
+
     .blog-title {
         margin-bottom: 10px;
     }
@@ -146,7 +145,7 @@
         text-overflow: ellipsis;
         overflow: hidden;
     }
-    
+
     .blog-title a {
         text-decoration: none;
         color: #000;
@@ -156,25 +155,25 @@
         height: 60px;
         line-height: 30px;
     }
-    
+
     .blog-title span {
         font: 400 12px/22px Arial;
         color: #999;
         padding: 0 5px;
     }
-    
+
     .blog-title .title-icon {
         margin-right: 5px;
     }
-    
+
     .blog-start {
         cursor: pointer;
     }
-    
+
     .blog-tags span {
         cursor: pointer;
     }
-    
+
     .blog-summary p {
         text-align: left;
         text-indent: 2em;
@@ -185,7 +184,7 @@
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
     }
-    
+
     .blog-summary a {
         float: right;
         margin-bottom: 20px;
