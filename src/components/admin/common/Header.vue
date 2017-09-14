@@ -52,6 +52,7 @@
             logoutAdmin() {
                 this.$http.post('/api/user/logout')
                     .then((res) => {
+                        localStorage.removeItem('userData');
                         this.$router.push('/login');
                     })
                     .catch((err) => {

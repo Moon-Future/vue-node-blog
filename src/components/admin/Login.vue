@@ -6,7 +6,7 @@
                     <el-input v-model="loginForm.email"></el-input>
                 </el-form-item>
                 <el-form-item label="密码" prop="password">
-                    <el-input type="password" v-model="loginForm.password"></el-input>
+                    <el-input type="password" v-model="loginForm.password" @keyup.enter.native="login('loginForm')"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="success" @click="login('loginForm')">登录</el-button>
@@ -42,7 +42,8 @@
             .then((res) => {
                 console.log('res', res);
                 if(res.data !== false) {
-                    this.$router.push('/admin');
+                    // this.$router.push('/admin');
+                    console.log('已登陆');
                 }
             })
             .catch((err) => {
@@ -63,6 +64,7 @@
                                 this.$message.error(res.msg);
                                 return;
                             }
+                            localStorage.setItem('userData', JSON.stringify(res));
                             this.$message.success('登陆成功');
                             this.$router.push('/admin');
                         }).catch((err) => {

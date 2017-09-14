@@ -159,7 +159,7 @@ module.exports = {
     userLogin(req, res, next) {
         pool.getConnection((err, connection) => {
             let postData = req.body;
-            console.log('session', req.session);
+            console.log('res', req);
             connection.query(sqlMap.user.queryByEmail, [postData.email], (err, result) => {
                 if(result.length === 0) {
                     res.json({
@@ -173,6 +173,7 @@ module.exports = {
                             msg: '密码错误'
                         });
                     }else{
+                        delete result[0].password;
                         req.session.isLogin = true;
                         req.session.userData = result[0];
                         jsonWrite(res, result[0]);
