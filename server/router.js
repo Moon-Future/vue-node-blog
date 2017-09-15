@@ -28,7 +28,10 @@ router.get('/getSession', (req, res, next) => {
 
 
 // post
-
+// 更新文章
+router.post('/article/updArticle', (req, res, next) => {
+    api.updArticle(req, res, next);
+})
 // 填写评论
 router.post('/comment/writeComment', (req, res, next) => {
     api.writeComment(req, res, next);
@@ -43,8 +46,11 @@ router.post('/user/login', (req, res, next) => {
 })
 // 退出
 router.post('/user/logout', (req, res, next) => {
-    delete req.session.isLogin;
-    delete req.session.userData;
+    req.session.destroy((err) => {
+        if (err) {
+            throw err;
+        }
+    });
     res.end();
 })
 

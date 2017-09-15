@@ -39,7 +39,7 @@
                     <el-button size="small" type="primary" :disabled="userRoot ? false : true">编辑</el-button>
                     <el-button size="small" type="warning" :disabled="userRoot ? false : true" v-if="scope.row.state">存稿</el-button>
                     <el-button size="small" type="success" :disabled="userRoot ? false : true" v-if="!scope.row.state">发布</el-button>
-                    <el-button size="small" type="danger" :disabled="userRoot ? false : true" @click="deleteHandle(articles.id)">删除</el-button>
+                    <el-button size="small" type="danger" :disabled="userRoot ? false : true" @click="deleteHandle(scope.row.id)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -92,7 +92,13 @@
                 }
             },
             deleteHandle(id) {
-                
+                this.$http.post('/api/article/updArticle', {
+                    id: id, delOr: 1
+                }).then((res) => {
+                    res.data === true ? this.$message.success('删除到回收站') : this.$message.error('没有权限');
+                }).catch((err) => {
+                    throw err;
+                });
             }
         }
     }

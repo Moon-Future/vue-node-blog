@@ -68,6 +68,27 @@ module.exports = {
             })
         })
     },
+    // 更新文章
+    updArticle(req, res, next) {
+        pool.getConnection((err, connection) => {
+            if (req.session.userData.root !== 1) {
+                res.send('false');
+                return;
+            }
+            let postData = req.body, sql = 'UPDATE articles SET ', str = '';
+            for(let key in postData) {
+                if (key === 'id') {
+                    continue
+                }
+                str += key + ' = ' + postData[key] + ','
+            }
+            sql += str.substr(0, str.length - 1) + ' WHERE id = ' + postData.id;
+            connection.query(sql, (err, result) => {
+                res.send('true');
+                connection.release();
+            })
+        })
+    },
     // 标签
     getTagAll(req, res, next) {
         pool.getConnection((err, connection) => {
@@ -160,7 +181,6 @@ module.exports = {
     userLogin(req, res, next) {
         pool.getConnection((err, connection) => {
             let postData = req.body;
-            console.log('res', req.session);
             connection.query(sqlMap.user.queryByEmail, [postData.email], (err, result) => {
                 if(result.length === 0) {
                     res.json({
