@@ -49,6 +49,7 @@ var mergeData = function(data) {
             obj[tmp.id].start = tmp.start;
             obj[tmp.id].state = tmp.state;
             obj[tmp.id].image = tmp.image;
+            obj[tmp.id].delOr = tmp.delOr;
         }
     }
     for(let i in obj){

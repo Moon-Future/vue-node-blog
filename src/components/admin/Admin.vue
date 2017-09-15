@@ -59,6 +59,7 @@
                 .then((res) => {
                     res = res.data;
                     res === false ? this.$router.push('/login') : this.userData = res;
+                    console.log('userData', this.userData);
                 })
                 .catch((err) => {
                     throw err;

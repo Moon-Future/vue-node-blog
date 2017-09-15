@@ -34,12 +34,12 @@
                     <span v-else style="color:#8391a5">暂存稿</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" min-width="200" v-if="userRoot === '1'">
+            <el-table-column label="操作" min-width="200">
                 <template scope="scope">
-                    <el-button size="small" type="primary">编辑</el-button>
-                    <el-button size="small" type="warning" v-if="scope.row.state">存稿</el-button>
-                    <el-button size="small" type="success" v-if="!scope.row.state">发布</el-button>
-                    <el-button size="small" type="danger">删除</el-button>
+                    <el-button size="small" type="primary" :disabled="userRoot ? false : true">编辑</el-button>
+                    <el-button size="small" type="warning" :disabled="userRoot ? false : true" v-if="scope.row.state">存稿</el-button>
+                    <el-button size="small" type="success" :disabled="userRoot ? false : true" v-if="!scope.row.state">发布</el-button>
+                    <el-button size="small" type="danger" :disabled="userRoot ? false : true" @click="deleteHandle(articles.id)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -90,6 +90,9 @@
                         return row.tags;
                     }
                 }
+            },
+            deleteHandle(id) {
+                
             }
         }
     }
