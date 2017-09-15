@@ -1,9 +1,9 @@
 <template>
     <div>
-        <vHeader :imgAvatar="imgDataUrl" @uploadDisplay="uploadHandle"></vHeader>
+        <vHeader :userAvatar="userData.avatar" :userName="userData.name" @uploadDisplay="uploadHandle"></vHeader>
         <vSidebar></vSidebar>
         <div class="content">
-            <transition name="move" mode="out-in"><router-view></router-view></transition>
+            <transition name="move" mode="out-in"><router-view :userRoot="userData.root"></router-view></transition>
         </div>
         <my-upload field="avatar"
             :width="200"
@@ -30,10 +30,12 @@
         },
         data() {
             return {
-                name: '假面',
-                time: '2017-08-09',
+                userData: {
+                    id: '8023',
+                    name: '假面',
+                    avatar: '../../../../static/images/avatar/head2.jpg',
+                },
                 uploadShow: false,
-                imgDataUrl: '../../../../static/images/avatar/head2.jpg',
                 params: {
                     token: '123456798',
                     name: 'avatar'
@@ -48,18 +50,18 @@
                 this.uploadShow = data;
             },
             cropUploadSuccess(jsonData, field) {
-                console.log('-------- upload success --------');
-                this.imgDataUrl = jsonData;
+                this.$message.success('上传成功！');
+                this.avatar = jsonData;
             }
         },
-        created() {
-            this.$http.get('/api/user/getUserAll')
+        beforeCreate() {
+            this.$http.get('/api/getSession')
                 .then((res) => {
-                    console.log('res', res);
-                    this.imgDataUrl = '../../../../static/images/avatar/' + res.data[0].avatar
+                    res = res.data;
+                    res === false ? this.$router.push('/login') : this.userData = res;
                 })
                 .catch((err) => {
-                    console.log('err', err);
+                    throw err;
                 });
         }
     }

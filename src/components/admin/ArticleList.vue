@@ -34,7 +34,7 @@
                     <span v-else style="color:#8391a5">暂存稿</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" min-width="200">
+            <el-table-column label="操作" min-width="200" v-if="userRoot === '1'">
                 <template scope="scope">
                     <el-button size="small" type="primary">编辑</el-button>
                     <el-button size="small" type="warning" v-if="scope.row.state">存稿</el-button>
@@ -49,6 +49,7 @@
 <script>
     export default {
         name: 'ArticleList',
+        props: ['userRoot'],
         data() {
             return {
                 articles: [],

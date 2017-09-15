@@ -37,13 +37,11 @@
                 },
             }
         },
-        created() {
+        beforeCreated() {
           this.$http.get('/api/getSession')
             .then((res) => {
-                console.log('res', res);
                 if(res.data !== false) {
-                    // this.$router.push('/admin');
-                    console.log('已登陆');
+                    this.$router.push('/admin');
                 }
             })
             .catch((err) => {
@@ -64,7 +62,6 @@
                                 this.$message.error(res.msg);
                                 return;
                             }
-                            localStorage.setItem('userData', JSON.stringify(res));
                             this.$message.success('登陆成功');
                             this.$router.push('/admin');
                         }).catch((err) => {

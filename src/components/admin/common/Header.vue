@@ -17,14 +17,14 @@
 
             <el-col :md="8" :sm="8" :xs="12" class="right">
                 <el-dropdown trigger="click" class="notice">
-                    <el-badge is-dot>陈亮</el-badge>
+                    <el-badge is-dot>{{ userName }}</el-badge>
                     <el-dropdown-menu>
                         <el-dropdown-item><el-badge :value="12">评论</el-badge></el-dropdown-item>
                         <el-dropdown-item><el-badge :value="9">阅读</el-badge></el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
                 <el-dropdown trigger="click" class="user-infor">
-                    <img :src="imgAvatar" alt="">
+                    <img :src="userAvatar" alt="">
                     <el-dropdown-menu>
                         <el-dropdown-item @click.native="uploadDisplay">更改头像</el-dropdown-item>
                         <el-dropdown-item @click.native="logoutAdmin">退出</el-dropdown-item>
@@ -38,13 +38,7 @@
 <script>
     export default {
         name: 'Header',
-        props: ['imgAvatar'],
-        data() {
-            return {
-                name: '假面',
-                time: '2017-08-09',
-            }
-        },
+        props: ['userAvatar', 'userName'],
         methods:{
             uploadDisplay() {
                 this.$emit('uploadDisplay', true);
@@ -52,7 +46,6 @@
             logoutAdmin() {
                 this.$http.post('/api/user/logout')
                     .then((res) => {
-                        localStorage.removeItem('userData');
                         this.$router.push('/login');
                     })
                     .catch((err) => {
