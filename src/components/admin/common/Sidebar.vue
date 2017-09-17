@@ -78,6 +78,11 @@
                         icon: 'el-icon-setting',
                         index: 'user',
                         title: '用户'
+                    },
+                    {
+                        icon: 'el-icon-delete2',
+                        index: 'recycleBin',
+                        title: '回收站'
                     }
                 ]
             }

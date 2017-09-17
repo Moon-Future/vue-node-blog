@@ -1,7 +1,8 @@
 var sqlMap = {
     article: {
         queryById: 'SELECT * from tag_links as c LEFT JOIN tags as a  on a.id = c.tid LEFT JOIN articles as b on b.id = c.aid where c.aid = ?',
-        queryAll: 'SELECT * from tag_links as c LEFT JOIN tags as a  on a.id = c.tid RIGHT JOIN articles as b on b.id = c.aid WHERE b.delOr != 1',
+        // queryAll: 'SELECT * from tag_links as c LEFT JOIN tags as a  on a.id = c.tid RIGHT JOIN articles as b on b.id = c.aid WHERE b.delOr != 1',
+        queryAll: 'SELECT * from tag_links as c LEFT JOIN tags as a  on a.id = c.tid RIGHT JOIN articles as b on b.id = c.aid',
         delById: 'DELETE FROM articles WHERE id = ?',
         updById: 'UPDATE articles SET ? FROM WHERE id = ?'
     },

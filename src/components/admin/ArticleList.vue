@@ -6,7 +6,11 @@
                 <el-breadcrumb-item>Article</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
-        <el-table :data="articles" border style="width:100%">
+        <el-tabs @tab-click="tabClick">
+            <el-tab-pane><span slot="label"><i class="el-icon-document"></i> 文章列表</span></el-tab-pane>
+            <el-tab-pane><span slot="label"><i class="el-icon-delete2"></i> 回收站</span></el-tab-pane>
+        </el-tabs>
+        <el-table :data="delFlag ? articlesDel : articles" border style="width:100%">
             <el-table-column prop="id" label="ID" width="100"></el-table-column>
             <el-table-column prop="title" label="标题" width="300"></el-table-column>
             <el-table-column prop="tags" label="标签" width="200" :filters="tags" :filter-method="filterTag" filter-placement="bottom-end">
@@ -30,16 +34,20 @@
             <el-table-column prop="start" label="点赞" width="100"></el-table-column>
             <el-table-column prop="state" label="状态" width="80">
                 <template scope="scope">
-                    <span v-if="scope.row.state" style="color:#13ce66">已发布</span>
+                    <!-- 0：删除  1：已发布  2：暂存稿 -->
+                    <span v-if="scope.row.state === 1" style="color:#13ce66">已发布</span>
+                    <span v-else-if="scope.row.state === 0" style="color:#ff4949">删除</span>
                     <span v-else style="color:#8391a5">暂存稿</span>
                 </template>
             </el-table-column>
             <el-table-column label="操作" min-width="200">
                 <template scope="scope">
-                    <el-button size="small" type="primary" :disabled="userRoot ? false : true">编辑</el-button>
-                    <el-button size="small" type="warning" :disabled="userRoot ? false : true" v-if="scope.row.state">存稿</el-button>
-                    <el-button size="small" type="success" :disabled="userRoot ? false : true" v-if="!scope.row.state">发布</el-button>
-                    <el-button size="small" type="danger" :disabled="userRoot ? false : true" @click="deleteHandle(scope.row.id)">删除</el-button>
+                    <el-button size="small" type="primary" v-show="!delFlag" :disabled="userRoot ? false : true">编辑</el-button>
+                    <el-button size="small" type="warning" v-show="!delFlag" :disabled="userRoot ? false : true" v-if="scope.row.state">存稿</el-button>
+                    <el-button size="small" type="success" v-show="!delFlag" :disabled="userRoot ? false : true" v-if="!scope.row.state">发布</el-button>
+                    <el-button size="small" type="danger" v-show="!delFlag" :disabled="userRoot ? false : true" @click="deleteHandle(scope.row.id)">删除</el-button>
+                    <el-button size="small" type="success" v-show="delFlag" :disabled="userRoot ? false : true" @click="deleteHandle(scope.row.id)">还原</el-button>
+                    <el-button size="small" type="danger" v-show="delFlag" :disabled="userRoot ? false : true" @click="deleteHandle(scope.row.id)">彻底删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -53,18 +61,25 @@
         data() {
             return {
                 articles: [],
-                tags: []
+                articlesDel: [],
+                tags: [],
+                delFlag: false
             }
         },
         created() {
             this.$http.get('/api/article/getArticleAll')
                 .then((res) => {
-                    this.articles = res.data;
+                    this.articles = res.data.articles;
+                    this.articlesDel = res.data.articlesDel;
                     this.articles.map((article) => {
                         article.post_time = new Date(article.post_time).format('yyyy/MM/dd hh:mm');
                         article.upd_time = article.upd_time == '' ? '暂无修改' : new Date(article.upd_time).format('yyyy/MM/dd hh:mm');
-                    })
-                    console.log('11', this.articles);
+                    });
+                    this.articlesDel.map((article) => {
+                        article.post_time = new Date(article.post_time).format('yyyy/MM/dd hh:mm');
+                        article.upd_time = article.upd_time == '' ? '暂无修改' : new Date(article.upd_time).format('yyyy/MM/dd hh:mm');
+                    });
+                    console.log('res', res);
                 })
                 .catch((err) => {
                     console.log('err', err);
@@ -93,12 +108,15 @@
             },
             deleteHandle(id) {
                 this.$http.post('/api/article/updArticle', {
-                    id: id, delOr: 1
+                    id: id, state: 0
                 }).then((res) => {
                     res.data === true ? this.$message.success('删除到回收站') : this.$message.error('没有权限');
                 }).catch((err) => {
                     throw err;
                 });
+            },
+            tabClick(tab) {
+                this.delFlag = tab.index === '1' ? true : false;
             }
         }
     }

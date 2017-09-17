@@ -27,8 +27,8 @@ var jsonWrite = function (res, data) {
 };
 
 // 数据处理
-var mergeData = function(data) {
-    var obj = {}, arr = [], tmp;
+var mergeData = function(data, flag) {
+    var obj = {}, arr = [], arrDel = [], tmp;
     for(let i = 0, len = data.length; i < len; i++){
         tmp = data[i];
         if(obj[tmp.id]){
@@ -49,21 +49,22 @@ var mergeData = function(data) {
             obj[tmp.id].start = tmp.start;
             obj[tmp.id].state = tmp.state;
             obj[tmp.id].image = tmp.image;
-            obj[tmp.id].delOr = tmp.delOr;
         }
     }
     for(let i in obj){
-        arr.push(obj[i]);
+        obj[i].state !== 0 ? (flag ? obj[i].state === 1 ? arr.push(obj[i]) : false : arr.push(obj[i])) : arrDel.push(obj[i]);
     }
-    return arr;
+
+    return flag ? arr : {'articles': arr, 'articlesDel': arrDel};
 }
 
 module.exports = {
     // 文章
     getArticleAll(req, res, next) {
         pool.getConnection((err, connection) => {
+            let param = req.query.index;
             connection.query(sqlMap.article.queryAll, (err, result) => {
-                jsonWrite(res, result ? mergeData(result) : result);
+                jsonWrite(res, result ? mergeData(result, param) : result);
                 connection.release();
             })
         })

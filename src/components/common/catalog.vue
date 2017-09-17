@@ -92,14 +92,14 @@
         },
         created() {
             var self = this;
-            axios.get('/api/article/getArticleAll')
-                .then((res) => {
+            axios.get('/api/article/getArticleAll', {
+                    params: {index: true}
+                }).then((res) => {
                     self.blogs = res.data;
                     self.blogs.map((blog) => {
                         blog.post_time = self.timeFormat(blog.post_time);
                     })
-                })
-                .catch((err) => {
+                }).catch((err) => {
                     console.log('err', err);
                 });
             axios.get('/api/tag/getTagAll')
