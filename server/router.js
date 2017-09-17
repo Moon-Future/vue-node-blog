@@ -3,7 +3,6 @@ var router = express.Router();
 var api = require('./api');
 
 // get
-
 // 获得所有文章
 router.get('/article/getArticleAll', (req, res, next) => {
     api.getArticleAll(req, res, next);
@@ -23,7 +22,6 @@ router.get('/user/getUserAll', (req, res, next) => {
 // 获取session
 router.get('/getSession', (req, res, next) => {
     req.session.isLogin ? res.send(req.session.userData) : res.send('false');
-    res.end();
 })
 
 
@@ -43,6 +41,10 @@ router.post('/picture/avatar', (req, res, next) => {
 // 登陆
 router.post('/user/login', (req, res, next) => {
     api.userLogin(req, res, next);
+})
+// 注册
+router.post('/user/signup', (req, res, next) => {
+    api.userSignup(req, res, next);
 })
 // 退出
 router.post('/user/logout', (req, res, next) => {

@@ -18,6 +18,7 @@ var sqlMap = {
         update:'update users set avatar=? where username=236338364',
         queryAll: 'select * from users',
         queryByEmail: 'select * from users where email=?',
+        insert: 'INSERT INTO users(name, email, password, root, avatar) VALUES (?,?,?,0,?)',
     }
 }
 

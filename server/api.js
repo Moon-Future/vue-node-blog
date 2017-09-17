@@ -203,5 +203,40 @@ module.exports = {
                 }
             })
         })
-  }
+    },
+    // 注册
+    userSignup(req, res, next) {
+        pool.getConnection((err, connection) => {
+            let postData = req.body;
+            if (postData.password !== postData.rePassword) {
+                res.json({
+                    status: false,
+                    msg: '两次密码输入不一样',
+                });
+                return;
+            }
+            connection.query(sqlMap.user.queryByEmail, [postData.email], (err, result) => {
+                if (result.length !== 0) {
+                    res.json({
+                        status: false,
+                        msg: '用户已存在'
+                    });
+                    connection.release();
+                } else {
+                    connection.query(sqlMap.user.insert, [postData.name,postData.email,postData.password,postData.avatar], (err, result) => {
+                        let status = true, msg = '注册成功';
+                        if (err) {
+                            status = false;
+                            msg = '服务器出错,请稍后再试';
+                        }
+                        res.json({
+                            status: status,
+                            msg: msg
+                        });
+                        connection.release();
+                    })
+                }
+            })
+        })
+    },
 }
