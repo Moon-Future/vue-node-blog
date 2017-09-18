@@ -30,6 +30,10 @@ router.get('/getSession', (req, res, next) => {
 router.post('/article/updArticle', (req, res, next) => {
     api.updArticle(req, res, next);
 })
+// 新增文章
+router.post('/article/addArticle', (req, res, next) => {
+    api.addArticle(req, res, next);
+})
 // 填写评论
 router.post('/comment/writeComment', (req, res, next) => {
     api.writeComment(req, res, next);

@@ -90,6 +90,19 @@ module.exports = {
             })
         })
     },
+    // 新增文章
+    addArticle(req, res, next) {
+        pool.getConnection((err, connection) => {
+            let postData = req.body, curTime = new Date().getTime();
+            if (req.session.userData.root !== 1) {
+                postData.state = 2;
+            }
+            connection.query(sqlMap.article.insert, [postData.user_id,postData.author,postData.title,postData.state,postData.type,postData.loadURL,postData.summary,curTime,null,0,0,'',''], (err, result) => {
+                res.send('true');
+                connection.release();
+            })
+        })
+    },
     // 标签
     getTagAll(req, res, next) {
         pool.getConnection((err, connection) => {

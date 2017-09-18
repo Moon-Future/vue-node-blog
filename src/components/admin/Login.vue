@@ -34,8 +34,8 @@
             return {
                 signupFlag: false,
                 loginForm: {
-                    email: '',
-                    password: '',
+                    email: '236338364@qq.com',
+                    password: '489584507',
                     rePassword: '',
                     nickName: '',
                     avatar: '../../../../static/images/avatar/head2.jpg'

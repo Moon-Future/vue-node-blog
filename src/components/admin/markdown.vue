@@ -8,8 +8,9 @@
         </div>
         <div class="editor">
             <div class="title">
-                标题：<input type="text">
+                标题：<input type="text" v-model="title">
             </div>
+            <el-button size="small" type="primary" class="coverPic">来张封面图？</el-button>
             <markdown-editor v-model="content" :configs="configs" ref="markdownEditor"></markdown-editor>
             <div class="tag">
                 标签：
@@ -32,7 +33,7 @@
                 </div>
             </div>
             <div class="submit">
-                <el-button type="success">发布</el-button>
+                <el-button type="success" @click="submitHandle">发布</el-button>
                 <el-button type="info">存稿</el-button>
             </div>
         </div>
@@ -44,11 +45,13 @@
     import axios from 'axios'
     export default {
         name: 'Markdown',
+        props: ['userData'],
         components: {
             markdownEditor
         },
         data() {
             return {
+                title: '',
                 content: '',
                 tags: [],
                 tagSel: [],
@@ -82,7 +85,7 @@
                 this.tagSel.splice(index, 1);
             },
             handleInputConfirm() {
-                let inputValue = this.inputValue, flag = false, tagAll = this.tags.concat(this.tagSel);
+                let inputValue = this.inputValue.trim(), flag = false, tagAll = this.tags.concat(this.tagSel);
                 tagAll.map((tag) => {
                     if(tag.name.toLocaleLowerCase() == inputValue.toLocaleLowerCase()){
                         flag = true;
@@ -98,6 +101,44 @@
                 this.inputVisible = true;
                 this.$nextTick(_ => {
                     this.$refs.saveTagInput.$refs.input.focus();
+                });
+            },
+            submitHandle() {
+                console.log('title', this.title);
+                console.log('content', this.content);
+                console.log('tagSel', this.tagSel);
+                var obj = {
+                    user_id: this.userData.id,
+                    author: this.userData.name,
+                    title: this.title,
+                    content: this.content,
+                    state: 1,
+                    type: 1,
+                    loadURL: '#',
+                    summary: '啦啦啦啦',
+                    view: 0,
+                    start: 0,
+                    image: '',
+                    filePath: ''
+                }
+                console.log('obj', obj);
+                this.$http.post('/api/article/addArticle', {
+                    user_id: this.userData.id,
+                    author: this.userData.name,
+                    title: this.title,
+                    // content: this.content,
+                    state: 1,
+                    type: 1,
+                    loadURL: '#',
+                    summary: '啦啦啦啦',
+                    view: 0,
+                    start: 0,
+                    image: '',
+                    filePath: ''
+                }).then((res) => {
+                    console.log('res', res);
+                }).catch((err) => {
+                    console.log('err', err);
                 });
             }
         }
@@ -119,6 +160,9 @@
         font-size: 20px;
         text-align: center;
         min-width: 100px; 
+    }
+    .coverPic {
+        margin: 10px;
     }
     .tag {
         margin-bottom: 20px;

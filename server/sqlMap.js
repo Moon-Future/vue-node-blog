@@ -4,7 +4,9 @@ var sqlMap = {
         // queryAll: 'SELECT * FROM tag_links as c LEFT JOIN tags as a  on a.id = c.tid RIGHT JOIN articles as b on b.id = c.aid WHERE b.delOr != 1',
         queryAll: 'SELECT * FROM tag_links as c LEFT JOIN tags as a  on a.id = c.tid RIGHT JOIN articles as b on b.id = c.aid',
         delById: 'DELETE FROM articles WHERE id = ?',
-        updById: 'UPDATE articles SET ? FROM WHERE id = ?'
+        updById: 'UPDATE articles SET ? FROM WHERE id = ?',
+        insert: 'INSERT INTO articles(user_id, author, title, state, type, loadURL, summary, post_time, upd_time, view, start, image, filePath) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
+
     },
     tag: {
         queryById: 'SELECT * FROM articles WHERE id=?',

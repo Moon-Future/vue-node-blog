@@ -42,12 +42,12 @@
             </el-table-column>
             <el-table-column label="操作" min-width="200">
                 <template scope="scope">
-                    <el-button size="small" type="primary" v-show="!delFlag" :disabled="userRoot ? false : true">编辑</el-button>
-                    <el-button size="small" type="warning" v-show="!delFlag" :disabled="userRoot ? false : true" v-if="scope.row.state">存稿</el-button>
-                    <el-button size="small" type="success" v-show="!delFlag" :disabled="userRoot ? false : true" v-if="!scope.row.state">发布</el-button>
-                    <el-button size="small" type="danger" v-show="!delFlag" :disabled="userRoot ? false : true" @click="deleteHandle(scope.row.id)">删除</el-button>
-                    <el-button size="small" type="success" v-show="delFlag" :disabled="userRoot ? false : true" @click="deleteHandle(scope.row.id)">还原</el-button>
-                    <el-button size="small" type="danger" v-show="delFlag" :disabled="userRoot ? false : true" @click="deleteHandle(scope.row.id)">彻底删除</el-button>
+                    <el-button size="small" type="primary" v-show="!delFlag" :disabled="userData.root ? false : true">编辑</el-button>
+                    <el-button size="small" type="warning" v-show="!delFlag" :disabled="userData.root ? false : true" v-if="scope.row.state">存稿</el-button>
+                    <el-button size="small" type="success" v-show="!delFlag" :disabled="userData.root ? false : true" v-if="!scope.row.state">发布</el-button>
+                    <el-button size="small" type="danger" v-show="!delFlag" :disabled="userData.root ? false : true" @click="deleteHandle(scope.row.id)">删除</el-button>
+                    <el-button size="small" type="success" v-show="delFlag" :disabled="userData.root ? false : true" @click="deleteHandle(scope.row.id)">还原</el-button>
+                    <el-button size="small" type="danger" v-show="delFlag" :disabled="userData.root ? false : true" @click="deleteHandle(scope.row.id)">彻底删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -57,7 +57,7 @@
 <script>
     export default {
         name: 'ArticleList',
-        props: ['userRoot'],
+        props: ['userData'],
         data() {
             return {
                 articles: [],

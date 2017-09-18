@@ -3,7 +3,7 @@
         <vHeader :userAvatar="userData.avatar" :userName="userData.name" @uploadDisplay="uploadHandle"></vHeader>
         <vSidebar></vSidebar>
         <div class="content">
-            <transition name="move" mode="out-in"><router-view :userRoot="userData.root"></router-view></transition>
+            <transition name="move" mode="out-in"><router-view :userData="userData"></router-view></transition>
         </div>
         <my-upload field="avatar"
             :width="200"
