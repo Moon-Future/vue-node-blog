@@ -3,7 +3,7 @@
         <div class="blog-main">
             <div class="blog-avatar">
                 <div @click="gotoAdmin">
-                    <img src="../../../static/images/head1.jpg" alt="" />
+                    <img :src="avatar" alt="" />
                 </div>
             </div>
             <div class="blog-nav">
@@ -24,17 +24,32 @@
 <script>
     export default {
     name: 'Home',
-    methods: {
-      gotoAdmin() {
+    data() {
+        return {
+            avatarRoot: '../../../static/images/avatar/',
+            avatar: '../../../../static/images/avatar/head2.jpg'
+        }
+    },
+    beforeCreate() {
         this.$http.get('/api/getSession')
-          .then((res) => {
-            res.data === false ? this.$router.push('/login') : this.$router.push('/admin');
-          })
-          .catch((err) => {
-            throw err;
-          })
-      }
-    }
+            .then((res) => {
+                res.data.avatar ? this.avatar = this.avatarRoot + res.data.avatar : false;
+            })
+            .catch((err) => {
+                throw err;
+            })
+    },
+    methods: {
+        gotoAdmin() {
+            this.$http.get('/api/getSession')
+                .then((res) => {
+                    res.data === false ? this.$router.push('/login') : this.$router.push('/admin');
+                })
+                .catch((err) => {
+                    throw err;
+                })
+            }
+        }
     }
 </script>
 
@@ -80,6 +95,7 @@
     .blog-nav ul{
         list-style-type: none;
         padding: 0;
+        text-align: center;
     }
     .blog-nav ul li{
         display: inline-block;

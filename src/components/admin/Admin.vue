@@ -30,15 +30,16 @@
         },
         data() {
             return {
+                avatarRoot: '../../../../static/images/avatar/',
                 userData: {
-                    id: '8023',
+                    id: 8023,
                     name: '假面',
                     avatar: '../../../../static/images/avatar/head2.jpg',
                 },
                 uploadShow: false,
                 params: {
-                    token: '123456798',
-                    name: 'avatar'
+                    // token: '123456798',
+                    // name: 'avatar',
                 },
                 headers: {
                     smail: '*_~'
@@ -51,15 +52,17 @@
             },
             cropUploadSuccess(jsonData, field) {
                 this.$message.success('上传成功！');
-                this.avatar = jsonData;
+                this.userData.avatar = this.avatarRoot + jsonData;
             }
         },
         beforeCreate() {
             this.$http.get('/api/getSession')
                 .then((res) => {
+                    console.log('res', res);
                     res = res.data;
                     res === false ? this.$router.push('/login') : this.userData = res;
-                    console.log('userData', this.userData);
+                    this.userData.avatar = this.avatarRoot + res.avatar;
+                    this.params.userID = this.userData.id;
                 })
                 .catch((err) => {
                     throw err;

@@ -152,17 +152,23 @@ module.exports = {
     },
     // 上传图片
     uploadPic(req, res, next) {
-        var form = new formidable.IncomingForm();
+        let form = new formidable.IncomingForm(), userID;
         form.uploadDir = '../static/images/avatar/';
         form.parse(req, (error, fields, files) => {
+            userID = fields.userID;
             for(let key in files){
-                var file = files[key];
-                var fileName = uuid.v1() + '_' + file.name;
-                var newPath = form.uploadDir + fileName;
-                jsonWrite(res, newPath);
+                let file = files[key];
+                let fileName = uuid.v1() + '_' + file.name;
+                let newPath = form.uploadDir + fileName;
+                jsonWrite(res, fileName);
                 fs.renameSync(file.path, newPath);
                 pool.getConnection((err, connection) => {
-                    connection.query(sqlMap.user.update, fileName, (err, result) => {
+                    connection.query(sqlMap.user.update, [fileName, userID], (err, result) => {
+                        if (err) {
+                            throw err;
+                        }
+                        req.session.userData.avatar = fileName;
+                        req.session.save()
                         connection.release();
                     })
                 })
