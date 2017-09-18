@@ -63,7 +63,6 @@
                 .catch((err) => {
                     throw err;
                 })
-                console.log(crypto.createHash('sha1').update('489584507').digest('hex'))
         },
         methods: {
             login(formName) {

@@ -152,16 +152,21 @@ module.exports = {
     },
     // 上传图片
     uploadPic(req, res, next) {
-        let form = new formidable.IncomingForm(), userID;
+        let form = new formidable.IncomingForm(), userID, userAvatar;
         form.uploadDir = '../static/images/avatar/';
         form.parse(req, (error, fields, files) => {
             userID = fields.userID;
+            userAvatar = fields.userAvatar;
             for(let key in files){
                 let file = files[key];
                 let fileName = uuid.v1() + '_' + file.name;
                 let newPath = form.uploadDir + fileName;
                 jsonWrite(res, fileName);
                 fs.renameSync(file.path, newPath);
+                // 删除原头像文件
+                if (userAvatar !== 'head1.jpg' && userAvatar !== 'head2.jpg') {
+                    fs.unlinkSync(form.uploadDir + userAvatar);
+                }
                 pool.getConnection((err, connection) => {
                     connection.query(sqlMap.user.update, [fileName, userID], (err, result) => {
                         if (err) {

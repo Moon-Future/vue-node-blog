@@ -48,7 +48,7 @@
     export default {
         data() {
             return {
-                avatarRoot: '../../../../static/images/avatar/',
+                avatarRoot: '../../../../../static/images/avatar/',
                 avatar: '../../../../../static/images/avatar/head2.jpg'
             }
         },

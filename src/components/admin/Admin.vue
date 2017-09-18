@@ -58,11 +58,11 @@
         beforeCreate() {
             this.$http.get('/api/getSession')
                 .then((res) => {
-                    console.log('res', res);
                     res = res.data;
-                    res === false ? this.$router.push('/login') : this.userData = res;
+                    res === false ? this.$router.push('/login') : this.userData = JSON.parse(JSON.stringify(res));
                     this.userData.avatar = this.avatarRoot + res.avatar;
-                    this.params.userID = this.userData.id;
+                    this.params.userID = res.id;
+                    this.params.userAvatar = res.avatar;
                 })
                 .catch((err) => {
                     throw err;
