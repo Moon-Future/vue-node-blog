@@ -124,9 +124,31 @@ module.exports = {
     writeComment(req, res, next) {
         pool.getConnection((err, connection) => {
             let postData = req.body, time = new Date().getTime();
-            connection.query(sqlMap.comment.insert, [postData.aid, postData.uid, postData.uname, postData.rid, postData.rname, postData.content, time, postData.reminder, postData.email], (err, result) => {
-                jsonWrite(res, 'ok');
-                connection.release();
+            // 游客评论
+            let email = postData.email, name = postData.uname, website = postData.website, id;
+            connection.query(sqlMap.visitor.queryByEmail, [email], (err, result) => {
+                if (err) { throw err; }
+                if (result.length !== 0) {
+                    let data = JSON.parse(JSON.stringify(result[0]));
+                    id = data.id;
+                    jsonWrite(res, data);
+                    connection.query(sqlMap.comment.insert, [postData.aid, id, postData.rid, postData.content, time, postData.reminder], (err, result) => {
+                        jsonWrite(res, 'ok');
+                        connection.release();
+                    })
+                } else {
+                    connection.query(sqlMap.visitor.insert, [name, email, website, 'avatar'], (err, result) => {
+                        if (err) { throw err;  }
+                        connection.query(sqlMap.visitor.queryByEmail, [email], (err, result) => {
+                            if (err) { throw err; }
+                            id = result[0].id;
+                            connection.query(sqlMap.comment.insert, [postData.aid, id, postData.rid, postData.content, time, postData.reminder], (err, result) => {
+                                jsonWrite(res, 'ok');
+                                connection.release();
+                            })
+                        })
+                    })
+                }
             })
         })
     },
@@ -135,8 +157,8 @@ module.exports = {
             let params = req.query, obj = {};
             connection.query(sqlMap.comment.queryByActicleId, [params.articleID], (err, result) => {
                 for(let i = 0, len = result.length; i < len; i++){
-                    let tmp = result[i], replys, tmpObj = {};
-                    if(!tmp.reply_id){
+                    let tmp = result[i], replyCommentID = tmp.reply_comment_id, replyID = tmp.reply_id, tmpObj = {};
+                    if(!replyCommentID){
                         obj[tmp.id] ? false : obj[tmp.id] = {};
                         obj[tmp.id].article_id = tmp.article_id;
                         obj[tmp.id].user_id = tmp.user_id;
@@ -144,18 +166,17 @@ module.exports = {
                         obj[tmp.id].content = tmp.content;
                         obj[tmp.id].time = tmp.time;
                     }else{
-                        replys = tmp.reply_id.split(',');
-                        obj[replys[0]] ? false : obj[replys[0]] = {};
-                        obj[replys[0]].replys ? false : obj[replys[0]].replys = [];
+                        obj[replyCommentID] ? false : obj[replyCommentID] = {};
+                        obj[replyCommentID].replys ? false : obj[replyCommentID].replys = [];
                         tmpObj.user_id = tmp.user_id;
                         tmpObj.user_name = tmp.user_name;
                         tmpObj.content = tmp.content;
                         tmpObj.time = tmp.time;
-                        if(replys.length > 1){
-                            tmpObj.reply_id = replys[1];
+                        if(replyID){
+                            tmpObj.reply_id = replyID;
                             tmpObj.reply_name = tmp.reply_name;
                         }
-                        obj[replys[0]].replys.push(tmpObj);
+                        obj[replyCommentID].replys.push(tmpObj);
                     }
                 }
                 jsonWrite(res, {data: obj, len: result.length});

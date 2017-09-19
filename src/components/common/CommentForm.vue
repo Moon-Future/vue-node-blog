@@ -1,12 +1,15 @@
 <template>
     <div>
         <el-form :model="ruleForm" :rules="rules" label-position="top" ref="commentForm" class="from-comment">
-            <el-form-item label="大名" prop="name">
-                <el-input v-model="ruleForm.name"></el-input>
-            </el-form-item>
             <el-form-item label="邮箱" prop="email">
                 <el-input v-model="ruleForm.email"></el-input>
                 <el-checkbox v-model="ruleForm.reminder">收到回复邮件提醒</el-checkbox>
+            </el-form-item>
+            <el-form-item label="大名" prop="name">
+                <el-input v-model="ruleForm.name"></el-input>
+            </el-form-item>
+            <el-form-item label="个人网站" prop="website">
+                <el-input v-model="ruleForm.website"></el-input>
             </el-form-item>
             <el-form-item :label="labelString" prop="comment" class="comment-text">
                 <el-input type="textarea" spellcheck="false" :rows="5" v-model="ruleForm.comment"></el-input>
@@ -27,6 +30,7 @@
                 ruleForm: {
                     name: '',
                     email: '',
+                    website: '',
                     reminder: false,
                     comment: ''
                 },
@@ -53,8 +57,9 @@
                             aid: self.$route.params.id,
                             uid: 8023,
                             uname: self.ruleForm.name,
-                            rid: '',
-                            rname: '',
+                            website: self.ruleForm.website,
+                            rid: null,
+                            rname: null,
                             email: self.ruleForm.email,
                             reminder: self.ruleForm.email ? (self.ruleForm.reminder ? 1 : 0) : 0,
                             content: self.ruleForm.comment

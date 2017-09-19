@@ -1,8 +1,8 @@
 <template>
     <transition name="fade">
-        <div class="blog-catalog" v-if="catalogDisplay">
+        <div class="article-catalog" v-if="catalogDisplay">
             <div class="catalog-search">
-                <el-input placeholder="blog search" icon="search" @click="searchBlog" @keyup.enter.native="searchBlog"></el-input>
+                <el-input placeholder="article search" icon="search" @click="searchArticle" @keyup.enter.native="searchArticle"></el-input>
             </div>
             <div class="btn-hide">
                 <i class="iconfont icon-zhankai-copy" @click="hiddenPanel"></i>
@@ -20,20 +20,20 @@
                 <el-breadcrumb-item v-if="crumbFlag[1] && crumbFlag[0]" @click.native="clickBread(1)">{{ crumbFlag[1] }}</el-breadcrumb-item>
                 <el-breadcrumb-item v-if="crumbFlag[2] && crumbFlag[0]">{{ crumbFlag[2] }}</el-breadcrumb-item>
             </el-breadcrumb>
-            <p class="currentBlog" v-if="currentArticle.title">当前正在阅读：<span @click="gotoCurrentArticle">{{ currentArticle.title }}</span></p>
+            <p class="currentArticle" v-if="currentArticle.title">当前正在阅读：<span @click="gotoCurrentArticle">{{ currentArticle.title }}</span></p>
             <div class="catalog-list" v-if="!crumbFlag[2]">
                 <ul>
-                    <li v-for="(blog, i) in fileterBlog" :key="blog.id">
-                        <router-link to="" @click.native="blogSelect(blog)"><p class="title">{{ i+1 }}、{{ blog.title }}</p></router-link>
+                    <li v-for="(article, i) in fileterArticle" :key="article.id">
+                        <router-link to="" @click.native="articleSelect(article)"><p class="title">{{ i+1 }}、{{ article.title }}</p></router-link>
                         <p class="mes">
-                            <span>{{ blog.post_time }}</span>
-                            <span><i class="el-icon-search"></i>{{ blog.view }}</span>
-                            <span v-for="tag in blog.tags" :key="tag.id">{{ tag.name }}</span>
+                            <span>{{ article.post_time }}</span>
+                            <span><i class="el-icon-search"></i>{{ article.view }}</span>
+                            <span v-for="tag in article.tags" :key="tag.id">{{ tag.name }}</span>
                         </p>
                     </li>
                 </ul>
             </div>
-            <div class="blog-chapter" v-if="crumbFlag[2]">
+            <div class="article-chapter" v-if="crumbFlag[2]">
                 {{ crumbFlag[2] }}
             </div>
         </div>
@@ -47,45 +47,8 @@
         data() {
             return {
                 'tagOn': false,
-                'tags': [
-                    {'name':'Vue', 'id':'0'},
-                    {'name':'HTML5', 'id':'1'},
-                    {'name':'Javascript', 'id':'2'},
-                    {'name':'Python', 'id':'3'},
-                    {'name':'Java', 'id':'4'},
-                    {'name':'Ruby', 'id':'5'},
-                    {'name':'CSS', 'id':'6'},
-                    {'name':'MySql', 'id':'7'}
-                ],
-                'blogs': [
-                    {
-                        'title': 'Vue+MySql从0搭建个人博客',
-                        'tags': [{'id':0,'name':'vue'}, {'id':1,'name':'mysql'}],
-                        'post_time': '2017-07-25',
-                        'upd_time': '2017-08-26',
-                        'view': '666',
-                        'start': '555',
-                        'summary': 'nskgbgbtgbgnior'
-                    },
-                    {
-                        'title': '个人博客数据表设计',
-                        'tags': [{'id':1,'name':'mysql'}],
-                        'post_time': '2016-07-25',
-                        'upd_time': '2018-08-26',
-                        'view': '159628',
-                        'start': '666',
-                        'summary': '通话录音软件论坛已经'
-                    },
-                    {
-                        'title': '入门到放弃',
-                        'tags': [{'id':2,'name':'javascript'}],
-                        'post_time': '2017-03-25',
-                        'upd_time': '2017-06-26',
-                        'view': '865921',
-                        'start': '85961',
-                        'summary': '钢铁行业调节阀的海能翻'
-                    }
-                ],
+                'tags': [],
+                'articles': [],
 //              crumbFlag: [true, false, false], // 三级面包屑   // 目录/标签/文章标题       crumbCata/crumbSub/crumbTitle
 //              currentArticle: {title: '', tag: ''}
             }
@@ -95,9 +58,9 @@
             axios.get('/api/article/getArticleAll', {
                     params: {index: true}
                 }).then((res) => {
-                    self.blogs = res.data;
-                    self.blogs.map((blog) => {
-                        blog.post_time = self.timeFormat(blog.post_time);
+                    self.articles = res.data;
+                    self.articles.map((article) => {
+                        article.post_time = self.timeFormat(article.post_time);
                     })
                 }).catch((err) => {
                     console.log('err', err);
@@ -124,7 +87,7 @@
                 });
                 this.crumbFlagHanle([{'index':1,'newValue':false}]);
             },
-            searchBlog() {
+            searchArticle() {
                 
             },
             clickBread(index) {
@@ -137,10 +100,10 @@
                     this.crumbFlagHanle([{'index':2,'newValue':false}]);
                 }
             },
-            blogSelect(blog) {
-                this.crumbFlagHanle([{'index':2,'newValue':blog.title}]);
-                this.currentArticleHanle({'flag':true,'title':blog.title,'tag':this.crumbFlag[1]});
-                this.$router.push({name: 'Article', params: {id: blog.id, title: blog.title}});
+            articleSelect(article) {
+                this.crumbFlagHanle([{'index':2,'newValue':article.title}]);
+                this.currentArticleHanle({'flag':true,'title':article.title,'tag':this.crumbFlag[1]});
+                this.$router.push({name: 'Article', params: {id: article.id, title: article.title}});
             },
             gotoCurrentArticle() {
                 this.crumbFlagHanle([{'index':2,'newValue':this.currentArticle.title},{'index':1,'newValue':false}]);
@@ -155,17 +118,17 @@
             })
         },
         computed: {
-            fileterBlog() {
+            fileterArticle() {
                 var self = this;
-                return this.blogs.filter(function(blog){
+                return this.articles.filter(function(article){
                     if(self.crumbFlag[1]){
-                        for(let i = 0, len = blog.tags.length; i < len; i++){
-                            if(blog.tags[i].name.toLowerCase()  == self.crumbFlag[1].toLowerCase() ){
-                                return blog;
+                        for(let i = 0, len = article.tags.length; i < len; i++){
+                            if(article.tags[i].name.toLowerCase()  == self.crumbFlag[1].toLowerCase() ){
+                                return article;
                             }
                         }
                     }else{
-                        return blog;
+                        return article;
                     }
                 })
             },
@@ -175,7 +138,7 @@
 </script>
 
 <style scoped>
-    .blog-catalog {
+    .article-catalog {
         position: fixed;
         width: 20%;
         height: 100%;
@@ -187,12 +150,12 @@
         overflow: auto;
     }
     
-    .blog-catalog a {
+    .article-catalog a {
         text-decoration: none;
     }
     
     @media only screen and (max-width: 992px) {
-        .blog-catalog {
+        .article-catalog {
             display: none;
         }
     }
@@ -266,13 +229,13 @@
         margin-right: 5px;
     }
     
-    .currentBlog {
+    .currentarticle {
         margin: 3px 0 0 0;
         text-align: left;
         font-size: 13px;
         color: #FFFF00;
     }
-    .currentBlog span {
+    .currentarticle span {
         cursor: pointer;
     }
     

@@ -104,29 +104,11 @@
                 });
             },
             submitHandle() {
-                console.log('title', this.title);
-                console.log('content', this.content);
-                console.log('tagSel', this.tagSel);
-                var obj = {
-                    user_id: this.userData.id,
-                    author: this.userData.name,
-                    title: this.title,
-                    content: this.content,
-                    state: 1,
-                    type: 1,
-                    loadURL: '#',
-                    summary: '啦啦啦啦',
-                    view: 0,
-                    start: 0,
-                    image: '',
-                    filePath: ''
-                }
-                console.log('obj', obj);
                 this.$http.post('/api/article/addArticle', {
                     user_id: this.userData.id,
                     author: this.userData.name,
                     title: this.title,
-                    // content: this.content,
+                    content: this.content,
                     state: 1,
                     type: 1,
                     loadURL: '#',
