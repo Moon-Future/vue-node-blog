@@ -44,25 +44,7 @@
                 replyUserName: '',
                 commentFormShow: true,
                 isHighLight: false,
-                comments: [
-                    // {
-                    //     article_id: '111',
-                    //     user_id: '222',
-                    //     user_name: 'name',
-                    //     content: '很不错哟，继续努力哟！',
-                    //     time: '111',
-                    //     replys: [
-                    //         {
-                    //             user_id: '222',
-                    //             user_name: 'name',
-                    //             content: '很不错哟，继续努力哟！',
-                    //             time: '111',
-                    //             reply_id: '333',
-                    //             reply_name: 'reply_name'
-                    //         }
-                    //     ]
-                    // }
-                ],
+                comments: [],
                 commentLen: 0
             }
         },
@@ -82,7 +64,7 @@
         },
         methods: {
             replyHandle(key, replyId, replyName, event) {
-                for(let i in this.comments){
+                for (let i in this.comments) {
                     // this.comments[i].replyFormShow = i == key ? true : false;
                     // this.$set(this.comments[i], 'replyFormShow', i == key ? true : false);
                     // 对象更改检测注意事项 https://cn.vuejs.org/v2/guide/list.html#对象更改检测注意事项
@@ -93,15 +75,26 @@
                 }
                 this.commentFormShow = false;
             },
-            formShowState(flag) {
-                if(!flag){
-                    for(let i in this.comments){
-                        this.comments[i] = Object.assign({}, this.comments[i], {
-                            replyFormShow: false
-                        })
-                    }
-                    this.commentFormShow = true;
-                }
+            formShowState(opt) {
+                console.log('opt', opt);
+                let show = opt.show, newComment = opt.data;
+                // if (!show) {
+                //     for(let i in this.comments){
+                //         this.comments[i] = Object.assign({}, this.comments[i], {
+                //             replyFormShow: false
+                //         })
+                //     }
+                //     this.commentFormShow = true;
+                // }
+                // if (newComment) {
+                //     if (newComment.rid) {
+                //         this.comments[newComment.rCommentID].replys.push(newComment);
+                //     } else {
+                //         this.comments.push(newComment);
+                //         this.commentLen += 1;
+                //     }
+                // }
+                console.log('comments', this.comments);
             }
         },
         computed: {

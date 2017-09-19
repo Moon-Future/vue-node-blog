@@ -1,6 +1,6 @@
 <template>
     <div>
-        <article class="article-detail">
+        <!-- <article class="article-detail">
             <div class="article-title">
                 <h1>node+vue搭建个人博客111</h1>
                 <div class="article-mes">
@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div class="markdown-body" v-html="article"></div>
-        </article>
+        </article> -->
         <Comment></Comment>
     </div>
 </template>

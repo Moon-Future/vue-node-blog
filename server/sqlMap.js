@@ -13,7 +13,7 @@ var sqlMap = {
         queryAll: 'SELECT * FROM tags'
     },
     comment: {
-        insert: 'INSERT INTO comments(article_id, user_id, reply_id, content, time, reminder) VALUES (?,?,?,?,?,?)',
+        insert: 'INSERT INTO comments(article_id, user_id, reply_id, reply_comment_id, content, time, reminder) VALUES (?,?,?,?,?,?,?)',
         queryAll: 'SELECT * FROM comments',
         // queryByActicleId: 'SELECT * FROM comments WHERE article_id = ?'
         queryByActicleId: 'SELECT c.id, c.article_id, c.user_id, c.reply_id, c.reply_comment_id, c.content, c.time, v.name as user_name, vi.name as reply_name FROM visitors as v RIGHT JOIN comments as c on c.user_id = v.id LEFT JOIN visitors as vi on c.reply_id = vi.id WHERE c.article_id = 1'

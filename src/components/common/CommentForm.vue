@@ -11,8 +11,8 @@
             <el-form-item label="个人网站" prop="website">
                 <el-input v-model="ruleForm.website"></el-input>
             </el-form-item>
-            <el-form-item :label="labelString" prop="comment" class="comment-text">
-                <el-input type="textarea" spellcheck="false" :rows="5" v-model="ruleForm.comment"></el-input>
+            <el-form-item :label="labelString" prop="content" class="comment-text">
+                <el-input type="textarea" spellcheck="false" :rows="5" v-model="ruleForm.content"></el-input>
             </el-form-item>
         </el-form>
         <el-button type="success" @click="submitHandle('commentForm')">提交</el-button>
@@ -32,7 +32,7 @@
                     email: '',
                     website: '',
                     reminder: false,
-                    comment: ''
+                    content: ''
                 },
                 rules: {
                     name: [
@@ -42,7 +42,7 @@
                     email: [
                         { required: true, type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
                     ],
-                    comment: [
+                    content: [
                         { required: true, message: '亲输入你的见解', trigger: 'blur' },
                     ]
                 },
@@ -52,24 +52,24 @@
             submitHandle(formName) {
                 var self = this;
                 this.$refs[formName].validate((valid) => {
-                    if(valid) {
+                    if (valid) {
                         this.$http.post('/api/comment/writeComment', {
                             aid: self.$route.params.id,
-                            uid: 8023,
-                            uname: self.ruleForm.name,
-                            website: self.ruleForm.website,
-                            rid: null,
-                            rname: null,
+                            uname: self.ruleForm.name.trim(),
+                            website: self.ruleForm.website.trim(),
+                            rid: this.replyUserId,
+                            rname: this.replyUserName,
+                            rCommentID: this.replyUserId ? self.$route.params.id : null,
                             email: self.ruleForm.email,
                             reminder: self.ruleForm.email ? (self.ruleForm.reminder ? 1 : 0) : 0,
-                            content: self.ruleForm.comment
+                            content: self.ruleForm.content
                         }).then((res) => {
                             this.$message.success('提交成功');
-                            this.replyUserName ? this.formHanle(false) : false;
+                            this.formHanle({show: true, data: res.data});
                         }).catch((err) => {
                             throw err;
                         })
-                    }else {
+                    } else {
                         this.$message({
                             showClose: true,
                             message: '数据有误，提交失败',
@@ -82,10 +82,10 @@
             cancleHandle(formName) {
                 this.$refs[formName].resetFields();
                 this.ruleForm.reminder = false;
-                this.formHanle(false);
+                this.formHanle({show: false});
             },
-            formHanle(flag) {
-                this.$emit('formHanle', flag);
+            formHanle(opt) {
+                this.$emit('formHanle', opt);
             }
         },
         computed: {

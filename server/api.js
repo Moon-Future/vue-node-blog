@@ -125,15 +125,16 @@ module.exports = {
         pool.getConnection((err, connection) => {
             let postData = req.body, time = new Date().getTime();
             // 游客评论
-            let email = postData.email, name = postData.uname, website = postData.website, id;
+            let email = postData.email, name = postData.uname, website = postData.website, uid;
             connection.query(sqlMap.visitor.queryByEmail, [email], (err, result) => {
                 if (err) { throw err; }
                 if (result.length !== 0) {
                     let data = JSON.parse(JSON.stringify(result[0]));
-                    id = data.id;
+                    uid = data.id;
                     jsonWrite(res, data);
-                    connection.query(sqlMap.comment.insert, [postData.aid, id, postData.rid, postData.content, time, postData.reminder], (err, result) => {
-                        jsonWrite(res, 'ok');
+                    connection.query(sqlMap.comment.insert, [postData.aid, uid, postData.rid, postData.rCommentID, postData.content, time, postData.reminder], (err, result) => {
+                        postData.uid = uid;
+                        jsonWrite(res, postData);
                         connection.release();
                     })
                 } else {
@@ -141,9 +142,10 @@ module.exports = {
                         if (err) { throw err;  }
                         connection.query(sqlMap.visitor.queryByEmail, [email], (err, result) => {
                             if (err) { throw err; }
-                            id = result[0].id;
-                            connection.query(sqlMap.comment.insert, [postData.aid, id, postData.rid, postData.content, time, postData.reminder], (err, result) => {
-                                jsonWrite(res, 'ok');
+                            uid = result[0].id;
+                            connection.query(sqlMap.comment.insert, [postData.aid, uid, postData.rid, postData.rCommentID, postData.content, time, postData.reminder], (err, result) => {
+                                postData.uid = uid;
+                                jsonWrite(res, postData);
                                 connection.release();
                             })
                         })
