@@ -1,31 +1,31 @@
 <template>
     <div class="article-comment">
-        <commentForm v-if="commentFormShow"></commentForm>
+        <commentForm v-if="commentFormShow" @formHanle="formShowState"></commentForm>
         <div class="comment-detail">
             <div class="comment-count">评论：（共 {{ commentLen }} 条）</div>
-            <div class="comment-list clearfix" v-for="(comment, key) in comments" :key="key">
+            <div class="comment-list clearfix" v-for="comment in comments" :id="comment.commentID">
                 <div class="comment-psn">
                     <img src="../../../static/images/avatar/head1.jpg" alt="">
                     <div class="psn-mes">
-                        <p :class="{highlight:isHighLight}">{{ comment.user_name }}</p>
+                        <p :class="{highlight:isHighLight}">{{ comment.uname }}</p>
                         <p>{{ comment.time }}</p>
                     </div>
                 </div>
                 <p>{{ comment.content }}</p>
                 <div class="comment-btn">
                     <span>支持</span>
-                    <span @click="replyHandle(key, comment.user_id, comment.user_name)">回复</span>
+                    <span @click="replyHandle(comment.commentID, comment.uid, comment.uname)">回复</span>
                 </div>
                 <div class="reply" v-if="comment.replys">
-                    <p v-for="(reply, i) in comment.replys" :key="i">
-                        <span class="reply-psn" :class="{highlight:isHighLight}" @click="replyHandle(key, reply.user_id, reply.user_name, $event)">{{ reply.user_name }} </span>
-                        <span v-if="reply.reply_name">回复
-                            <span class="reply-psn" :class="{highlight:isHighLight}" @click="replyHandle(key, reply.reply_id, reply.reply_name, $event)">{{ reply.reply_name }}</span>
+                    <p v-for="(reply, i) in comment.replys" :comment.commentID="i">
+                        <span class="reply-psn" :class="{highlight:isHighLight}" @click="replyHandle(comment.commentID, reply.uid, reply.uname, $event)">{{ reply.uname }} </span>
+                        <span v-if="reply.rname">回复
+                            <span class="reply-psn" :class="{highlight:isHighLight}" @click="replyHandle(comment.commentID, reply.rid, reply.rname, $event)">{{ reply.rname }}</span>
                         </span>: 
                         {{ reply.content }}
                     </p>
                 </div>
-                <commentForm :replyUserId="replyUserId" :replyUserName="replyUserName" @formHanle="formShowState" v-if="comment.replyFormShow" style="padding: 10px;margin: 10px 0;border: 1px dotted #ccc;background: #fff;"></commentForm>
+                <commentForm :replyUserId="replyUserId" :replyUserName="replyUserName" :commentID="comment.commentID" @formHanle="formShowState" v-if="comment.replyFormShow" style="padding: 10px;margin: 10px 0;border: 1px dotted #ccc;background: #fff;"></commentForm>
             </div>
         </div>
     </div>
@@ -49,51 +49,58 @@
             }
         },
         created() {
-            var self = this, articleID = this.$route.params.id;
+            var articleID = this.$route.params.id;
             this.$http.get('/api/comment/getComment', { 
                 params: {articleID: articleID}
             }).then((res) => {
-                self.comments = res.data.data;
-                self.commentLen = res.data.len;
-                for(let key in self.comments){
-                    self.comments[key].replyFormShow = false;
+                console.log(res);
+                this.comments = res.data;
+                this.commentLen = res.data.length;
+                for (let i = 0; i < this.commentLen; i++) {
+                    this.comments[i].replyFormShow = false;
                 }
             }).catch((err) => {
-                console.log('err', err);
+                throw err;
             });
         },
         methods: {
-            replyHandle(key, replyId, replyName, event) {
-                for (let i in this.comments) {
-                    // this.comments[i].replyFormShow = i == key ? true : false;
-                    // this.$set(this.comments[i], 'replyFormShow', i == key ? true : false);
+            replyHandle(commentID, replyId, replyName, event) {
+                for (let i = 0; i < this.commentLen; i++) {
+                    // this.comments[i].replyFormShow = i == commentID ? true : false;
+                    // this.$set(this.comments[i], 'replyFormShow', i == commentID ? true : false);
                     // 对象更改检测注意事项 https://cn.vuejs.org/v2/guide/list.html#对象更改检测注意事项
+                    let id = this.comments[i].commentID;
                     this.comments[i] = Object.assign({}, this.comments[i], {
-                        replyFormShow: i == key ? true : false
+                        replyFormShow: id == commentID ? true : false
                     })
-                    i == key ? (this.replyUserId = replyId, this.replyUserName = replyName) : false;
+                    id == commentID ? (this.replyUserId = replyId, this.replyUserName = replyName) : false;
                 }
                 this.commentFormShow = false;
             },
             formShowState(opt) {
-                console.log('opt', opt);
                 let show = opt.show, newComment = opt.data;
-                // if (!show) {
-                //     for(let i in this.comments){
-                //         this.comments[i] = Object.assign({}, this.comments[i], {
-                //             replyFormShow: false
-                //         })
-                //     }
-                //     this.commentFormShow = true;
-                // }
-                // if (newComment) {
-                //     if (newComment.rid) {
-                //         this.comments[newComment.rCommentID].replys.push(newComment);
-                //     } else {
-                //         this.comments.push(newComment);
-                //         this.commentLen += 1;
-                //     }
-                // }
+                if (!show) {
+                    for (let i = 0; i < this.commentLen; i++) {
+                        this.comments[i] = Object.assign({}, this.comments[i], {
+                            replyFormShow: false
+                        })
+                    }
+                    this.commentFormShow = true;
+                }
+                if (newComment) {
+                    if (newComment.rid) {
+                        for (let i = 0; i < this.commentLen; i++) {
+                            if (this.comments[i].commentID === newComment.rCommentID) {
+                                this.comments[i].replys ? false : this.comments[i].replys = [];
+                                this.comments[i].replys.push(newComment);
+                                break;
+                            }
+                        }
+                    } else {
+                        this.comments.push(newComment);
+                        this.commentLen += 1;
+                    }
+                }
                 console.log('comments', this.comments);
             }
         },

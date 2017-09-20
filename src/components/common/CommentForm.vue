@@ -23,7 +23,7 @@
 <script>
     export default {
         name: 'CommentForm',
-        props: ['replyUserId', 'replyUserName'],
+        props: ['replyUserId', 'replyUserName', 'commentID'],
         data() {
             return {
                 label: '留言',
@@ -50,22 +50,22 @@
         },
         methods: {
             submitHandle(formName) {
-                var self = this;
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.$http.post('/api/comment/writeComment', {
-                            aid: self.$route.params.id,
-                            uname: self.ruleForm.name.trim(),
-                            website: self.ruleForm.website.trim(),
+                            aid: this.$route.params.id,
+                            uname: this.ruleForm.name.trim(),
+                            website: this.ruleForm.website.trim(),
                             rid: this.replyUserId,
                             rname: this.replyUserName,
-                            rCommentID: this.replyUserId ? self.$route.params.id : null,
-                            email: self.ruleForm.email,
-                            reminder: self.ruleForm.email ? (self.ruleForm.reminder ? 1 : 0) : 0,
-                            content: self.ruleForm.content
+                            rCommentID: this.replyUserId ? this.commentID : null,
+                            email: this.ruleForm.email,
+                            reminder: this.ruleForm.email ? (this.ruleForm.reminder ? 1 : 0) : 0,
+                            content: this.ruleForm.content
                         }).then((res) => {
                             this.$message.success('提交成功');
-                            this.formHanle({show: true, data: res.data});
+                            this.replyUserId ? this.formHanle({show: false, data: res.data}) : this.formHanle({show: true, data: res.data})
+                            this.$refs[formName].resetFields();
                         }).catch((err) => {
                             throw err;
                         })

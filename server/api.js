@@ -156,32 +156,34 @@ module.exports = {
     },
     getComment(req, res, next) {
         pool.getConnection((err, connection) => {
-            let params = req.query, obj = {};
+            let params = req.query, obj = {}, arr = [];
             connection.query(sqlMap.comment.queryByActicleId, [params.articleID], (err, result) => {
                 for(let i = 0, len = result.length; i < len; i++){
                     let tmp = result[i], replyCommentID = tmp.reply_comment_id, replyID = tmp.reply_id, tmpObj = {};
                     if(!replyCommentID){
                         obj[tmp.id] ? false : obj[tmp.id] = {};
-                        obj[tmp.id].article_id = tmp.article_id;
-                        obj[tmp.id].user_id = tmp.user_id;
-                        obj[tmp.id].user_name = tmp.user_name;
+                        arr.push(obj[tmp.id]);
+                        obj[tmp.id].commentID = tmp.id;
+                        obj[tmp.id].aid = tmp.article_id;
+                        obj[tmp.id].uid = tmp.user_id;
+                        obj[tmp.id].uname = tmp.user_name;
                         obj[tmp.id].content = tmp.content;
                         obj[tmp.id].time = tmp.time;
                     }else{
                         obj[replyCommentID] ? false : obj[replyCommentID] = {};
                         obj[replyCommentID].replys ? false : obj[replyCommentID].replys = [];
-                        tmpObj.user_id = tmp.user_id;
-                        tmpObj.user_name = tmp.user_name;
+                        tmpObj.uid = tmp.user_id;
+                        tmpObj.uname = tmp.user_name;
                         tmpObj.content = tmp.content;
                         tmpObj.time = tmp.time;
                         if(replyID){
-                            tmpObj.reply_id = replyID;
-                            tmpObj.reply_name = tmp.reply_name;
+                            tmpObj.rid = replyID;
+                            tmpObj.rname = tmp.reply_name;
                         }
                         obj[replyCommentID].replys.push(tmpObj);
                     }
                 }
-                jsonWrite(res, {data: obj, len: result.length});
+                jsonWrite(res, arr);
                 connection.release();
             })
         })
