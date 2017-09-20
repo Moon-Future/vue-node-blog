@@ -17,6 +17,20 @@
         </el-form>
         <el-button type="success" @click="submitHandle('commentForm')">提交</el-button>
         <el-button v-show="replyUserName" type="danger" @click="cancleHandle('commentForm')">取消</el-button>
+        <el-dialog
+            title="提示：email用户已存在"
+            :visible.sync="dialogVisible"
+            size="tiny"
+            :show-close="false">
+            <span>
+                <p><strong>大名：</strong>{{ oriName }} ------ {{ ruleForm.name }}</p>
+                <p><strong>个人网站：</strong>{{ oriWebsite }} ------ {{ ruleForm.website }}</p>
+            </span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="success" @click="updVisitorMse">更新信息</el-button>
+                <el-button type="primary" @click="useVisitor">使用原信息</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -27,12 +41,15 @@
         data() {
             return {
                 label: '留言',
+                dialogVisible: false,
+                oriName: '',
+                oriWebsite: '',
                 ruleForm: {
-                    name: '',
-                    email: '',
-                    website: '',
+                    name: 'chenliang',
+                    email: '236338364@qq.com',
+                    website: 'ww',
                     reminder: false,
-                    content: ''
+                    content: '111'
                 },
                 rules: {
                     name: [
@@ -52,20 +69,37 @@
             submitHandle(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.$http.post('/api/comment/writeComment', {
-                            aid: this.$route.params.id,
-                            uname: this.ruleForm.name.trim(),
-                            website: this.ruleForm.website.trim(),
-                            rid: this.replyUserId,
-                            rname: this.replyUserName,
-                            rCommentID: this.replyUserId ? this.commentID : null,
-                            email: this.ruleForm.email,
-                            reminder: this.ruleForm.email ? (this.ruleForm.reminder ? 1 : 0) : 0,
-                            content: this.ruleForm.content
+                        this.$http.get('/api/visitor/getVisitor', {
+                            params: {email: this.ruleForm.email}
                         }).then((res) => {
-                            this.$message.success('提交成功');
-                            this.replyUserId ? this.formHanle({show: false, data: res.data}) : this.formHanle({show: true, data: res.data})
-                            this.$refs[formName].resetFields();
+                            res = res.data;
+                            if (!res) {
+                                // this.$http.post('/api/comment/writeComment', {
+                                //     aid: this.$route.params.id,
+                                //     uname: this.ruleForm.name.trim(),
+                                //     website: this.ruleForm.website.trim(),
+                                //     rid: this.replyUserId,
+                                //     rname: this.replyUserName,
+                                //     rCommentID: this.replyUserId ? this.commentID : null,
+                                //     email: this.ruleForm.email,
+                                //     reminder: this.ruleForm.email ? (this.ruleForm.reminder ? 1 : 0) : 0,
+                                //     content: this.ruleForm.content
+                                // }).then((res) => {
+                                //     this.$message.success('提交成功');
+                                //     this.replyUserId ? this.formHanle({show: false, data: res.data}) : this.formHanle({show: true, data: res.data})
+                                //     this.$refs[formName].resetFields();
+                                // }).catch((err) => {
+                                //     throw err;
+                                // })
+                            } else {
+                                console.log('用户存在');
+                                if (res.name !== this.ruleForm.name.trim() || (res.website && this.ruleForm.website !== res.website)) {
+                                    console.log('信息不同');
+                                    this.dialogVisible = true;
+                                } else {
+                                    console.log('信息相同');
+                                }
+                            }
                         }).catch((err) => {
                             throw err;
                         })
@@ -86,6 +120,14 @@
             },
             formHanle(opt) {
                 this.$emit('formHanle', opt);
+            },
+            updVisitorMse() {
+                console.log('eee');
+                this.dialogVisible = false;
+            },
+            useVisitor() {
+                console.log('fff');
+                this.dialogVisible = false;
             }
         },
         computed: {

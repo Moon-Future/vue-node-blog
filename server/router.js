@@ -19,6 +19,10 @@ router.get('/comment/getComment', (req, res, next) => {
 router.get('/user/getUserAll', (req, res, next) => {
     api.getUserAll(req, res, next);
 })
+// 游客评论邮箱查询
+router.get('/visitor/getVisitor', (req, res, next) => {
+    api.getVisitor(req, res, next);
+})
 // 获取session
 router.get('/getSession', (req, res, next) => {
     req.session.isLogin ? res.send(req.session.userData) : res.send('false');

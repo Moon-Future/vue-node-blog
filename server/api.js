@@ -227,6 +227,16 @@ module.exports = {
             })
         })
     },
+    // 游客评论邮箱查询
+    getVisitor(req, res, next) {
+        pool.getConnection((err, connection) => {
+            let params = req.query, email = params.email;
+            connection.query(sqlMap.visitor.queryByEmail, [email], (err, result) => {
+                result.length === 0 ? jsonWrite(res, false) : jsonWrite(res, result[0]);
+                connection.release();
+            })
+        })
+    },
     // 登陆
     userLogin(req, res, next) {
         pool.getConnection((err, connection) => {
