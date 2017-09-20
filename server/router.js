@@ -42,6 +42,10 @@ router.post('/article/addArticle', (req, res, next) => {
 router.post('/comment/writeComment', (req, res, next) => {
     api.writeComment(req, res, next);
 })
+// 更新游客信息
+router.post('/visitor/updVisitorMes', (req, res, next) => {
+    api.updVisitorMes(req, res, next);
+})
 // 上传头像
 router.post('/picture/avatar', (req, res, next) => {
     api.uploadPic(req, res, next);
