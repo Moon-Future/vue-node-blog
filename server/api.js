@@ -125,7 +125,8 @@ module.exports = {
         pool.getConnection((err, connection) => {
             let postData = req.body, time = new Date().getTime();
             // 游客评论
-            let email = postData.email, name = postData.uname, website = postData.website, reminder = postData.reminder, uid = postData.uid;
+            let email = postData.email, name = postData.uname, website = postData.website,
+            reminder = postData.reminder, avatar = postData.avatar || '', uid = postData.uid;
             if (uid) {
                 connection.query(sqlMap.comment.insert, [postData.aid, uid, postData.rid, postData.rCommentID, postData.content, time], (err, result) => {
                     postData.uid = uid;
@@ -133,13 +134,14 @@ module.exports = {
                     connection.release();
                 })
             } else {
-                connection.query(sqlMap.visitor.insert, [name, email, website, 'avatar', reminder], (err, result) => {
+                connection.query(sqlMap.visitor.insert, [name, email, website, avatar, reminder], (err, result) => {
                     if (err) { throw err;  }
                     connection.query(sqlMap.visitor.queryByEmail, [email], (err, result) => {
                         if (err) { throw err; }
                         uid = result[0].id;
                         connection.query(sqlMap.comment.insert, [postData.aid, uid, postData.rid, postData.rCommentID, postData.content, time], (err, result) => {
                             postData.uid = uid;
+                            postData.avatar = result[0].avatar;
                             jsonWrite(res, postData);
                             connection.release();
                         })
@@ -163,6 +165,7 @@ module.exports = {
                         obj[tmp.id].uname = tmp.user_name;
                         obj[tmp.id].content = tmp.content;
                         obj[tmp.id].time = tmp.time;
+                        obj[tmp.id].avatar = tmp.avatar;
                     }else{
                         obj[replyCommentID] ? false : obj[replyCommentID] = {};
                         obj[replyCommentID].replys ? false : obj[replyCommentID].replys = [];
@@ -234,11 +237,23 @@ module.exports = {
     // 更新游客信息
     updVisitorMes(req, res, next) {
         pool.getConnection((err, connection) => {
-            let postData = req.body;
-            connection.query(sqlMap.visitor.updByEmail, [postData.name, postData.website, 'avatar', postData.reminder, postData.email], (err, result) => {
+            let postData = req.body, avatar = postData.avatar || '', email = postData.email;
+            if (req.session.userData && req.session.userData.email === email) {
+                return;
+            }
+            // 博客账户不可在此更新,只能在后台更新
+            connection.query(sqlMap.user.queryByEmail, [email], (err, result) => {
                 if (err) { throw err; }
-                jsonWrite(res, true);
-                connection.release();
+                if (result.length !== 0) {
+                    jsonWrite(res, false);
+                    return;
+                } else {
+                    connection.query(sqlMap.visitor.updByEmail, [postData.name, postData.website, avatar, postData.reminder, email], (err, result) => {
+                        if (err) { throw err; }
+                        jsonWrite(res, true);
+                        connection.release();
+                    })
+                }
             })
         })
     },

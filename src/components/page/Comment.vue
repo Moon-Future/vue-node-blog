@@ -5,7 +5,7 @@
             <div class="comment-count">评论：（共 {{ commentLen }} 条）</div>
             <div class="comment-list clearfix" v-for="comment in comments" :key="comment.commentID">
                 <div class="comment-psn">
-                    <img src="../../../static/images/avatar/head1.jpg" alt="">
+                    <img :src="avatarRoot + (comment.avatar || 'visitor_avatar.jpg')" alt="">
                     <div class="psn-mes">
                         <p :class="{highlight:isHighLight}"><strong>{{ comment.uname }}</strong></p>
                         <p class="reply-time">{{ timeFormat(comment.time) }}</p>
@@ -43,6 +43,7 @@
         },
         data() {
             return {
+                avatarRoot: '../../../static/images/avatar/',
                 replyUserId: '',
                 replyUserName: '',
                 commentFormShow: true,
@@ -104,7 +105,6 @@
                         this.commentLen += 1;
                     }
                 }
-                console.log('comments', this.comments);
             },
             timeFormat(time) {
                 let curTime = new Date().getTime(), diffTime = curTime - time,

@@ -2,20 +2,20 @@
     <div>
         <el-form :model="ruleForm" :rules="rules" label-position="top" ref="commentForm" class="from-comment">
             <el-form-item label="邮箱" prop="email">
-                <el-input v-model="ruleForm.email"></el-input>
-                <el-checkbox v-model="ruleForm.reminder">收到回复邮件提醒</el-checkbox>
+                <el-input v-model="ruleForm.email" :disabled="login"></el-input>
+                <el-checkbox v-model="ruleForm.reminder" v-if="!login">收到回复邮件提醒</el-checkbox>
             </el-form-item>
             <el-form-item label="大名" prop="name">
-                <el-input v-model="ruleForm.name"></el-input>
+                <el-input v-model="ruleForm.name" :disabled="login"></el-input>
             </el-form-item>
             <el-form-item label="个人网站" prop="website">
-                <el-input v-model="ruleForm.website"></el-input>
+                <el-input v-model="ruleForm.website" :disabled="login"></el-input>
             </el-form-item>
             <el-form-item :label="labelString" prop="content" class="comment-text">
                 <el-input type="textarea" spellcheck="false" :rows="5" v-model="ruleForm.content"></el-input>
             </el-form-item>
         </el-form>
-        <el-checkbox v-model="remember" style="display:block;margin-bottom:5px">记住我？</el-checkbox>
+        <el-checkbox v-model="remember" v-if="!login" style="display:block;margin-bottom:5px">记住我？</el-checkbox>
         <el-button type="success" @click="submitHandle('commentForm')">提交</el-button>
         <el-button v-show="replyUserName" type="danger" @click="cancleHandle('commentForm')">取消</el-button>
         <el-dialog
@@ -42,6 +42,7 @@
         data() {
             return {
                 label: '留言',
+                login: false,
                 dialogVisible: false,
                 oriName: '',
                 oriWebsite: '',
@@ -51,6 +52,7 @@
                     name: '',
                     email: '',
                     website: '',
+                    avatar: '',
                     reminder: false,
                     content: ''
                 },
@@ -80,15 +82,16 @@
                                 aid: this.$route.params.id,
                                 uname: this.ruleForm.name.trim(),
                                 website: this.ruleForm.website.trim(),
+                                avatar: this.ruleForm.avatar,
                                 rid: this.replyUserId,
                                 rname: this.replyUserName,
                                 rCommentID: this.replyUserId ? this.commentID : null,
                                 email: this.ruleForm.email,
                                 content: this.ruleForm.content,
                                 reminder: this.ruleForm.email ? (this.ruleForm.reminder ? 1 : 0) : 0,
+                                time: new Date().getTime()
                             }
                             if (res) {
-                                console.log('res', res);
                                 res.reminder = res.reminder === 1 ? true : false;
                                 if (res.name !== this.ruleForm.name.trim() || res.reminder !== this.ruleForm.reminder || (res.website && this.ruleForm.website !== res.website)) {
                                     this.oriName = res.name;
@@ -98,6 +101,7 @@
                                     return;
                                 } else {
                                     formData.uid = res.id;
+                                    formData.avatar = res.avatar;
                                 }
                             }
                             this.$http.post('/api/comment/writeComment', formData)
@@ -116,7 +120,6 @@
                                     } else {
                                         delete localStorage.visitorMes;
                                     }
-                                    // this.$refs[formName].resetFields();
                                     this.ruleForm.content = '';
                                 }).catch((err) => {
                                     throw err;
@@ -143,6 +146,7 @@
                 this.$emit('formHanle', opt);
             },
             updVisitorMes() {
+                if (this.login) { return; }
                 this.$http.post('/api/visitor/updVisitorMes', {
                     email: this.ruleForm.email,
                     name: this.ruleForm.name,
@@ -153,7 +157,7 @@
                         this.$message.success('更新成功,请再次提交');
                         this.dialogVisible = false;
                     } else {
-                        this.$message.error('更新失败');
+                        this.$message.error('更新失败,请更换eamil');
                     }
                     this.dialogVisible = false;
                 }).catch((err) => {
@@ -164,7 +168,6 @@
                 this.ruleForm.name = this.oriName;
                 this.ruleForm.website = this.oriWebsite;
                 this.ruleForm.reminder = this.oriReminder;
-                console.log(this.ruleForm);
                 this.dialogVisible = false;
             }
         },
@@ -182,6 +185,20 @@
                 this.ruleForm.reminder = visitorMes.reminder;
                 this.remember = visitorMes.remember;
             }
+            this.$http.get('/api/getSession')
+                .then((res) => {
+                    res = res.data;
+                    if (res && res.root === 1) {
+                        this.ruleForm.name = res.name;
+                        this.ruleForm.email = res.email;
+                        this.ruleForm.website = res.website || '';
+                        this.ruleForm.avatar = res.avatar;
+                        this.login = true;
+                    }
+                })
+                .catch((err) => {
+                    throw err;
+                });
         }
     }
 </script>
