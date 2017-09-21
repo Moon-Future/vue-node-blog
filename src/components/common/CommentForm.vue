@@ -15,6 +15,7 @@
                 <el-input type="textarea" spellcheck="false" :rows="5" v-model="ruleForm.content"></el-input>
             </el-form-item>
         </el-form>
+        <el-checkbox v-model="remember" style="display:block;margin-bottom:5px">记住我？</el-checkbox>
         <el-button type="success" @click="submitHandle('commentForm')">提交</el-button>
         <el-button v-show="replyUserName" type="danger" @click="cancleHandle('commentForm')">取消</el-button>
         <el-dialog
@@ -24,6 +25,7 @@
             <span>
                 <p><strong>大名：</strong>{{ oriName }}</p>
                 <p><strong>个人网站：</strong>{{ oriWebsite }}</p>
+                <p><el-checkbox v-model="oriReminder" :disabled="true">收到回复邮件提醒</el-checkbox></p>
             </span>
             <span slot="footer" class="dialog-footer">
                 <el-button type="success" @click="updVisitorMes">更新信息</el-button>
@@ -43,6 +45,8 @@
                 dialogVisible: false,
                 oriName: '',
                 oriWebsite: '',
+                oriReminder: false,
+                remember: false,
                 ruleForm: {
                     name: '',
                     email: '',
@@ -80,13 +84,16 @@
                                 rname: this.replyUserName,
                                 rCommentID: this.replyUserId ? this.commentID : null,
                                 email: this.ruleForm.email,
+                                content: this.ruleForm.content,
                                 reminder: this.ruleForm.email ? (this.ruleForm.reminder ? 1 : 0) : 0,
-                                content: this.ruleForm.content
                             }
                             if (res) {
-                                if (res.name !== this.ruleForm.name.trim() || (res.website && this.ruleForm.website !== res.website)) {
+                                console.log('res', res);
+                                res.reminder = res.reminder === 1 ? true : false;
+                                if (res.name !== this.ruleForm.name.trim() || res.reminder !== this.ruleForm.reminder || (res.website && this.ruleForm.website !== res.website)) {
                                     this.oriName = res.name;
                                     this.oriWebsite = res.website || '';
+                                    this.oriReminder = res.reminder;
                                     this.dialogVisible = true;
                                     return;
                                 } else {
@@ -96,8 +103,21 @@
                             this.$http.post('/api/comment/writeComment', formData)
                                 .then((res) => {
                                     this.$message.success('提交成功');
-                                    this.replyUserId ? this.formHanle({show: false, data: res.data}) : this.formHanle({show: true, data: res.data})
-                                    this.$refs[formName].resetFields();
+                                    this.replyUserId ? this.formHanle({show: false, data: res.data}) : this.formHanle({show: true, data: res.data});
+                                    if (this.remember) {
+                                        let visitorMes = {
+                                            email: this.ruleForm.email,
+                                            name: this.ruleForm.name,
+                                            website: this.ruleForm.website,
+                                            reminder: this.ruleForm.reminder,
+                                            remember: this.remember
+                                        }
+                                        localStorage.visitorMes = JSON.stringify(visitorMes);
+                                    } else {
+                                        delete localStorage.visitorMes;
+                                    }
+                                    // this.$refs[formName].resetFields();
+                                    this.ruleForm.content = '';
                                 }).catch((err) => {
                                     throw err;
                                 })
@@ -126,7 +146,8 @@
                 this.$http.post('/api/visitor/updVisitorMes', {
                     email: this.ruleForm.email,
                     name: this.ruleForm.name,
-                    website: this.ruleForm.website
+                    website: this.ruleForm.website,
+                    reminder: this.ruleForm.email ? (this.ruleForm.reminder ? 1 : 0) : 0,
                 }).then((res) => {
                     if (res.data) {
                         this.$message.success('更新成功,请再次提交');
@@ -142,12 +163,24 @@
             useVisitorMes() {
                 this.ruleForm.name = this.oriName;
                 this.ruleForm.website = this.oriWebsite;
+                this.ruleForm.reminder = this.oriReminder;
+                console.log(this.ruleForm);
                 this.dialogVisible = false;
             }
         },
         computed: {
             labelString() {
                 return this.label + (this.replyUserName ? ' @' + this.replyUserName : '');
+            }
+        },
+        created() {
+            let visitorMes = localStorage.visitorMes && JSON.parse(localStorage.visitorMes);
+            if (visitorMes) {
+                this.ruleForm.name = visitorMes.name;
+                this.ruleForm.email = visitorMes.email;
+                this.ruleForm.website = visitorMes.website;
+                this.ruleForm.reminder = visitorMes.reminder;
+                this.remember = visitorMes.remember;
             }
         }
     }
