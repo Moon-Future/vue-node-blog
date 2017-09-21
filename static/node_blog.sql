@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2017-09-19 23:21:07
+Date: 2017-09-21 18:14:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -58,13 +58,13 @@ CREATE TABLE `comments` (
   `reply_comment_id` int(11) DEFAULT NULL,
   `content` varchar(255) NOT NULL,
   `time` bigint(15) NOT NULL,
-  `reminder` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of comments
 -- ----------------------------
+INSERT INTO `comments` VALUES ('71', '1', '8055', null, null, '让我uveitis', '1505988654793');
 
 -- ----------------------------
 -- Table structure for tags
@@ -126,8 +126,8 @@ CREATE TABLE `users` (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('666', '你', '489584507@qq.com', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', '0', 'head2.jpg');
-INSERT INTO `users` VALUES ('8023', '假面对白', '236338364@qq.com', 'f889134a41063043803618b18908b6bd6d57b027', '1', 'head1.jpg');
+INSERT INTO `users` VALUES ('666', '12分魅力', '489584507@qq.com', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', '0', 'head1.jpg');
+INSERT INTO `users` VALUES ('8023', '假面对白', '236338364@qq.com', 'f889134a41063043803618b18908b6bd6d57b027', '1', 'head2.jpg');
 
 -- ----------------------------
 -- Table structure for visitors
@@ -139,10 +139,12 @@ CREATE TABLE `visitors` (
   `email` varchar(255) NOT NULL,
   `website` varchar(255) DEFAULT NULL,
   `avatar` varchar(255) DEFAULT NULL,
+  `reminder` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8038 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8059 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of visitors
 -- ----------------------------
-INSERT INTO `visitors` VALUES ('8023', '假面对白', '236338364@qq.com', null, null);
+INSERT INTO `visitors` VALUES ('8023', '假面对白', '236338364@qq.com', '', 'head2.jpg', '0');
+INSERT INTO `visitors` VALUES ('8055', '12分魅力', '489584507@qq.com', 'www.baidu.com', 'head1.jpg', '0');
