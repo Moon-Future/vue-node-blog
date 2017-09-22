@@ -33,7 +33,6 @@
                 <router-link to="/">Go Home</router-link>
             </div>
         </div>
-        <!-- #13ce66 #20a0ff -->
     </div>
 </template>
 
@@ -107,27 +106,27 @@
             signup(formName) {
                 this.$refs[formName].validate((valid) => {
                     if(valid) {
-                        // if (this.loginForm.password !== this.loginForm.rePassword) {
-                        //     this.$message.error('两次密码输入不一样');
-                        //     return;
-                        // }
-                        // this.$http.post('/api/user/signup', {
-                        //     email: this.loginForm.email,
-                        //     password: crypto.createHash('sha1').update(this.loginForm.password).digest('hex'),
-                        //     rePassword: crypto.createHash('sha1').update(this.loginForm.rePassword).digest('hex'),
-                        //     name: this.loginForm.nickName,
-                        //     avatar: this.loginForm.avatar
-                        // }).then((res) => {
-                        //     if (res.data.status === true) {
-                        //         this.$message.success('注册成功');
-                        //         this.signupFlag = false;
-                        //         this.$refs[formName].resetFields();
-                        //     } else {
-                        //         this.$message.error(res.data.msg);
-                        //     }
-                        // }).catch((err) => {
-                        //     throw err;
-                        // })
+                        if (this.loginForm.password !== this.loginForm.rePassword) {
+                            this.$message.error('两次密码输入不一样');
+                            return;
+                        }
+                        this.$http.post('/api/user/signup', {
+                            email: this.loginForm.email,
+                            password: crypto.createHash('sha1').update(this.loginForm.password).digest('hex'),
+                            rePassword: crypto.createHash('sha1').update(this.loginForm.rePassword).digest('hex'),
+                            name: this.loginForm.nickName,
+                            avatar: this.loginForm.avatar
+                        }).then((res) => {
+                            if (res.data.status === true) {
+                                this.$message.success('注册成功');
+                                this.signupFlag = false;
+                                this.$refs[formName].resetFields();
+                            } else {
+                                this.$message.error(res.data.msg);
+                            }
+                        }).catch((err) => {
+                            throw err;
+                        })
                     }else {
                         this.$message({
                             showClose: true,
@@ -152,20 +151,11 @@
 
 <style>
     .login {
-        height: 100%;
+        min-height: 100%;
         background: #f1f1f1;
-        display: flex;
-        display: -webkit-flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    }
-
-    @media only screen and (max-height: 568px) {
-        .login {
-            padding: 20px;
-            height: initial;
-        }
+        text-align: center;
+        padding: 20px 0;
+        box-sizing: border-box;
     }
 
     .login-avatar {
@@ -188,18 +178,24 @@
     .tabs span {
         cursor: pointer;
         padding: 10px;
+        opacity: 0.7;
     }
 
     .tabs span:hover {
         color: #403333;
+        opacity: 1;
     }
 
     .tabs span.tabClicked {
-        border-bottom: 2px solid #20a0ff;
+        border-bottom: 2px solid #0f88eb;
+        color: #0f88eb;
     }
 
     .panel {
         width: 300px;
+        position: relative;
+        left: 50%;
+        margin-left: -150px;
         background: #fff;
         border: 1px solid #d5d5d5;
         padding: 20px 20px 0 20px;
@@ -220,15 +216,15 @@
     }
 
     .goHome {
-        text-align: right;
+        text-align: center;
         padding: 10px 5px;
     }
     .goHome a {
         text-decoration: none;
         padding: 0 5px 5px 5px;
-        color: #6e6e75;
+        color: #0f88eb;
     }
     .goHome a:hover {
-        border-bottom: 2px solid red
+        border-bottom: 2px solid #0f88eb
     }
 </style>

@@ -113,6 +113,8 @@
         top: 15px;
         border-radius: 50%;
         cursor: pointer;
+        background: #f9ff00;
+        display: block;
     }
 
     @media only screen and (min-width: 992px) {
