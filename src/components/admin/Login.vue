@@ -1,5 +1,8 @@
 <template>
     <div class="login">
+            <div class="login-avatar">
+                <img src="../../../static/images/avatar/head2.jpg" alt="">
+            </div>
         <div class="panel">
             <el-form label-position="left" :model="loginForm" :rules="rules" ref="loginForm">
                 <el-form-item label="邮箱" prop="email">
@@ -38,7 +41,7 @@
                     password: '489584507',
                     rePassword: '',
                     nickName: '',
-                    avatar: '../../../../static/images/avatar/head2.jpg'
+                    avatar: '../../../static/images/avatar/head2.jpg'
                 },
                 rules: {
                     email: [
@@ -141,22 +144,39 @@
 <style>
     .login {
         height: 100%;
-        background: url('../../../static/images/pic10.jpg') no-repeat;
-        background-position: center;
-        background-size: cover;
+        background: #f1f1f1;
+        display: flex;
+        display: -webkit-flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    @media only screen and (max-height: 568px) {
+        .login {
+            padding: 20px;
+            height: initial;
+        }
+    }
+
+    .login-avatar {
+        margin-bottom: 20px;
+    }
+
+    .login-avatar img {
+        border-radius: 100%;
+        width: 150px;
+        height: 150px;
+        cursor: pointer;
     }
 
     .panel {
         width: 300px;
-        /* height: 224px; */
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        margin-left: -170px;
-        margin-top: -132px;
         background: #fff;
+        box-shadow: 0 1px 3px #352626;
         padding: 20px 20px 0 20px;
-        opacity: 0.8
+        opacity: 0.8;
+        box-sizing: border-box;
     }
 
     .panel label {

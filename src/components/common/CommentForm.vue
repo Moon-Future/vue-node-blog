@@ -15,7 +15,7 @@
                 <el-input type="textarea" spellcheck="false" :rows="5" v-model="ruleForm.content"></el-input>
             </el-form-item>
         </el-form>
-        <el-checkbox v-model="remember" v-if="!login" style="display:block;margin-bottom:5px">记住我？</el-checkbox>
+        <el-checkbox v-model="remember" v-if="!login" style="display:block;margin-bottom:5px;width:0">记住我？</el-checkbox>
         <el-button type="success" @click="submitHandle('commentForm')">提交</el-button>
         <el-button v-show="replyUserName" type="danger" @click="cancleHandle('commentForm')">取消</el-button>
         <el-dialog
