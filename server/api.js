@@ -11,7 +11,8 @@ var pool = mysql.createPool({
     user: mysqlConf.mysql.user,
     password: mysqlConf.mysql.password,
     database: mysqlConf.mysql.database,
-    port: mysqlConf.mysql.port
+    port: mysqlConf.mysql.port,
+    multipleStatements: true    // 多语句查询
 });
 
 // 向前台返回JSON方法的简单封装
@@ -303,7 +304,9 @@ module.exports = {
                     });
                     connection.release();
                 } else {
-                    connection.query(sqlMap.user.insert, [postData.name,postData.email,postData.password,postData.avatar], (err, result) => {
+                    let email = postData.email, password = postData.password, name = postData.name,
+                        avatar = postData.avatar, website = postData.website, reminder = postData.reminder;
+                    connection.query(sqlMap.user.insert, [name, email, password, avatar, website, reminder, name, email, avatar, website, reminder], (err, result) => {
                         let status = true, msg = '注册成功';
                         if (err) {
                             status = false;

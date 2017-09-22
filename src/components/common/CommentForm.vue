@@ -111,8 +111,8 @@
                                     if (this.remember) {
                                         let visitorMes = {
                                             email: this.ruleForm.email,
-                                            name: this.ruleForm.name,
-                                            website: this.ruleForm.website,
+                                            name: this.ruleForm.name.trim(),
+                                            website: this.ruleForm.website.trim(),
                                             reminder: this.ruleForm.reminder,
                                             remember: this.remember
                                         }
@@ -149,8 +149,8 @@
                 if (this.login) { return; }
                 this.$http.post('/api/visitor/updVisitorMes', {
                     email: this.ruleForm.email,
-                    name: this.ruleForm.name,
-                    website: this.ruleForm.website,
+                    name: this.ruleForm.name.trim(),
+                    website: this.ruleForm.website.trim(),
                     reminder: this.ruleForm.email ? (this.ruleForm.reminder ? 1 : 0) : 0,
                 }).then((res) => {
                     if (res.data) {

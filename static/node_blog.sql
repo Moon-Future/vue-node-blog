@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2017-09-21 18:14:32
+Date: 2017-09-23 03:14:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -120,14 +120,17 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `root` tinyint(2) DEFAULT NULL,
   `avatar` varchar(255) DEFAULT NULL,
+  `website` varchar(255) DEFAULT NULL,
+  `reminder` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8024 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8025 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('666', '12分魅力', '489584507@qq.com', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', '0', 'head1.jpg');
-INSERT INTO `users` VALUES ('8023', '假面对白', '236338364@qq.com', 'f889134a41063043803618b18908b6bd6d57b027', '1', 'head2.jpg');
+INSERT INTO `users` VALUES ('666', '12分魅力', '489584507@qq.com', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', '0', 'head1.jpg', null, null);
+INSERT INTO `users` VALUES ('8023', '假面对白', '236338364@qq.com', 'f889134a41063043803618b18908b6bd6d57b027', '1', 'head2.jpg', null, null);
+INSERT INTO `users` VALUES ('8024', '你的', '123456@qq.com', '7c4a8d09ca3762af61e59520943dc26494f8941b', '0', 'head2.jpg', '', '0');
 
 -- ----------------------------
 -- Table structure for visitors
@@ -141,10 +144,11 @@ CREATE TABLE `visitors` (
   `avatar` varchar(255) DEFAULT NULL,
   `reminder` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8059 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8057 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of visitors
 -- ----------------------------
 INSERT INTO `visitors` VALUES ('8023', '假面对白', '236338364@qq.com', '', 'head2.jpg', '0');
 INSERT INTO `visitors` VALUES ('8055', '12分魅力', '489584507@qq.com', 'www.baidu.com', 'head1.jpg', '0');
+INSERT INTO `visitors` VALUES ('8056', '你的', '123456@qq.com', '', 'head2.jpg', '0');

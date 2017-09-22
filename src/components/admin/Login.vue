@@ -1,7 +1,7 @@
 <template>
     <div class="login">
         <div class="login-avatar">
-            <img src="../../../static/images/avatar/head2.jpg" alt="">
+            <img :src="avatarRoot + loginForm.avatar" alt="">
         </div>
         <div class="tabs">
             <span class="tab-login" @click="goToLogin('loginForm')" :class="{'tabClicked': !signupFlag}">登陆</span>
@@ -11,6 +11,7 @@
             <el-form label-position="left" :model="loginForm" :rules="rules" ref="loginForm">
                 <el-form-item label="邮箱" prop="email">
                     <el-input v-model="loginForm.email"></el-input>
+                    <el-checkbox v-model="loginForm.reminder" v-if="signupFlag" style="text-align:left;display:block">收到回复邮件提醒</el-checkbox>
                 </el-form-item>
                 <el-form-item label="密码" prop="password">
                     <el-input type="password" v-model="loginForm.password" @keyup.enter.native="login('loginForm')"></el-input>
@@ -43,13 +44,15 @@
         data() {
             return {
                 signupFlag: false,
+                avatarRoot: '../../../static/images/avatar/',
                 loginForm: {
                     email: '236338364@qq.com',
                     password: '489584507',
                     rePassword: '',
                     nickName: '',
                     website: '',
-                    avatar: '../../../static/images/avatar/head2.jpg'
+                    avatar: 'head2.jpg',
+                    reminder: ''
                 },
                 rules: {
                     email: [
@@ -60,6 +63,9 @@
                     ],
                     rePassword: [
                         { required: true, message: '请填写密码', trigger: 'blur' }
+                    ],
+                    nickName: [
+                        { required: true, message: '请填写大名', trigger: 'blur' }
                     ],
                 },
             }
@@ -81,7 +87,7 @@
                     if(valid) {
                         this.$http.post('/api/user/login', {
                             email: this.loginForm.email,
-                            password: crypto.createHash('sha1').update(this.loginForm.password).digest('hex')
+                            password: crypto.createHash('sha1').update(this.loginForm.password.trim()).digest('hex')
                         }).then((res) => {
                             res = res.data;
                             if(res.status !== undefined && res.status === false){
@@ -112,10 +118,12 @@
                         }
                         this.$http.post('/api/user/signup', {
                             email: this.loginForm.email,
-                            password: crypto.createHash('sha1').update(this.loginForm.password).digest('hex'),
-                            rePassword: crypto.createHash('sha1').update(this.loginForm.rePassword).digest('hex'),
-                            name: this.loginForm.nickName,
-                            avatar: this.loginForm.avatar
+                            password: crypto.createHash('sha1').update(this.loginForm.password.trim()).digest('hex'),
+                            rePassword: crypto.createHash('sha1').update(this.loginForm.rePassword.trim()).digest('hex'),
+                            name: this.loginForm.nickName.trim(),
+                            avatar: this.loginForm.avatar,
+                            website: this.loginForm.website.trim(),
+                            reminder: this.loginForm.reminder ? 1 : 0
                         }).then((res) => {
                             if (res.data.status === true) {
                                 this.$message.success('注册成功');

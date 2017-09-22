@@ -22,7 +22,7 @@ var sqlMap = {
         update: 'UPDATE users SET avatar = ? WHERE id = ?',
         queryAll: 'SELECT * FROM users',
         queryByEmail: 'SELECT * FROM users WHERE email = ?',
-        insert: 'INSERT INTO users(name, email, password, root, avatar) VALUES (?,?,?,0,?)',
+        insert: 'INSERT INTO users(name, email, password, root, avatar, website, reminder) VALUES (?,?,?,0,?,?,?); INSERT INTO visitors(name, email, avatar, website, reminder) VALUES (?,?,?,?,?)',
     },
     visitor: {
         insert: 'INSERT INTO visitors(name, email, website, avatar, reminder) VALUES (?,?,?,?,?)',
