@@ -1,8 +1,12 @@
 <template>
     <div class="login">
-            <div class="login-avatar">
-                <img src="../../../static/images/avatar/head2.jpg" alt="">
-            </div>
+        <div class="login-avatar">
+            <img src="../../../static/images/avatar/head2.jpg" alt="">
+        </div>
+        <div class="tabs">
+            <span class="tab-login" @click="goToLogin('loginForm')" :class="{'tabClicked': !signupFlag}">登陆</span>
+            <span class="tab-signup" @click="goToSignup('loginForm')" :class="{'tabClicked': signupFlag}">注册</span>
+        </div>
         <div class="panel">
             <el-form label-position="left" :model="loginForm" :rules="rules" ref="loginForm">
                 <el-form-item label="邮箱" prop="email">
@@ -17,15 +21,19 @@
                 <el-form-item label="昵称" prop="nickName" v-if="signupFlag">
                     <el-input v-model="loginForm.nickName"></el-input>
                 </el-form-item>
-                <el-form-item>
-                    <el-button type="success" @click="login('loginForm')" v-if="!signupFlag">登录</el-button>
-                    <el-button type="primary" @click="signup('loginForm')" v-if="!signupFlag">注册</el-button>
-                    <el-button type="success" @click="submit('loginForm')" v-if="signupFlag">提交</el-button>
-                    <el-button type="primary" @click="backToLogin('loginForm')" v-if="signupFlag">返回登陆</el-button>
-                    <router-link to="/" class="goHome">Go Home</router-link>
+                <el-form-item label="个人网站" prop="website" v-if="signupFlag">
+                    <el-input v-model="loginForm.website"></el-input>
                 </el-form-item>
             </el-form>
+            <div class="btn-submit">
+                <el-button type="success" @click="login('loginForm')" v-if="!signupFlag">登录</el-button>
+                <el-button type="primary" @click="signup('loginForm')" v-if="signupFlag">注册</el-button>
+            </div>
+            <div class="goHome">
+                <router-link to="/">Go Home</router-link>
+            </div>
         </div>
+        <!-- #13ce66 #20a0ff -->
     </div>
 </template>
 
@@ -41,6 +49,7 @@
                     password: '489584507',
                     rePassword: '',
                     nickName: '',
+                    website: '',
                     avatar: '../../../static/images/avatar/head2.jpg'
                 },
                 rules: {
@@ -95,30 +104,30 @@
                     }
                 })
             },
-            submit(formName) {
+            signup(formName) {
                 this.$refs[formName].validate((valid) => {
                     if(valid) {
-                        if (this.loginForm.password !== this.loginForm.rePassword) {
-                            this.$message.error('两次密码输入不一样');
-                            return;
-                        }
-                        this.$http.post('/api/user/signup', {
-                            email: this.loginForm.email,
-                            password: crypto.createHash('sha1').update(this.loginForm.password).digest('hex'),
-                            rePassword: crypto.createHash('sha1').update(this.loginForm.rePassword).digest('hex'),
-                            name: this.loginForm.nickName,
-                            avatar: this.loginForm.avatar
-                        }).then((res) => {
-                            if (res.data.status === true) {
-                                this.$message.success('注册成功');
-                                this.signupFlag = false;
-                                this.$refs[formName].resetFields();
-                            } else {
-                                this.$message.error(res.data.msg);
-                            }
-                        }).catch((err) => {
-                            throw err;
-                        })
+                        // if (this.loginForm.password !== this.loginForm.rePassword) {
+                        //     this.$message.error('两次密码输入不一样');
+                        //     return;
+                        // }
+                        // this.$http.post('/api/user/signup', {
+                        //     email: this.loginForm.email,
+                        //     password: crypto.createHash('sha1').update(this.loginForm.password).digest('hex'),
+                        //     rePassword: crypto.createHash('sha1').update(this.loginForm.rePassword).digest('hex'),
+                        //     name: this.loginForm.nickName,
+                        //     avatar: this.loginForm.avatar
+                        // }).then((res) => {
+                        //     if (res.data.status === true) {
+                        //         this.$message.success('注册成功');
+                        //         this.signupFlag = false;
+                        //         this.$refs[formName].resetFields();
+                        //     } else {
+                        //         this.$message.error(res.data.msg);
+                        //     }
+                        // }).catch((err) => {
+                        //     throw err;
+                        // })
                     }else {
                         this.$message({
                             showClose: true,
@@ -129,11 +138,11 @@
                     }
                 })
             },
-            signup(formName) {
+            goToSignup(formName) {
                 this.signupFlag = true;
                 this.$refs[formName].resetFields();
             },
-            backToLogin(formName) {
+            goToLogin(formName) {
                 this.signupFlag = false;
                 this.$refs[formName].resetFields();
             }
@@ -170,12 +179,30 @@
         cursor: pointer;
     }
 
+    .tabs {
+        margin-bottom: 20px;
+        font-size: 1.2em;
+        color: #555;
+    }
+
+    .tabs span {
+        cursor: pointer;
+        padding: 10px;
+    }
+
+    .tabs span:hover {
+        color: #403333;
+    }
+
+    .tabs span.tabClicked {
+        border-bottom: 2px solid #20a0ff;
+    }
+
     .panel {
         width: 300px;
         background: #fff;
-        box-shadow: 0 1px 3px #352626;
+        border: 1px solid #d5d5d5;
         padding: 20px 20px 0 20px;
-        opacity: 0.8;
         box-sizing: border-box;
     }
 
@@ -188,12 +215,20 @@
         color: #000
     }
 
-    .goHome {
-        text-decoration: none;
-        float: right;
-        padding: 0 5px;
+    .btn-submit button {
+        width: 100%;
     }
-    .goHome:hover {
+
+    .goHome {
+        text-align: right;
+        padding: 10px 5px;
+    }
+    .goHome a {
+        text-decoration: none;
+        padding: 0 5px 5px 5px;
+        color: #6e6e75;
+    }
+    .goHome a:hover {
         border-bottom: 2px solid red
     }
 </style>
