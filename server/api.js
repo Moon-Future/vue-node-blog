@@ -200,8 +200,11 @@ module.exports = {
                 jsonWrite(res, fileName);
                 fs.renameSync(file.path, newPath);
                 // 删除原头像文件
-                if (userAvatar !== 'head1.jpg' && userAvatar !== 'head2.jpg') {
+                if (userAvatar && userAvatar !== 'avatar.jpg' && userAvatar !== 'head1.jpg' && userAvatar !== 'head2.jpg') {
                     fs.unlinkSync(form.uploadDir + userAvatar);
+                }
+                if (!userID) {
+                    return;
                 }
                 pool.getConnection((err, connection) => {
                     connection.query(sqlMap.user.update, [fileName, userID], (err, result) => {

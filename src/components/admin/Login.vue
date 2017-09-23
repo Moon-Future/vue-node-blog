@@ -1,7 +1,7 @@
 <template>
     <div class="login">
         <div class="login-avatar">
-            <img :src="avatarRoot + loginForm.avatar" alt="">
+            <img :src="avatarRoot + loginForm.avatar" alt="编辑" @click="uploadShow = signupFlag ? true : false">
         </div>
         <div class="tabs">
             <span class="tab-login" @click="goToLogin('loginForm')" :class="{'tabClicked': !signupFlag}">登陆</span>
@@ -34,24 +34,44 @@
                 <router-link to="/">Go Home</router-link>
             </div>
         </div>
+        <my-upload field="avatar" id="avatar-upload"
+            :width="200"
+            :height="200"
+            v-model="uploadShow"
+            url="api/picture/avatar"
+            :params="params"
+            :headers="headers"
+            @crop-upload-success="cropUploadSuccess"
+            img-format="jpg"></my-upload>
     </div>
 </template>
 
 <script>
+    import myUpload from 'vue-image-crop-upload'
     const crypto = require('crypto');
     export default {
         name: 'Login',
+        components: {
+           myUpload
+        },
         data() {
             return {
+                uploadShow: false,
+                headers: {
+                    smail: '*_~'
+                },
+                params: {
+                    avatar: ''
+                },
                 signupFlag: false,
                 avatarRoot: '../../../static/images/avatar/',
                 loginForm: {
-                    email: '236338364@qq.com',
-                    password: '489584507',
+                    email: '',
+                    password: '',
                     rePassword: '',
                     nickName: '',
                     website: '',
-                    avatar: 'head2.jpg',
+                    avatar: 'avatar.jpg',
                     reminder: ''
                 },
                 rules: {
@@ -126,9 +146,12 @@
                             reminder: this.loginForm.reminder ? 1 : 0
                         }).then((res) => {
                             if (res.data.status === true) {
+                                let email = this.loginForm.email, password =  this.loginForm.password;
                                 this.$message.success('注册成功');
                                 this.signupFlag = false;
                                 this.$refs[formName].resetFields();
+                                this.loginForm.email = email;
+                                this.loginForm.password = password;
                             } else {
                                 this.$message.error(res.data.msg);
                             }
@@ -152,6 +175,10 @@
             goToLogin(formName) {
                 this.signupFlag = false;
                 this.$refs[formName].resetFields();
+            },
+            cropUploadSuccess(fileName, field) {
+                this.params.avatar = fileName;
+                this.loginForm.avatar = fileName;
             }
         }
     }
@@ -175,6 +202,9 @@
         width: 150px;
         height: 150px;
         cursor: pointer;
+        display: inline-block;
+        border: 1px dotted #ccc;
+        line-height: 150px;
     }
 
     .tabs {
@@ -234,5 +264,30 @@
     }
     .goHome a:hover {
         border-bottom: 2px solid #0f88eb
+    }
+
+    /* 上次头像组件自适应 */
+    @media only screen and (max-width: 568px) {
+        #avatar-upload .vicp-wrap {
+            width: 300px;
+            height: 500px;
+        }
+        #avatar-upload .vicp-wrap .vicp-close {
+            background: #a9a7a7;
+            right: 0px;
+            top: 0px;
+        }
+    }
+
+    @media only screen and (min-width: 568px) and (max-width: 667px){
+        #avatar-upload .vicp-wrap {
+            width: 550px;
+            height: 280px;
+        }
+        #avatar-upload .vicp-wrap .vicp-close {
+            background: #a9a7a7;
+            right: 0px;
+            top: 0px;
+        }
     }
 </style>

@@ -5,7 +5,7 @@
         <div class="content">
             <transition name="move" mode="out-in"><router-view :userData="userData"></router-view></transition>
         </div>
-        <my-upload field="avatar"
+        <my-upload field="avatar" id="avatar-upload"
             :width="200"
             :height="200"
             v-model="uploadShow"
@@ -20,7 +20,7 @@
 <script>
     import vHeader from './common/Header'
     import vSidebar from './common/Sidebar'
-    import myUpload from 'vue-image-crop-upload';
+    import myUpload from 'vue-image-crop-upload'
     export default {
         name: 'Admin',
         components: {
@@ -50,9 +50,9 @@
             uploadHandle(data) {
                 this.uploadShow = data;
             },
-            cropUploadSuccess(jsonData, field) {
+            cropUploadSuccess(fileName, field) {
                 this.$message.success('上传成功！');
-                this.userData.avatar = this.avatarRoot + jsonData;
+                this.userData.avatar = this.avatarRoot + fileName;
             }
         },
         beforeCreate() {
@@ -91,6 +91,31 @@
         .content {
             left: 0;
             padding: 20px;
+        }
+    }
+
+    /* 上次头像组件自适应 */
+    @media only screen and (max-width: 568px) {
+        #avatar-upload .vicp-wrap {
+            width: 300px;
+            height: 500px;
+        }
+        #avatar-upload .vicp-wrap .vicp-close {
+            background: #a9a7a7;
+            right: 0px;
+            top: 0px;
+        }
+    }
+
+    @media only screen and (min-width: 568px) and (max-width: 667px){
+        #avatar-upload .vicp-wrap {
+            width: 550px;
+            height: 280px;
+        }
+        #avatar-upload .vicp-wrap .vicp-close {
+            background: #a9a7a7;
+            right: 0px;
+            top: 0px;
         }
     }
 </style>
