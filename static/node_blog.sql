@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2017-09-23 03:14:01
+Date: 2017-09-25 21:13:17
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -32,14 +32,14 @@ CREATE TABLE `articles` (
   `view` bigint(20) NOT NULL,
   `start` bigint(20) NOT NULL,
   `image` varchar(255) DEFAULT NULL,
-  `filePath` varchar(255) NOT NULL,
+  `fileName` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of articles
 -- ----------------------------
-INSERT INTO `articles` VALUES ('1', '8023', 'node+vue搭建个人博客111', '1', '1', '#', '一步一个脚印11', '1504112522100', '1504112522100', '222', '333', null, '');
+INSERT INTO `articles` VALUES ('1', '8023', 'node+vue搭建个人博客111', '1', '1', '#', '一步一个脚印11', '1504112522100', '1504112522100', '222', '333', null, 'README.md');
 INSERT INTO `articles` VALUES ('2', '8023', 'node+vue搭建个人博客222', '0', '1', '#', '一步一个脚印22', '1504112522100', '1504112522100', '55', '66', null, '');
 INSERT INTO `articles` VALUES ('3', '8023', 'node+vue搭建个人博客333', '0', '1', '#', '一步一个脚印33', '1504112522100', '1504112522100', '55', '66', '', '');
 INSERT INTO `articles` VALUES ('4', '8023', 'node+vue搭建个人博客444', '0', '1', '#', '一步一个脚印44', '1504112522100', '1504112522100', '55', '66', '', '');
@@ -123,14 +123,13 @@ CREATE TABLE `users` (
   `website` varchar(255) DEFAULT NULL,
   `reminder` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8025 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8031 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
 INSERT INTO `users` VALUES ('666', '12分魅力', '489584507@qq.com', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', '0', 'head1.jpg', null, null);
 INSERT INTO `users` VALUES ('8023', '假面对白', '236338364@qq.com', 'f889134a41063043803618b18908b6bd6d57b027', '1', 'head2.jpg', null, null);
-INSERT INTO `users` VALUES ('8024', '你的', '123456@qq.com', '7c4a8d09ca3762af61e59520943dc26494f8941b', '0', 'head2.jpg', '', '0');
 
 -- ----------------------------
 -- Table structure for visitors
@@ -144,11 +143,10 @@ CREATE TABLE `visitors` (
   `avatar` varchar(255) DEFAULT NULL,
   `reminder` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8057 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8063 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of visitors
 -- ----------------------------
 INSERT INTO `visitors` VALUES ('8023', '假面对白', '236338364@qq.com', '', 'head2.jpg', '0');
 INSERT INTO `visitors` VALUES ('8055', '12分魅力', '489584507@qq.com', 'www.baidu.com', 'head1.jpg', '0');
-INSERT INTO `visitors` VALUES ('8056', '你的', '123456@qq.com', '', 'head2.jpg', '0');

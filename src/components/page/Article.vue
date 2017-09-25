@@ -14,7 +14,7 @@
             </div>
             <div class="markdown-body" v-html="article"></div>
         </article>
-        <Comment></Comment>
+        <Comment v-if="show"></Comment>
     </div>
 </template>
 
@@ -34,7 +34,8 @@
         },
         data() {
             return {
-                article: ''
+                article: '',
+                show: false
             }
         },
         beforeCreate() {
@@ -44,6 +45,7 @@
                 .then((res) => {
                     var mdData = res.data;
                     this.article = marked(mdData);
+                    this.show = true;
                 })
                 .catch((err) => {
                     console.log(err);
