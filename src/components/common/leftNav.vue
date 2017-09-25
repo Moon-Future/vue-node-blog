@@ -11,7 +11,7 @@
             <el-row>
                 <el-col :span="24">
                     <div @click="gotoAdmin">
-                        <img class="left-avatar" :src="avatar" />
+                        <img class="left-avatar" :src="getAvatar" />
                     </div>
                 </el-col>
             </el-row>
@@ -46,21 +46,17 @@
 
 <script>
     export default {
+        props: ['avatar'],
         data() {
             return {
-                avatarRoot: '../../../../../static/images/avatar/',
-                avatar: '../../../../../static/images/avatar/head2.jpg'
+                avatarRoot: '../../../static/images/avatar/',
             }
         },
-        beforeCreate() {
-            this.$http.get('/api/getSession')
-                .then((res) => {
-                    res.data.avatar ? this.avatar = this.avatarRoot + res.data.avatar : false;
-                })
-                .catch((err) => {
-                    throw err;
-                })
-            },
+        computed: {
+            getAvatar() {
+                return this.avatarRoot + this.avatar;
+            }
+        },
         methods: {
             showPanel() {
                 this.$store.dispatch('changeCatalogDiaplay');

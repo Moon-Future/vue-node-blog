@@ -4,7 +4,7 @@
         <div class="m-header">
             <div class="clearfix">
                 <div class="m-avatar">
-                    <img src="../../../static/images/head1.jpg" alt="headPicture" class="left-avatar" />
+                    <img :src="getAvatar" alt="headPice" class="left-avatar" @click="gotoAdmin" />
                     <p>我的博客我的博客我的博客我的博客</p>
                 </div>
                 <div class="md-menu">
@@ -43,8 +43,10 @@
 <script>
     import {mapState, mapActions} from 'vuex'
     export default {
+        props: ['avatar'],
         data() {
             return {
+                avatarRoot: '../../../static/images/avatar/',
                 menuOpen: false,
                 switchType: true,
             }
@@ -61,6 +63,15 @@
                 this.currentArticleHanle({'title': ''});
                 this.crumbFlagHanle([{'index':2, 'newValue':false}]);
             },
+            gotoAdmin() {
+              this.$http.get('/api/getSession')
+                .then((res) => {
+                    res.data === false ? this.$router.push('/login') : this.$router.push('/admin');
+                })
+                .catch((err) => {
+                    throw err;
+                })
+            },
             ...mapActions({
                 crumbFlagHanle: 'crumbFlag',
                 currentArticleHanle: 'currentArticle',
@@ -69,6 +80,9 @@
         },
         computed: {
             ...mapState(['crumbFlag', 'currentArticle', 'boxCol']),
+            getAvatar() {
+                return this.avatarRoot + this.avatar;
+            }
         }
     }
 </script>
@@ -111,6 +125,7 @@
         width: 30%;
         margin-right: 10px;
         border-radius: 50%;
+        cursor: pointer;
     }
     
     .m-avatar p {
