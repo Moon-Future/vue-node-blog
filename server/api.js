@@ -50,6 +50,7 @@ var mergeData = function(data, flag) {
             obj[tmp.id].start = tmp.start;
             obj[tmp.id].state = tmp.state;
             obj[tmp.id].image = tmp.image;
+            obj[tmp.id].fileName = tmp.fileName;
         }
     }
     for(let i in obj){
@@ -94,11 +95,18 @@ module.exports = {
     // 新增文章
     addArticle(req, res, next) {
         pool.getConnection((err, connection) => {
-            let postData = req.body, curTime = new Date().getTime();
+            let postData = req.body,
+                curTime = new Date().getTime(),
+                content = postData.content,
+                title = postData.title,
+                fileDir = '../static/articles/',
+                fileName = uuid.v1() + '_' + title + '.md',
+                filePath = fileDir + fileName;
             if (req.session.userData.root !== 1) {
                 postData.state = 2;
             }
-            connection.query(sqlMap.article.insert, [postData.user_id,postData.author,postData.title,postData.state,postData.type,postData.loadURL,postData.summary,curTime,null,0,0,'',''], (err, result) => {
+            connection.query(sqlMap.article.insert, [postData.user_id,title,postData.state,postData.type,postData.loadURL,postData.summary,curTime,null,0,0,'',fileName], (err, result) => {
+                fs.writeFileSync(filePath, content);
                 res.send('true');
                 connection.release();
             })

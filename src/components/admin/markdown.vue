@@ -8,7 +8,7 @@
         </div>
         <div class="editor">
             <div class="title">
-                标题：<input type="text" v-model="title">
+                标题：<input type="text" v-model="title" :title="title">
             </div>
             <el-button size="small" type="primary" class="coverPic">来张封面图？</el-button>
             <markdown-editor v-model="content" :configs="configs" ref="markdownEditor"></markdown-editor>
@@ -33,8 +33,8 @@
                 </div>
             </div>
             <div class="submit">
-                <el-button type="success" @click="submitHandle">发布</el-button>
-                <el-button type="info">存稿</el-button>
+                <el-button type="success" @click="submitHandle(1)" v-if="userData.root">发布</el-button>
+                <el-button type="info" @click="submitHandle(2)">存稿</el-button>
             </div>
         </div>
     </div>
@@ -103,20 +103,21 @@
                     this.$refs.saveTagInput.$refs.input.focus();
                 });
             },
-            submitHandle() {
+            submitHandle(state) {
                 this.$http.post('/api/article/addArticle', {
                     user_id: this.userData.id,
-                    author: this.userData.name,
+                    // author: this.userData.name,
                     title: this.title,
                     content: this.content,
-                    state: 1,
-                    type: 1,
-                    loadURL: '#',
-                    summary: '啦啦啦啦',
+                    state: state,   // 1:发布 2:存稿
+                    type: 1,        // 1:原创 2:转载
+                    loadURL: '#',   // 转载地址
+                    summary: '啦啦啦啦',    // 摘要
                     view: 0,
                     start: 0,
                     image: '',
-                    filePath: ''
+                    filePath: '',
+                    tags: this.tagSel
                 }).then((res) => {
                     console.log('res', res);
                 }).catch((err) => {

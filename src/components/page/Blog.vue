@@ -64,6 +64,7 @@
     @media only screen and (max-width: 992px) {
         .blog-content {
             width: 100%;
+            padding: 20px;
         }
         .switch-type {
             display: none;

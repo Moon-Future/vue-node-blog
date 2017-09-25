@@ -94,7 +94,7 @@
         }
     }
 
-    /* 上次头像组件自适应 */
+    /* 上传头像组件自适应 */
     @media only screen and (max-width: 568px) {
         #avatar-upload .vicp-wrap {
             width: 300px;

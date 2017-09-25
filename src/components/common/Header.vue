@@ -130,7 +130,7 @@
     .xs-menu {
         line-height: 60px;
         float: right;
-        margin-right: 30px;
+        /*margin-right: 30px;*/
     }
     
     .m-detail {
