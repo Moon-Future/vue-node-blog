@@ -45,7 +45,7 @@
                     <el-button size="small" type="primary" v-show="!delFlag" :disabled="userData.root ? false : true">编辑</el-button>
                     <el-button size="small" type="warning" v-show="!delFlag" :disabled="userData.root ? false : true" v-if="scope.row.state">存稿</el-button>
                     <el-button size="small" type="success" v-show="!delFlag" :disabled="userData.root ? false : true" v-if="!scope.row.state">发布</el-button>
-                    <el-button size="small" type="danger" v-show="!delFlag" :disabled="userData.root ? false : true" @click="deleteHandle(scope.row.id)">删除</el-button>
+                    <el-button size="small" type="danger" v-show="!delFlag" :disabled="userData.root ? false : true" @click="deleteHandle(scope.row, scope.$index)">删除</el-button>
                     <el-button size="small" type="success" v-show="delFlag" :disabled="userData.root ? false : true" @click="deleteHandle(scope.row.id)">还原</el-button>
                     <el-button size="small" type="danger" v-show="delFlag" :disabled="userData.root ? false : true" @click="deleteHandle(scope.row.id)">彻底删除</el-button>
                 </template>
@@ -106,11 +106,14 @@
                     }
                 }
             },
-            deleteHandle(id) {
+            deleteHandle(article, index) {
                 this.$http.post('/api/article/updArticle', {
-                    id: id, state: 0
+                    id: article.id, state: 0
                 }).then((res) => {
                     res.data.status === true ? this.$message.success('删除到回收站') : this.$message.error(res.data.msg);
+                    article.state = 0;
+                    this.articles.splice(index, 1);
+                    this.articlesDel.push(article);
                 }).catch((err) => {
                     throw err;
                 });
