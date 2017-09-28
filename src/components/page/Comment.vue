@@ -57,7 +57,6 @@
             this.$http.get('/api/comment/getComment', { 
                 params: {articleID: articleID}
             }).then((res) => {
-                console.log(res);
                 this.comments = res.data;
                 this.commentLen = res.data.length;
                 for (let i = 0; i < this.commentLen; i++) {

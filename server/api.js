@@ -16,7 +16,7 @@ var pool = mysql.createPool({
 });
 
 // 向前台返回JSON方法的简单封装
-var jsonWrite = function (res, data) {
+/*var jsonWrite = function (res, data) {
     if(typeof data === 'undefined') {
         res.json({
             status: false,
@@ -25,7 +25,7 @@ var jsonWrite = function (res, data) {
     } else {
         res.json(data);
     }
-};
+};*/
 
 // 数据处理
 var mergeData = function(data, flag) {
@@ -66,7 +66,7 @@ module.exports = {
         pool.getConnection((err, connection) => {
             let param = req.query.index;
             connection.query(sqlMap.article.queryAll, (err, result) => {
-                jsonWrite(res, result ? mergeData(result, param) : result);
+                res.json(result ? mergeData(result, param) : result);
                 connection.release();
             })
         })
@@ -75,20 +75,26 @@ module.exports = {
     updArticle(req, res, next) {
         pool.getConnection((err, connection) => {
             if (req.session.userData.root !== 1) {
-                res.send('false');
+                res.json({status: false, msg: '没有权限'});
                 return;
             }
-            let postData = req.body, sql = 'UPDATE articles SET ', str = '';
-            for(let key in postData) {
-                if (key === 'id') {
-                    continue
+            let postData = req.body, id = postData.id, title = postData.title, sql = 'UPDATE articles SET ', str = '';
+            connection.query('SELECT * FROM articles WHERE title = ? AND id != ?', [title, id], (err, result) => {
+                if (result.length === 0) {
+                    for(let key in postData) {
+                        if (key === 'id') {
+                            continue
+                        }
+                        str += key + ' = ' + postData[key] + ','
+                    }
+                    sql += str.substr(0, str.length - 1) + ' WHERE id = ' + postData.id;
+                    connection.query(sql, (err, result) => {
+                        res.json({status: true, msg: '提交成功'});
+                        connection.release();
+                    })
+                } else {
+                    res.json({status: false, msg: '文章标题已存在'});
                 }
-                str += key + ' = ' + postData[key] + ','
-            }
-            sql += str.substr(0, str.length - 1) + ' WHERE id = ' + postData.id;
-            connection.query(sql, (err, result) => {
-                res.send('true');
-                connection.release();
             })
         })
     },
@@ -100,15 +106,25 @@ module.exports = {
                 content = postData.content,
                 title = postData.title,
                 fileDir = '../static/articles/',
-                fileName = uuid.v1() + '_' + title + '.md',
+                fileName = title + '.md',
                 filePath = fileDir + fileName;
-            if (req.session.userData.root !== 1) {
-                postData.state = 2;
-            }
-            connection.query(sqlMap.article.insert, [postData.user_id,title,postData.state,postData.type,postData.loadURL,postData.summary,curTime,null,0,0,'',fileName], (err, result) => {
-                fs.writeFileSync(filePath, content);
-                res.send('true');
-                connection.release();
+            if (!title || !content) {
+                res.json({status: true, msg: '提交失败,请完善内容'});
+                return;
+            }     
+            connection.query(sqlMap.article.queryByTitle, [title], (err, result) => {
+                if (result.length === 0) {
+                    if (req.session.userData.root !== 1) {
+                        postData.state = 2;
+                    }
+                    connection.query(sqlMap.article.insert, [postData.user_id,title,postData.state,postData.type,postData.loadURL,postData.summary,curTime,null,0,0,''], (err, result) => {
+                        fs.writeFileSync(filePath, content);
+                        res.json({status: true, msg: '提交成功'});
+                        connection.release();
+                    })
+                } else {
+                    res.json({status: false, msg: '提交失败,文章标题已存在'});
+                }
             })
         })
     },
@@ -116,7 +132,7 @@ module.exports = {
     getTagAll(req, res, next) {
         pool.getConnection((err, connection) => {
             connection.query(sqlMap.tag.queryAll, (err, result) => {
-                jsonWrite(res, result);
+                res.json(result);
                 connection.release();
             })
         })
@@ -124,7 +140,7 @@ module.exports = {
     getTagById(req, res, next) {
         pool.getConnection((err, connection) => {
             connection.query(sqlMap.tag.queryById, (err, result) => {
-                jsonWrite(res, result);
+                res.json(result);
                 connection.release();
             })
         })
@@ -139,7 +155,7 @@ module.exports = {
             if (uid) {
                 connection.query(sqlMap.comment.insert, [postData.aid, uid, postData.rid, postData.rCommentID, postData.content, time], (err, result) => {
                     postData.uid = uid;
-                    jsonWrite(res, postData);
+                    res.json(postData);
                     connection.release();
                 })
             } else {
@@ -151,7 +167,7 @@ module.exports = {
                         connection.query(sqlMap.comment.insert, [postData.aid, uid, postData.rid, postData.rCommentID, postData.content, time], (err, result) => {
                             postData.uid = uid;
                             postData.avatar = result[0].avatar;
-                            jsonWrite(res, postData);
+                            res.json(postData);
                             connection.release();
                         })
                     })
@@ -189,7 +205,7 @@ module.exports = {
                         obj[replyCommentID].replys.push(tmpObj);
                     }
                 }
-                jsonWrite(res, arr);
+                res.json(arr);
                 connection.release();
             })
         })
@@ -205,7 +221,7 @@ module.exports = {
                 let file = files[key];
                 let fileName = uuid.v1() + '_' + file.name;
                 let newPath = form.uploadDir + fileName;
-                jsonWrite(res, fileName);
+                res.json(fileName);
                 fs.renameSync(file.path, newPath);
                 // 删除原头像文件
                 if (userAvatar && userAvatar !== 'avatar.jpg' && userAvatar !== 'head1.jpg' && userAvatar !== 'head2.jpg') {
@@ -231,7 +247,7 @@ module.exports = {
     getUserAll(req, res, next) {
         pool.getConnection((err, connection) => {
             connection.query(sqlMap.user.queryAll, (err, result) => {
-                jsonWrite(res, result);
+                res.json(result);
                 connection.release();
             })
         })
@@ -241,7 +257,7 @@ module.exports = {
         pool.getConnection((err, connection) => {
             let params = req.query, email = params.email;
             connection.query(sqlMap.visitor.queryByEmail, [email], (err, result) => {
-                result.length === 0 ? jsonWrite(res, false) : jsonWrite(res, result[0]);
+                result.length === 0 ? res.json(false) : res.json(result[0]);
                 connection.release();
             })
         })
@@ -257,12 +273,12 @@ module.exports = {
             connection.query(sqlMap.user.queryByEmail, [email], (err, result) => {
                 if (err) { throw err; }
                 if (result.length !== 0) {
-                    jsonWrite(res, false);
+                    res.json(false);
                     return;
                 } else {
                     connection.query(sqlMap.visitor.updByEmail, [postData.name, postData.website, avatar, postData.reminder, email], (err, result) => {
                         if (err) { throw err; }
-                        jsonWrite(res, true);
+                        res.json(true);
                         connection.release();
                     })
                 }
@@ -289,7 +305,7 @@ module.exports = {
                         delete result[0].password;
                         req.session.isLogin = true;
                         req.session.userData = result[0];
-                        jsonWrite(res, result[0]);
+                        res.json(result[0]);
                         connection.release();
                     }
                 }

@@ -1,12 +1,11 @@
 var sqlMap = {
     article: {
         queryById: 'SELECT * FROM tag_links as c LEFT JOIN tags as a on a.id = c.tid LEFT JOIN articles as b on b.id = c.aid WHERE c.aid = ?',
-        // queryAll: 'SELECT * FROM tag_links as c LEFT JOIN tags as a  on a.id = c.tid RIGHT JOIN articles as b on b.id = c.aid WHERE b.delOr != 1',
         queryAll: 'SELECT * FROM tag_links as c LEFT JOIN tags as a on a.id = c.tid RIGHT JOIN articles as b on b.id = c.aid',
         delById: 'DELETE FROM articles WHERE id = ?',
         updById: 'UPDATE articles SET ? FROM WHERE id = ?',
-        insert: 'INSERT INTO articles(user_id, title, state, type, loadURL, summary, post_time, upd_time, view, start, image, fileName) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',
-
+        insert: 'INSERT INTO articles(user_id, title, state, type, loadURL, summary, post_time, upd_time, view, start, cover) VALUES (?,?,?,?,?,?,?,?,?,?,?)',
+        queryByTitle: 'SELECT * FROM articles WHERE title = ?',
     },
     tag: {
         queryById: 'SELECT * FROM articles WHERE id=?',
@@ -15,8 +14,7 @@ var sqlMap = {
     comment: {
         insert: 'INSERT INTO comments(article_id, user_id, reply_id, reply_comment_id, content, time) VALUES (?,?,?,?,?,?)',
         queryAll: 'SELECT * FROM comments',
-        // queryByActicleId: 'SELECT * FROM comments WHERE article_id = ?'
-        queryByActicleId: 'SELECT c.id, c.article_id, c.user_id, c.reply_id, c.reply_comment_id, c.content, c.time, v.name as user_name, v.avatar, vi.name as reply_name FROM visitors as v RIGHT JOIN comments as c on c.user_id = v.id LEFT JOIN visitors as vi on c.reply_id = vi.id WHERE c.article_id = 1'
+        queryByActicleId: 'SELECT c.id, c.article_id, c.user_id, c.reply_id, c.reply_comment_id, c.content, c.time, v.name as user_name, v.avatar, vi.name as reply_name FROM visitors as v RIGHT JOIN comments as c on c.user_id = v.id LEFT JOIN visitors as vi on c.reply_id = vi.id WHERE c.article_id = ?'
     },
     user: {
         update: 'UPDATE users SET avatar = ? WHERE id = ?',

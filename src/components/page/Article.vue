@@ -40,10 +40,10 @@
         },
         beforeCreate() {
             // axios.get('../../../static/README.md')
-            var fileName = this.$route.params.title;
-            axios.get('../../../static/articles/' + fileName)
+            var title = this.$route.params.title + '.md';
+            axios.get('../../../static/articles/' + title)
                 .then((res) => {
-                    var mdData = res.data;
+                    var mdData = res.data + '';
                     this.article = marked(mdData);
                     this.show = true;
                 })

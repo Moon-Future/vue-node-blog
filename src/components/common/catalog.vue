@@ -229,13 +229,13 @@
         margin-right: 5px;
     }
     
-    .currentarticle {
+    .currentArticle {
         margin: 3px 0 0 0;
         text-align: left;
         font-size: 13px;
         color: #FFFF00;
     }
-    .currentarticle span {
+    .currentArticle span {
         cursor: pointer;
     }
     

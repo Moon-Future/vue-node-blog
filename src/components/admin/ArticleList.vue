@@ -110,7 +110,7 @@
                 this.$http.post('/api/article/updArticle', {
                     id: id, state: 0
                 }).then((res) => {
-                    res.data === true ? this.$message.success('删除到回收站') : this.$message.error('没有权限');
+                    res.data.status === true ? this.$message.success('删除到回收站') : this.$message.error(res.data.msg);
                 }).catch((err) => {
                     throw err;
                 });

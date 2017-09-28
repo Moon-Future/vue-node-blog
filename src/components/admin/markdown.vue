@@ -104,9 +104,12 @@
                 });
             },
             submitHandle(state) {
+                if (this.title === '' || this.content === '') {
+                    this.$message.error('提交失败,请完善内容');
+                    return;
+                }
                 this.$http.post('/api/article/addArticle', {
                     user_id: this.userData.id,
-                    // author: this.userData.name,
                     title: this.title,
                     content: this.content,
                     state: state,   // 1:发布 2:存稿
@@ -115,11 +118,15 @@
                     summary: '啦啦啦啦',    // 摘要
                     view: 0,
                     start: 0,
-                    image: '',
-                    filePath: '',
+                    cover: '',
                     tags: this.tagSel
                 }).then((res) => {
                     console.log('res', res);
+                    if (res.data.status) {
+                        this.$message.success(res.data.msg);
+                    } else {
+                        this.$message.error(res.data.msg);
+                    }
                 }).catch((err) => {
                     console.log('err', err);
                 });

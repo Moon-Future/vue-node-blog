@@ -5,7 +5,7 @@
                 <el-col :md="boxCol" :key="article.id">
                     <el-card class="box-card">
                         <div class="article-title">
-                            <router-link to="" @click.native="readAll(article.id, article.title, article.fileName)"><h2 :title="article.title">{{ article.title }}</h2></router-link>
+                            <router-link to="" @click.native="readAll(article.id, article.title)"><h2 :title="article.title">{{ article.title }}</h2></router-link>
                             <div class="article-mes">
                                 <span class="article-postdata">{{ article.post_time }}</span>
                                 <span class="article-view"><i class="el-icon-search title-icon"></i>{{ article.view }}</span>
@@ -20,7 +20,7 @@
                         <div class="article-summary">
                             <p :title="article.summary">{{ article.summary }}</p>
                             <!-- <el-button type="primary" @click="readAll(article.id, article.title)">阅读全文</el-button> -->
-                            <a type="primary" @click="readAll(article.id, article.title, article.fileName)">阅读全文</a>
+                            <a type="primary" @click="readAll(article.id, article.title)">阅读全文</a>
                         </div>
                     </el-card>
                 </el-col>
@@ -48,7 +48,6 @@
                     this.articles.map((article) => {
                         article.post_time = this.timeFormat(article.post_time);
                     })
-                    console.log(this.articles);
                 }).catch((err) => {
                     console.log('err', err);
                 });
@@ -57,8 +56,8 @@
             ...mapState(['boxCol'])
         },
         methods: {
-            readAll(articleId, title, fileName) {
-                this.$router.push({name: 'Article', params: { id: articleId, title: fileName}});
+            readAll(articleId, title) {
+                this.$router.push({name: 'Article', params: { id: articleId, title: title}});
                 this.currentArticle({title: title});
                 this.crumbFlag([{index: 1, newValue: false}]);
             },
