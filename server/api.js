@@ -87,9 +87,12 @@ module.exports = {
                         }
                         str += key + ' = ' + postData[key] + ','
                     }
-                    sql += str.substr(0, str.length - 1) + ' WHERE id = ' + postData.id;
+                    sql += str.substr(0, str.length - 1) + ' WHERE id = ' + id;
+                    if (postData.type === 3) { // 彻底删除
+                        sql = 'DELETE FROM articles WHERE id = ' + id;
+                    }
                     connection.query(sql, (err, result) => {
-                        res.json({status: true, msg: '提交成功'});
+                        res.json({status: true, msg: '操作成功'});
                         connection.release();
                     })
                 } else {

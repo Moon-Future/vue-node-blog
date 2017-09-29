@@ -42,12 +42,12 @@
             </el-table-column>
             <el-table-column label="操作" min-width="200">
                 <template scope="scope">
-                    <el-button size="small" type="primary" v-show="!delFlag" :disabled="userData.root ? false : true">编辑</el-button>
-                    <el-button size="small" type="warning" v-show="!delFlag" :disabled="userData.root ? false : true" v-if="scope.row.state">存稿</el-button>
-                    <el-button size="small" type="success" v-show="!delFlag" :disabled="userData.root ? false : true" v-if="!scope.row.state">发布</el-button>
-                    <el-button size="small" type="danger" v-show="!delFlag" :disabled="userData.root ? false : true" @click="deleteHandle(scope.row, scope.$index)">删除</el-button>
-                    <el-button size="small" type="success" v-show="delFlag" :disabled="userData.root ? false : true" @click="deleteHandle(scope.row.id)">还原</el-button>
-                    <el-button size="small" type="danger" v-show="delFlag" :disabled="userData.root ? false : true" @click="deleteHandle(scope.row.id)">彻底删除</el-button>
+                    <el-button size="small" type="primary" v-show="!delFlag" :disabled="userData.root ? false : true" @click="editorHandle(scope.row)">编辑</el-button>
+                    <el-button size="small" type="warning" v-show="!delFlag" :disabled="userData.root ? false : true" v-if="scope.row.state === 1" @click="operateHandle(scope.row, 2)">存稿</el-button>
+                    <el-button size="small" type="success" v-show="!delFlag" :disabled="userData.root ? false : true" v-if="scope.row.state === 2" @click="operateHandle(scope.row, 1)">发布</el-button>
+                    <el-button size="small" type="danger" v-show="!delFlag" :disabled="userData.root ? false : true" @click="operateHandle(scope.row, 0, scope.$index)">删除</el-button>
+                    <el-button size="small" type="success" v-show="delFlag" :disabled="userData.root ? false : true" @click="operateHandle(scope.row, 2, scope.$index)">还原</el-button>
+                    <el-button size="small" type="danger" v-show="delFlag" :disabled="userData.root ? false : true" @click="operateHandle(scope.row, 3, scope.$index)">彻底删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -106,17 +106,47 @@
                     }
                 }
             },
-            deleteHandle(article, index) {
-                this.$http.post('/api/article/updArticle', {
-                    id: article.id, state: 0
-                }).then((res) => {
-                    res.data.status === true ? this.$message.success('删除到回收站') : this.$message.error(res.data.msg);
-                    article.state = 0;
-                    this.articles.splice(index, 1);
-                    this.articlesDel.push(article);
-                }).catch((err) => {
-                    throw err;
-                });
+            editorHandle(article) {
+                console.log('editor');
+            },
+            operateHandle(...arg) {
+                let article = arg[0], state = arg[1], index = arg[2], type = arg[1],
+                    postData = {id: article.id, state: state};
+                index !== undefined ? postData.type = type : false;
+                this.$http.post('/api/article/updArticle', postData)
+                    .then((res) => {
+                        let msg = '';
+                        if (res.data.status === true) {
+                            if (type === 0) {
+                                article.state = 0;
+                                this.articles.splice(index, 1);
+                                this.articlesDel.push(article);
+                                msg = '删除到回收站';
+                            } else if (type === 2) {
+                                article.state = 2;
+                                if (index !== undefined) {
+                                    this.articlesDel.splice(index, 1);
+                                    this.articles.push(article);
+                                    msg = '还原到存稿';
+                                } else {
+                                    msg = '存稿';
+                                }
+                            } else if (type === 3) {
+                                if (index !== undefined) {
+                                    this.articlesDel.splice(index, 1);
+                                    msg = '删除成功';
+                                }
+                            } else {
+                                article.state = 1;
+                                msg = '发布';
+                            }
+                            this.$message.success(msg)
+                        } else {
+                            this.$message.error(res.data.msg);
+                        }
+                    }).catch((err) => {
+                        throw err;
+                    });
             },
             tabClick(tab) {
                 this.delFlag = tab.index === '1' ? true : false;
