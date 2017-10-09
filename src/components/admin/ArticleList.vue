@@ -79,7 +79,6 @@
                         article.post_time = new Date(article.post_time).format('yyyy/MM/dd hh:mm');
                         article.upd_time = article.upd_time == '' ? '暂无修改' : new Date(article.upd_time).format('yyyy/MM/dd hh:mm');
                     });
-                    console.log('res', res);
                 })
                 .catch((err) => {
                     console.log('err', err);
@@ -107,7 +106,10 @@
                 }
             },
             editorHandle(article) {
-                console.log('editor');
+                this.$router.push({
+                    path: 'markdown',
+                    query: {id: article.id, title: article.title}
+                })
             },
             operateHandle(...arg) {
                 let article = arg[0], state = arg[1], index = arg[2], type = arg[1],

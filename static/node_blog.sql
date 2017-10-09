@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2017-09-28 19:21:29
+Date: 2017-10-09 17:47:34
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -39,11 +39,9 @@ CREATE TABLE `articles` (
 -- Records of articles
 -- ----------------------------
 INSERT INTO `articles` VALUES ('1', '8023', 'README', '1', '1', '#', '一步一个脚印11', '1504112522100', '1504112522100', '222', '333', null);
-INSERT INTO `articles` VALUES ('2', '8023', 'node+vue搭建个人博客222', '0', '1', '#', '一步一个脚印22', '1504112522100', '1504112522100', '55', '66', null);
 INSERT INTO `articles` VALUES ('3', '8023', 'node+vue搭建个人博客333', '0', '1', '#', '一步一个脚印33', '1504112522100', '1504112522100', '55', '66', '');
-INSERT INTO `articles` VALUES ('4', '8023', 'node+vue搭建个人博客444', '0', '1', '#', '一步一个脚印44', '1504112522100', '1504112522100', '55', '66', '');
-INSERT INTO `articles` VALUES ('5', '8023', 'node+vue搭建个人博客555', '2', '1', '#', '一步一个脚印55', '1504112522100', '1504112522100', '55', '66', '');
-INSERT INTO `articles` VALUES ('6', '8023', 'node+vue搭建个人博客666', '0', '1', '#', '一步一个脚印66', '1504112522100', '1504112522100', '55', '66', '');
+INSERT INTO `articles` VALUES ('5', '8023', 'node+vue搭建个人博客555', '1', '1', '#', '一步一个脚印55', '1504112522100', '1504112522100', '55', '66', '5');
+INSERT INTO `articles` VALUES ('7', '8023', 'node+vue搭建个人博客777', '2', '1', '#', '一步一个脚印55', '1504112522100', '1504112522100', '55', '66', '5');
 
 -- ----------------------------
 -- Table structure for comments
@@ -128,7 +126,7 @@ CREATE TABLE `users` (
 -- Records of users
 -- ----------------------------
 INSERT INTO `users` VALUES ('666', '12分魅力', '489584507@qq.com', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', '0', 'head1.jpg', null, null);
-INSERT INTO `users` VALUES ('8023', '假面对白', '236338364@qq.com', 'f889134a41063043803618b18908b6bd6d57b027', '1', '37cf33f0-a429-11e7-ab8f-8ff0e9aca14e_avatar.jpg', null, null);
+INSERT INTO `users` VALUES ('8023', '假面对白', '236338364@qq.com', 'f889134a41063043803618b18908b6bd6d57b027', '1', 'head2.jpg', null, null);
 
 -- ----------------------------
 -- Table structure for visitors

@@ -32,9 +32,9 @@ var mergeData = function(data, flag) {
     var obj = {}, arr = [], arrDel = [], tmp;
     for(let i = 0, len = data.length; i < len; i++){
         tmp = data[i];
-        if(obj[tmp.id]){
+        if (obj[tmp.id]) {
             tmp.tid ? obj[tmp.id].tags.push({'id':tmp.tid, 'name':tmp.name}) : false;
-        }else{
+        } else {
             obj[tmp.id] = {};
             obj[tmp.id].id = tmp.id;
             obj[tmp.id].user_id = tmp.user_id;
@@ -49,14 +49,12 @@ var mergeData = function(data, flag) {
             obj[tmp.id].view = tmp.view;
             obj[tmp.id].start = tmp.start;
             obj[tmp.id].state = tmp.state;
-            obj[tmp.id].image = tmp.image;
-            obj[tmp.id].fileName = tmp.fileName;
+            obj[tmp.id].cover = tmp.cover;
         }
     }
     for(let i in obj){
         obj[i].state !== 0 ? (flag ? obj[i].state === 1 ? arr.push(obj[i]) : false : arr.push(obj[i])) : arrDel.push(obj[i]);
     }
-
     return flag ? arr : {'articles': arr, 'articlesDel': arrDel};
 }
 
@@ -67,6 +65,23 @@ module.exports = {
             let param = req.query.index;
             connection.query(sqlMap.article.queryAll, (err, result) => {
                 res.json(result ? mergeData(result, param) : result);
+                connection.release();
+            })
+        })
+    },
+    getArticleById(req, res, next) {
+        pool.getConnection((err, connection) => {
+            let params = req.query, id = params.id, title = params.title,
+                filePath = '../static/articles/' + title + '.md',
+                content = fs.readFileSync(filePath, 'utf-8'), data;
+            connection.query(sqlMap.article.queryById, [id], (err, result) => {
+                if (result.length !== 0) {
+                    data = mergeData(result, false).articles;
+                    data[0].content = content || '';
+                } else {
+                    data = result;
+                }
+                res.json(data);
                 connection.release();
             })
         })
@@ -114,7 +129,7 @@ module.exports = {
             if (!title || !content) {
                 res.json({status: true, msg: '提交失败,请完善内容'});
                 return;
-            }     
+            }   
             connection.query(sqlMap.article.queryByTitle, [title], (err, result) => {
                 if (result.length === 0) {
                     if (req.session.userData.root !== 1) {

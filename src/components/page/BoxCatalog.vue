@@ -15,7 +15,7 @@
                                 </span>
                             </div>
                         </div>
-                        <img v-if="article.image" :src="article.image" class="box-card-image">
+                        <img v-if="article.cover" :src="article.cover" class="box-card-image">
                         <!-- <img v-else :src="imageDefault" class="box-card-image"> -->
                         <div class="article-summary">
                             <p :title="article.summary">{{ article.summary }}</p>

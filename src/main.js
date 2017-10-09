@@ -48,6 +48,11 @@ Vue.prototype.$http = axios;
 router.beforeEach ((to, from, next) => {
     const toData = to.params;
     const fromData = from.params;
+
+    if (to.name === from.name && to.query.id !== from.query.id) {
+        router.go(0);
+    }
+
     if(fromData.id && !toData.id){
         store.state.currentArticle.title = '';
         store.state.crumbFlag.splice(2, 1, '');

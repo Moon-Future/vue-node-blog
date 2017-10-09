@@ -7,6 +7,9 @@ var api = require('./api');
 router.get('/article/getArticleAll', (req, res, next) => {
     api.getArticleAll(req, res, next);
 })
+router.get('/article/getArticleById', (req, res, next) => {
+    api.getArticleById(req, res, next);
+})
 // 获取标签
 router.get('/tag/getTagAll', (req, res, next) => {
     api.getTagAll(req, res, next);

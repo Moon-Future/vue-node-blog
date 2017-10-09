@@ -42,7 +42,6 @@
 
 <script>
     import { markdownEditor } from 'vue-simplemde'
-    import axios from 'axios'
     export default {
         name: 'Markdown',
         props: ['userData'],
@@ -67,13 +66,29 @@
             }
         },
         created() {
-            axios.get('/api/tag/getTagAll')
+            let query = this.$route.query;
+            this.$http.get('/api/tag/getTagAll')
                 .then((res) => {
                     this.tags = res.data;
                 })
                 .catch((err) => {
                     console.log('err', err);
                 });
+            if (query.title) {
+                this.title = query.title;
+                this.$http.get('/api/article/getArticleById', {
+                        params: {id: query.id, title: this.title}
+                    }).then((res) => {
+                        let data = res.data;
+                        if (data.length !== 0) {
+                            this.tagSel = data[0].tags;
+                            this.content = data[0].content;
+                        }
+                    }).catch((err) => {
+                        console.log('err', err);
+                    });
+            }
+            
         },
         methods: {
             handleTagSel(tag) {
