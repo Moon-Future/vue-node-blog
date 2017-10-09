@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2017-10-09 17:47:34
+Date: 2017-10-09 21:55:28
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -33,15 +33,24 @@ CREATE TABLE `articles` (
   `start` bigint(20) NOT NULL,
   `cover` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of articles
 -- ----------------------------
 INSERT INTO `articles` VALUES ('1', '8023', 'README', '1', '1', '#', '一步一个脚印11', '1504112522100', '1504112522100', '222', '333', null);
-INSERT INTO `articles` VALUES ('3', '8023', 'node+vue搭建个人博客333', '0', '1', '#', '一步一个脚印33', '1504112522100', '1504112522100', '55', '66', '');
-INSERT INTO `articles` VALUES ('5', '8023', 'node+vue搭建个人博客555', '1', '1', '#', '一步一个脚印55', '1504112522100', '1504112522100', '55', '66', '5');
-INSERT INTO `articles` VALUES ('7', '8023', 'node+vue搭建个人博客777', '2', '1', '#', '一步一个脚印55', '1504112522100', '1504112522100', '55', '66', '5');
+INSERT INTO `articles` VALUES ('2', '8023', 'node+vue搭建个人博客2', '1', '1', '#', '一步一个脚印33', '1504112522100', '1504112522100', '55', '66', '');
+INSERT INTO `articles` VALUES ('3', '8023', 'node+vue搭建个人博客3', '1', '1', '#', '一步一个脚印55', '1504112522100', '1504112522100', '55', '66', '5');
+INSERT INTO `articles` VALUES ('4', '8023', 'node+vue搭建个人博客4', '1', '1', '#', '一步一个脚印55', '1504112522100', '1504112522100', '55', '66', '5');
+INSERT INTO `articles` VALUES ('5', '8023', 'node+vue搭建个人博客5', '1', '1', '#', '一步一个脚印55', '1504112522100', '1504112522100', '55', '66', '5');
+INSERT INTO `articles` VALUES ('6', '8023', 'node+vue搭建个人博客6', '1', '1', '#', '一步一个脚印55', '1504112522100', '1504112522100', '55', '66', '5');
+INSERT INTO `articles` VALUES ('7', '8023', 'node+vue搭建个人博客7', '1', '1', '#', '一步一个脚印55', '1504112522100', '1504112522100', '55', '66', '5');
+INSERT INTO `articles` VALUES ('8', '8023', 'node+vue搭建个人博客8', '1', '1', '#', '一步一个脚印55', '1504112522100', '1504112522100', '55', '66', '5');
+INSERT INTO `articles` VALUES ('9', '8023', 'node+vue搭建个人博客9', '1', '1', '#', '一步一个脚印55', '1504112522100', '1504112522100', '55', '66', '5');
+INSERT INTO `articles` VALUES ('10', '8023', 'node+vue搭建个人博客10', '1', '1', '#', '一步一个脚印55', '1504112522100', '1504112522100', '55', '66', '5');
+INSERT INTO `articles` VALUES ('11', '8023', 'node+vue搭建个人博客11', '1', '1', '#', '一步一个脚印55', '1504112522100', '1504112522100', '55', '66', '5');
+INSERT INTO `articles` VALUES ('12', '8023', 'node+vue搭建个人博客12', '1', '1', '#', '一步一个脚印55', '1504112522100', '1504112522100', '55', '66', '5');
+INSERT INTO `articles` VALUES ('13', '8023', 'node+vue搭建个人博客13', '1', '1', '#', '一步一个脚印55', '1504112522100', '1504112522100', '55', '66', '5');
 
 -- ----------------------------
 -- Table structure for comments

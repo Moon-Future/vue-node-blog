@@ -16,9 +16,7 @@
                 </el-col>
             </el-row>
             <div class="left-mes">
-                <p>I am chenliang</p>
-                <p>I am chenliang</p>
-                <p>I am chenliang</p>
+                <p>假面对白</p>
             </div>
         </div>
         <div class="left-menu">

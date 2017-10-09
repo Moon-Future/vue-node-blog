@@ -29,28 +29,50 @@ var pool = mysql.createPool({
 
 // 数据处理
 var mergeData = function(data, flag) {
-    var obj = {}, arr = [], arrDel = [], tmp;
+    let obj = {}, arr = [], arrDel = [], tmp;
     for(let i = 0, len = data.length; i < len; i++){
         tmp = data[i];
-        if (obj[tmp.id]) {
-            tmp.tid ? obj[tmp.id].tags.push({'id':tmp.tid, 'name':tmp.name}) : false;
-        } else {
-            obj[tmp.id] = {};
-            obj[tmp.id].id = tmp.id;
-            obj[tmp.id].user_id = tmp.user_id;
-            obj[tmp.id].title = tmp.title;
-            obj[tmp.id].type = tmp.type;
-            obj[tmp.id].loadURL = tmp.loadURL;
-            obj[tmp.id].tags = [];
-            tmp.tid ? obj[tmp.id].tags.push({'id':tmp.tid, 'name':tmp.name}) : false;
-            obj[tmp.id].summary = tmp.summary;
-            obj[tmp.id].post_time = tmp.post_time;
-            obj[tmp.id].upd_time = tmp.upd_time ? tmp.upd_time : '';
-            obj[tmp.id].view = tmp.view;
-            obj[tmp.id].start = tmp.start;
-            obj[tmp.id].state = tmp.state;
-            obj[tmp.id].cover = tmp.cover;
+        let tagString = tmp.tag_string, tagArr;
+        obj[tmp.id] = {};
+        obj[tmp.id].id = tmp.id;
+        obj[tmp.id].user_id = tmp.user_id;
+        obj[tmp.id].title = tmp.title;
+        obj[tmp.id].type = tmp.type;
+        obj[tmp.id].loadURL = tmp.loadURL;
+        obj[tmp.id].summary = tmp.summary;
+        obj[tmp.id].post_time = tmp.post_time;
+        obj[tmp.id].upd_time = tmp.upd_time ? tmp.upd_time : '';
+        obj[tmp.id].view = tmp.view;
+        obj[tmp.id].start = tmp.start;
+        obj[tmp.id].state = tmp.state;
+        obj[tmp.id].cover = tmp.cover;
+        obj[tmp.id].tags = [];
+        if (tagString) {
+            tagArr = tagString.split(',');
+            for(let j = 0, l = tagArr.length; j < l; j++){
+                obj[tmp.id].tags.push({id: tagArr[j].split('_')[0], name: tagArr[j].split('_')[1]})
+            }
         }
+
+        // if (obj[tmp.id]) {
+        //     tmp.tid ? obj[tmp.id].tags.push({'id':tmp.tid, 'name':tmp.name}) : false;
+        // } else {
+        //     obj[tmp.id] = {};
+        //     obj[tmp.id].id = tmp.id;
+        //     obj[tmp.id].user_id = tmp.user_id;
+        //     obj[tmp.id].title = tmp.title;
+        //     obj[tmp.id].type = tmp.type;
+        //     obj[tmp.id].loadURL = tmp.loadURL;
+        //     obj[tmp.id].tags = [];
+        //     tmp.tid ? obj[tmp.id].tags.push({'id':tmp.tid, 'name':tmp.name}) : false;
+        //     obj[tmp.id].summary = tmp.summary;
+        //     obj[tmp.id].post_time = tmp.post_time;
+        //     obj[tmp.id].upd_time = tmp.upd_time ? tmp.upd_time : '';
+        //     obj[tmp.id].view = tmp.view;
+        //     obj[tmp.id].start = tmp.start;
+        //     obj[tmp.id].state = tmp.state;
+        //     obj[tmp.id].cover = tmp.cover;
+        // }
     }
     for(let i in obj){
         obj[i].state !== 0 ? (flag ? obj[i].state === 1 ? arr.push(obj[i]) : false : arr.push(obj[i])) : arrDel.push(obj[i]);
@@ -62,9 +84,10 @@ module.exports = {
     // 文章
     getArticleAll(req, res, next) {
         pool.getConnection((err, connection) => {
-            let param = req.query.index;
-            connection.query(sqlMap.article.queryAll, (err, result) => {
-                res.json(result ? mergeData(result, param) : result);
+            let params = req.query, index = params.index, limit = params.limit,
+                sql = sqlMap.article.queryAll + (limit ? ' LIMIT ' + limit : '' );
+            connection.query(sql, (err, result) => {
+                res.json(result ? mergeData(result, index) : result);
                 connection.release();
             })
         })
@@ -74,6 +97,12 @@ module.exports = {
             let params = req.query, id = params.id, title = params.title,
                 filePath = '../static/articles/' + title + '.md',
                 content = fs.readFileSync(filePath, 'utf-8'), data;
+            if (!content) {
+                res.json({
+                    status: false,
+                    msg: '没有找到文章'
+                })
+            }
             connection.query(sqlMap.article.queryById, [id], (err, result) => {
                 if (result.length !== 0) {
                     data = mergeData(result, false).articles;

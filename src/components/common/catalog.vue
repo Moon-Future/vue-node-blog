@@ -32,6 +32,7 @@
                         </p>
                     </li>
                 </ul>
+                <el-button type="primary" size="mini" class="load-more">加载更多...</el-button>
             </div>
             <div class="article-chapter" v-if="crumbFlag[2]">
                 {{ crumbFlag[2] }}
@@ -46,9 +47,10 @@
     export default {
         data() {
             return {
-                'tagOn': false,
-                'tags': [],
-                'articles': [],
+                tagOn: false,
+                tags: [],
+                articles: [],
+                limit: 10
 //              crumbFlag: [true, false, false], // 三级面包屑   // 目录/标签/文章标题       crumbCata/crumbSub/crumbTitle
 //              currentArticle: {title: '', tag: ''}
             }
@@ -56,7 +58,7 @@
         created() {
             var self = this;
             axios.get('/api/article/getArticleAll', {
-                    params: {index: true}
+                    params: {index: true, limit: this.limit}
                 }).then((res) => {
                     self.articles = res.data;
                     self.articles.map((article) => {
@@ -174,7 +176,7 @@
     }
     
     .catalog-breadcrumb span {
-          color: #fff;  
+        color: #fff; 
     }
     
     .catalog-tags {
@@ -193,6 +195,10 @@
     
     .tag-list span:hover {
         color: #FFFF00;
+    }
+
+    .catalog-list {
+        text-align: center;
     }
     
     .catalog-list ul {
@@ -261,5 +267,9 @@
     
     .fade-enter-to /* .fade-leave-active in below version 2.1.8 */ {
         left: 0px
+    }
+
+    .load-more {
+        margin-top: 10px
     }
 </style>
