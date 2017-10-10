@@ -86,16 +86,19 @@ module.exports = {
         })
     },
     getArticleById(req, res, next) {
+        let params = req.query, id = params.id, title = params.title,
+            filePath = '../static/articles/' + title + '.md',
+            content, data;
+        try {
+            content = fs.readFileSync(filePath, 'utf-8');
+        } catch(e) {
+            res.json({
+                status: false,
+                msg: '没有找到文章'
+            })
+            return;
+        }
         pool.getConnection((err, connection) => {
-            let params = req.query, id = params.id, title = params.title,
-                filePath = '../static/articles/' + title + '.md',
-                content = fs.readFileSync(filePath, 'utf-8'), data;
-            if (!content) {
-                res.json({
-                    status: false,
-                    msg: '没有找到文章'
-                })
-            }
             connection.query(sqlMap.article.queryById, [id], (err, result) => {
                 if (result.length !== 0) {
                     data = mergeData(result, false).articles;

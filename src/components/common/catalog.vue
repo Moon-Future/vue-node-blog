@@ -125,7 +125,7 @@
             },
             articleSelect(article) {
                 this.crumbFlagHanle([{'index':2,'newValue':article.title}]);
-                this.currentArticleHanle({'flag':true,'title':article.title,'tag':this.crumbFlag[1]});
+                this.currentArticleHanle({'flag':true,'id':article.id,'title':article.title,'tag':this.crumbFlag[1]});
                 this.$router.push({name: 'Article', params: {id: article.id, title: article.title}});
             },
             gotoCurrentArticle() {

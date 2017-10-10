@@ -2,25 +2,28 @@
     <div>
         <article class="article-detail">
             <div class="article-title">
-                <h1>node+vue搭建个人博客111</h1>
+                {{ changeData }}
+                <h1>{{ article.title }}</h1>
                 <div class="article-mes">
-                    <span class="article-postdata">2017-07-04 01:02</span>
-                    <span class="article-view"><i class="el-icon-search title-icon"></i>222</span>
-                    <span class="article-start"><i class="title-icon el-icon-star-on"></i>333</span>
+                    <span class="article-postdata">{{ article.post_time }}</span>
+                    <span class="article-view"><i class="el-icon-search title-icon"></i>{{ article.view }}</span>
+                    <span class="article-start"><i class="title-icon el-icon-star-on"></i>{{ article.start }}</span>
                     <span class="article-tags">
-                        <el-tag type="primary">vue</el-tag>
+                        <template v-for="tag in article.tags">
+                            <el-tag type="primary" :key="tag.id">{{ tag.name }}</el-tag>
+                        </template>
                     </span>
                 </div>
             </div>
-            <div class="markdown-body" v-html="article"></div>
+            <div class="markdown-body" v-html="content"></div>
         </article>
         <Comment v-if="show"></Comment>
     </div>
 </template>
 
 <script>
+    import {mapState} from 'vuex'
     import marked from 'marked'
-    import axios from 'axios'
     import Comment from './Comment'
     marked.setOptions({
         highlight: function (code) {
@@ -34,22 +37,40 @@
         },
         data() {
             return {
-                article: '',
+                article: {},
+                content: '',
                 show: false
             }
         },
-        beforeCreate() {
-            // axios.get('../../../static/README.md')
-            var title = this.$route.params.title + '.md';
-            axios.get('../../../static/articles/' + title)
-                .then((res) => {
-                    var mdData = res.data + '';
-                    this.article = marked(mdData);
+        created() {
+            let params = this.$route.params;
+            this.getData({id: params.id, title: params.title});
+        },
+        methods: {
+            getData(options) {
+                this.show = false;
+                this.$http.get('/api/article/getArticleById', {
+                    params: {id: options.id, title: options.title}
+                }).then((res) => {
+                    if (res.data.status === false) {
+                        this.$message.error(res.data.msg);
+                        this.$set(this.article, 'title', res.data.msg);
+                        return;
+                    }
+                    this.article = res.data[0];
+                    this.article.post_time = this.timeFormat(this.article.post_time);
+                    this.content = marked(this.article.content);
                     this.show = true;
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
+                }).catch((err) => {
+                    console.log('err', err);
+                });
+            }
+        },
+        computed: {
+            ...mapState(['currentArticle']),
+            changeData() {
+                this.getData({id: this.currentArticle.id, title: this.currentArticle.title});
+            }
         }
     }
 </script>
@@ -75,6 +96,10 @@
     }
 
     .article-title .title-icon {
+        margin-right: 5px;
+    }
+
+    .article-tags span {
         margin-right: 5px;
     }
 </style>

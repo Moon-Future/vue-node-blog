@@ -10,6 +10,7 @@ export default {
         }
     },
     [types.CURRENT_ARTICLE](state, obj) {
+        obj.id == undefined ? false : state.currentArticle.id = obj.id;
         obj.title == undefined ? false : state.currentArticle.title = obj.title;
         obj.tag == undefined ? false : state.currentArticle.tag = obj.tag;
     },
