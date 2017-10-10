@@ -23,7 +23,7 @@
             <p class="currentArticle" v-if="currentArticle.title">当前正在阅读：<span @click="gotoCurrentArticle">{{ currentArticle.title }}</span></p>
             <div class="catalog-list" v-if="!crumbFlag[2]">
                 <ul>
-                    <li v-for="(article, i) in articles[key].data" :key="article.id">
+                    <li v-for="(article, i) in articleShow" :key="article.id">
                         <router-link to="" @click.native="articleSelect(article)"><p class="title">{{ i+1 }}、{{ article.title }}</p></router-link>
                         <p class="mes">
                             <span>{{ article.post_time }}</span>
@@ -59,7 +59,7 @@
                 },
                 loadFlag: false,
                 hasMore: true,
-                tagArticle: {},
+                articleShow: [],
                 key: 'all'
             }
         },
@@ -93,11 +93,13 @@
                 if (objAll.data.length === objAll.total) {
                     objTag.data = this.fileterData(objAll.data, objTag.name);
                     objTag.total = objTag.data.length;
+                    this.articleShow = objTag.data;
                 } else {
                     if (objTag.data.length === 0 || objTag.data.length !== objTag.total) {
                         this.loadData();
                     }
                 }
+                this.hasMore = (objTag.data.length === objTag.total) ? false : true;
             },
             changeTagStatus() {
                 this.tags.map(function(tag){
@@ -105,6 +107,7 @@
                 });
                 this.crumbFlagHanle([{'index':1,'newValue':false}]);
                 this.key = 'all';
+                this.articleShow = this.articles.all.data;
                 this.hasMore = (this.articles.all.data.length === this.articles.all.total) ? false : true;
             },
             searchArticle() {
@@ -156,6 +159,7 @@
                         })
                         this.articles[this.key].data = this.articles[this.key].data.concat(dataArr);
                         this.hasMore = (this.articles[this.key].total <= this.articles[this.key].data.length) ? false : true;
+                        this.articleShow = this.articles[this.key].data;
                     }).catch((err) => {
                         console.log('err', err);
                     });

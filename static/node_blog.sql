@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2017-10-09 21:55:28
+Date: 2017-10-10 18:17:05
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -114,6 +114,16 @@ INSERT INTO `tag_links` VALUES ('4', '2');
 INSERT INTO `tag_links` VALUES ('2', '3');
 INSERT INTO `tag_links` VALUES ('5', '4');
 INSERT INTO `tag_links` VALUES ('6', '5');
+INSERT INTO `tag_links` VALUES ('1', '4');
+INSERT INTO `tag_links` VALUES ('1', '3');
+INSERT INTO `tag_links` VALUES ('1', '2');
+INSERT INTO `tag_links` VALUES ('1', '5');
+INSERT INTO `tag_links` VALUES ('1', '6');
+INSERT INTO `tag_links` VALUES ('1', '7');
+INSERT INTO `tag_links` VALUES ('1', '8');
+INSERT INTO `tag_links` VALUES ('1', '9');
+INSERT INTO `tag_links` VALUES ('1', '10');
+INSERT INTO `tag_links` VALUES ('1', '11');
 
 -- ----------------------------
 -- Table structure for users
