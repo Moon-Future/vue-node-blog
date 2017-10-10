@@ -4,6 +4,7 @@ var sqlMap = require('./sqlMap');
 var formidable = require('formidable');
 var fs = require('fs');
 var uuid = require('node-uuid');
+const LIMIT = 10;
 
 // 连接数据库
 var pool = mysql.createPool({
@@ -53,26 +54,6 @@ var mergeData = function(data, flag) {
                 obj[tmp.id].tags.push({id: tagArr[j].split('_')[0], name: tagArr[j].split('_')[1]})
             }
         }
-
-        // if (obj[tmp.id]) {
-        //     tmp.tid ? obj[tmp.id].tags.push({'id':tmp.tid, 'name':tmp.name}) : false;
-        // } else {
-        //     obj[tmp.id] = {};
-        //     obj[tmp.id].id = tmp.id;
-        //     obj[tmp.id].user_id = tmp.user_id;
-        //     obj[tmp.id].title = tmp.title;
-        //     obj[tmp.id].type = tmp.type;
-        //     obj[tmp.id].loadURL = tmp.loadURL;
-        //     obj[tmp.id].tags = [];
-        //     tmp.tid ? obj[tmp.id].tags.push({'id':tmp.tid, 'name':tmp.name}) : false;
-        //     obj[tmp.id].summary = tmp.summary;
-        //     obj[tmp.id].post_time = tmp.post_time;
-        //     obj[tmp.id].upd_time = tmp.upd_time ? tmp.upd_time : '';
-        //     obj[tmp.id].view = tmp.view;
-        //     obj[tmp.id].start = tmp.start;
-        //     obj[tmp.id].state = tmp.state;
-        //     obj[tmp.id].cover = tmp.cover;
-        // }
     }
     for(let i in obj){
         obj[i].state !== 0 ? (flag ? obj[i].state === 1 ? arr.push(obj[i]) : false : arr.push(obj[i])) : arrDel.push(obj[i]);
@@ -84,10 +65,22 @@ module.exports = {
     // 文章
     getArticleAll(req, res, next) {
         pool.getConnection((err, connection) => {
-            let params = req.query, index = params.index, limit = params.limit,
-                sql = sqlMap.article.queryAll + (limit ? ' LIMIT ' + limit : '' );
+            let params = req.query, noDel = params.noDel, limit = params.limit, start = limit > LIMIT ? limit - LIMIT : 0,
+                sqlGetLen = '; SELECT COUNT(1) AS total FROM articles',
+                sql = sqlMap.article.queryAll + (limit ? ' LIMIT ' + start + ',' + limit : '' );
+            sql += (limit && limit <= LIMIT) ? sqlGetLen : '';
             connection.query(sql, (err, result) => {
-                res.json(result ? mergeData(result, index) : result);
+                let total = 0, data;
+                if (limit && limit <= LIMIT) {
+                    data = result[0];
+                    total = result[1][0].total;
+                    res.json({
+                        data: mergeData(data, noDel),
+                        total: total
+                    });
+                } else {
+                    res.json(result ? mergeData(result, noDel) : result);
+                }
                 connection.release();
             })
         })

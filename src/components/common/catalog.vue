@@ -32,7 +32,8 @@
                         </p>
                     </li>
                 </ul>
-                <el-button type="primary" size="mini" class="load-more">加载更多...</el-button>
+                <el-button v-if="hasMore" type="primary" size="mini" :loading="loadFlag" class="load-more" @click="loadMore"><span v-show="!loadFlag">加载更多...</span><span v-show="loadFlag">加载中</span></el-button>
+                <p class="no-more" v-if="!hasMore">没有更多了</p>
             </div>
             <div class="article-chapter" v-if="crumbFlag[2]">
                 {{ crumbFlag[2] }}
@@ -47,29 +48,36 @@
     export default {
         data() {
             return {
+                LIMIT: 10,
                 tagOn: false,
                 tags: [],
                 articles: [],
-                limit: 10
+                limit: 10,
+                total: 0,
+                loadFlag: false,
+                hasMore: true
 //              crumbFlag: [true, false, false], // 三级面包屑   // 目录/标签/文章标题       crumbCata/crumbSub/crumbTitle
 //              currentArticle: {title: '', tag: ''}
             }
         },
         created() {
-            var self = this;
             axios.get('/api/article/getArticleAll', {
-                    params: {index: true, limit: this.limit}
+                    params: {noDel: true, limit: this.limit}
                 }).then((res) => {
-                    self.articles = res.data;
-                    self.articles.map((article) => {
-                        article.post_time = self.timeFormat(article.post_time);
+                    this.articles = res.data.data;
+                    this.total = res.data.total;
+                    this.articles.map((article) => {
+                        article.post_time = this.timeFormat(article.post_time);
                     })
+                    if (this.total <= this.articles.length) {
+                        this.hasMore = false;
+                    }
                 }).catch((err) => {
                     console.log('err', err);
                 });
             axios.get('/api/tag/getTagAll')
                 .then((res) => {
-                    self.tags = res.data;
+                    this.tags = res.data;
                 })
                 .catch((err) => {
                     console.log('err', err);
@@ -117,11 +125,30 @@
                 hiddenPanel: 'changeCatalogDiaplay',
                 crumbFlagHanle: 'crumbFlag',
                 currentArticleHanle: 'currentArticle'
-            })
+            }),
+            loadMore() {
+                this.limit += this.LIMIT;
+                this.loadFlag = true;
+                axios.get('/api/article/getArticleAll', {
+                        params: {noDel: true, limit: this.limit}
+                    }).then((res) => {
+                        this.loadFlag = false;
+                        let dataArr = res.data;
+                        dataArr.map((data) => {
+                            data.post_time = this.timeFormat(data.post_time);
+                        })
+                        this.articles = this.articles.concat(dataArr);
+                        if (this.total <= this.articles.length) {
+                            this.hasMore = false;
+                        }
+                    }).catch((err) => {
+                        console.log('err', err);
+                    });
+            }
         },
         computed: {
             fileterArticle() {
-                var self = this;
+                let self = this;
                 return this.articles.filter(function(article){
                     if(self.crumbFlag[1]){
                         for(let i = 0, len = article.tags.length; i < len; i++){
@@ -210,7 +237,7 @@
     
     .catalog-list .title {
         margin-bottom: 2px;
-        white-space: nowrap;
+        /*white-space: nowrap;*/
         text-overflow: ellipsis;
         overflow: hidden;
         color: #fff;
@@ -271,5 +298,10 @@
 
     .load-more {
         margin-top: 10px
+    }
+
+    .no-more {
+        color: #97a8be;
+        font-size: 13px;
     }
 </style>

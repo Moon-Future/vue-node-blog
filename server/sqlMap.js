@@ -30,17 +30,3 @@ var sqlMap = {
 }
 
 module.exports = sqlMap;
-
-
-// SELECT count(1) from (
-
-
-// SELECT a.id FROM articles AS a
-// LEFT JOIN tag_links AS b ON a.id = b.aid
-// LEFT JOIN tags AS c ON b.tid = c.id
-// GROUP BY a.id
-
-
-// ) as aa
-
-// SELECT count(1) FROM articles

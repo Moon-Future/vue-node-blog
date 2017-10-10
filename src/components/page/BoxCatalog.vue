@@ -42,7 +42,7 @@
         },
         created() {
             axios.get('/api/article/getArticleAll', {
-                    params: {index: true}
+                    params: {noDel: true}
                 }).then((res) => {
                     this.articles = res.data;
                     this.articles.map((article) => {
