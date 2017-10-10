@@ -23,7 +23,7 @@
             <p class="currentArticle" v-if="currentArticle.title">当前正在阅读：<span @click="gotoCurrentArticle">{{ currentArticle.title }}</span></p>
             <div class="catalog-list" v-if="!crumbFlag[2]">
                 <ul>
-                    <li v-for="(article, i) in fileterArticle" :key="article.id">
+                    <li v-for="(article, i) in articles[key].data" :key="article.id">
                         <router-link to="" @click.native="articleSelect(article)"><p class="title">{{ i+1 }}、{{ article.title }}</p></router-link>
                         <p class="mes">
                             <span>{{ article.post_time }}</span>
@@ -32,7 +32,7 @@
                         </p>
                     </li>
                 </ul>
-                <el-button v-if="hasMore" type="primary" size="mini" :loading="loadFlag" class="load-more" @click="loadMore"><span v-show="!loadFlag">加载更多...</span><span v-show="loadFlag">加载中</span></el-button>
+                <el-button v-if="hasMore" type="primary" size="mini" :loading="loadFlag" class="load-more" @click="loadData"><span v-show="!loadFlag">加载更多...</span><span v-show="loadFlag">加载中</span></el-button>
                 <p class="no-more" v-if="!hasMore">没有更多了</p>
             </div>
             <div class="article-chapter" v-if="crumbFlag[2]">
@@ -44,40 +44,38 @@
 
 <script>
     import {mapState, mapActions} from 'vuex'
-    import axios from 'axios'
     export default {
         data() {
             return {
-                LIMIT: 10,
+                LIMIT_STEP: 10,
                 tagOn: false,
                 tags: [],
-                articles: [],
-                limit: 10,
-                total: 0,
+                articles: {
+                    all: {
+                        total: 0,
+                        limit: 0,
+                        data: []
+                    }
+                },
                 loadFlag: false,
-                hasMore: true
-//              crumbFlag: [true, false, false], // 三级面包屑   // 目录/标签/文章标题       crumbCata/crumbSub/crumbTitle
-//              currentArticle: {title: '', tag: ''}
+                hasMore: true,
+                tagArticle: {},
+                key: 'all'
             }
         },
         created() {
-            axios.get('/api/article/getArticleAll', {
-                    params: {noDel: true, limit: this.limit}
-                }).then((res) => {
-                    this.articles = res.data.data;
-                    this.total = res.data.total;
-                    this.articles.map((article) => {
-                        article.post_time = this.timeFormat(article.post_time);
-                    })
-                    if (this.total <= this.articles.length) {
-                        this.hasMore = false;
-                    }
-                }).catch((err) => {
-                    console.log('err', err);
-                });
-            axios.get('/api/tag/getTagAll')
+            this.loadData();
+            this.$http.get('/api/tag/getTagAll')
                 .then((res) => {
                     this.tags = res.data;
+                    for (let i = 0, len = this.tags.length; i < len; i++) {
+                        this.articles[this.tags[i].id] = {
+                            name: this.tags[i].name,
+                            total: 0,
+                            limit: 0,
+                            data: []
+                        }
+                    }
                 })
                 .catch((err) => {
                     console.log('err', err);
@@ -90,12 +88,24 @@
                 })
                 tagObj.bgColor = '#1D8CE0';
                 this.crumbFlagHanle([{'index':0,'newValue':true},{'index':1,'newValue':tagObj.name},{'index':2,'newValue':false}]);
+                this.key = tagObj.id;
+                let objAll = this.articles.all, objTag = this.articles[this.key];
+                if (objAll.data.length === objAll.total) {
+                    objTag.data = this.fileterData(objAll.data, objTag.name);
+                    objTag.total = objTag.data.length;
+                } else {
+                    if (objTag.data.length === 0 || objTag.data.length !== objTag.total) {
+                        this.loadData();
+                    }
+                }
             },
             changeTagStatus() {
                 this.tags.map(function(tag){
                     delete tag.bgColor;
                 });
                 this.crumbFlagHanle([{'index':1,'newValue':false}]);
+                this.key = 'all';
+                this.hasMore = (this.articles.all.data.length === this.articles.all.total) ? false : true;
             },
             searchArticle() {
                 
@@ -126,41 +136,42 @@
                 crumbFlagHanle: 'crumbFlag',
                 currentArticleHanle: 'currentArticle'
             }),
-            loadMore() {
-                this.limit += this.LIMIT;
+            loadData() {
+                let url = '/api/article/' + (this.key === 'all' ? 'getArticleAll' : 'getArticleByTagId');
+                this.articles[this.key].limit += this.LIMIT_STEP;
                 this.loadFlag = true;
-                axios.get('/api/article/getArticleAll', {
-                        params: {noDel: true, limit: this.limit}
+                this.$http.get(url, {
+                        params: {noDel: true, limit: this.articles[this.key].limit, tagId: this.key}
                     }).then((res) => {
                         this.loadFlag = false;
-                        let dataArr = res.data;
+                        let dataArr;
+                        if (res.data.data !== undefined) {
+                            dataArr = res.data.data;
+                            this.articles[this.key].total = res.data.total;
+                        } else {
+                            dataArr = res.data;
+                        }
                         dataArr.map((data) => {
                             data.post_time = this.timeFormat(data.post_time);
                         })
-                        this.articles = this.articles.concat(dataArr);
-                        if (this.total <= this.articles.length) {
-                            this.hasMore = false;
-                        }
+                        this.articles[this.key].data = this.articles[this.key].data.concat(dataArr);
+                        this.hasMore = (this.articles[this.key].total <= this.articles[this.key].data.length) ? false : true;
                     }).catch((err) => {
                         console.log('err', err);
                     });
-            }
-        },
-        computed: {
-            fileterArticle() {
+            },
+            fileterData(datas, name) {
                 let self = this;
-                return this.articles.filter(function(article){
-                    if(self.crumbFlag[1]){
-                        for(let i = 0, len = article.tags.length; i < len; i++){
-                            if(article.tags[i].name.toLowerCase()  == self.crumbFlag[1].toLowerCase() ){
-                                return article;
-                            }
+                return datas.filter(function(data){
+                    for(let i = 0, len = data.tags.length; i < len; i++){
+                        if(data.tags[i].name.toLowerCase() === name.toLowerCase()){
+                            return data;
                         }
-                    }else{
-                        return article;
                     }
                 })
             },
+        },
+        computed: {
             ...mapState(['catalogDisplay', 'crumbFlag', 'currentArticle']),
         }
     }

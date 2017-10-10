@@ -108,6 +108,29 @@ module.exports = {
             })
         })
     },
+    getArticleByTagId(req, res, next) {
+        pool.getConnection((err, connection) => {
+            let params = req.query, tagId = params.tagId, noDel = params.noDel,
+                limit = params.limit, start = limit > LIMIT ? limit - LIMIT : 0,
+                sqlGetLen = '; SELECT COUNT(1) AS total FROM tag_links WHERE tid = ' + tagId,
+                sql = sqlMap.article.queryByTagId + (limit ? ' LIMIT ' + start + ',' + limit : '' );
+            sql += (limit && limit <= LIMIT) ? sqlGetLen : '';
+            connection.query(sql, [tagId], (err, result) => {
+                let total = 0, data;
+                if (limit && limit <= LIMIT) {
+                    data = result[0];
+                    total = result[1][0].total;
+                    res.json({
+                        data: mergeData(data, noDel),
+                        total: total
+                    });
+                } else {
+                    res.json(result ? mergeData(result, noDel) : result);
+                }
+                connection.release();
+            })
+        })
+    },
     // 更新文章
     updArticle(req, res, next) {
         pool.getConnection((err, connection) => {

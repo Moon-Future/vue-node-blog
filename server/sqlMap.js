@@ -6,6 +6,23 @@ var sqlMap = {
         updById: 'UPDATE articles SET ? FROM WHERE id = ?',
         insert: 'INSERT INTO articles(user_id, title, state, type, loadURL, summary, post_time, upd_time, view, start, cover) VALUES (?,?,?,?,?,?,?,?,?,?,?)',
         queryByTitle: 'SELECT * FROM articles WHERE title = ?',
+        queryByTagId: "SELECT "+
+                            "c.*, ( "+
+                                "SELECT "+
+                                    "GROUP_CONCAT(aa.id, '_', aa. NAME) "+
+                                "FROM "+
+                                    "tags AS aa "+
+                                "LEFT JOIN tag_links AS bb ON aa.id = bb.tid "+
+                                "WHERE "+
+                                    "bb.aid = c.id "+
+                            ") AS tag_string "+
+                        "FROM "+
+                            "tags AS a "+
+                        "LEFT JOIN tag_links AS b ON a.id = b.tid "+
+                        "LEFT JOIN articles AS c ON b.aid = c.id "+
+                        "WHERE "+
+                            "a.id = ? "+
+                        "AND c.id IS NOT NULL"
     },
     tag: {
         queryById: 'SELECT * FROM articles WHERE id=?',

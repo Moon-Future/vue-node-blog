@@ -10,6 +10,9 @@ router.get('/article/getArticleAll', (req, res, next) => {
 router.get('/article/getArticleById', (req, res, next) => {
     api.getArticleById(req, res, next);
 })
+router.get('/article/getArticleByTagId', (req, res, next) => {
+    api.getArticleByTagId(req, res, next);
+})
 // 获取标签
 router.get('/tag/getTagAll', (req, res, next) => {
     api.getTagAll(req, res, next);
