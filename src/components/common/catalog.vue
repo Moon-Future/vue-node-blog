@@ -95,8 +95,10 @@
                     objTag.total = objTag.data.length;
                     this.articleShow = objTag.data;
                 } else {
-                    if (objTag.data.length === 0 || objTag.data.length !== objTag.total) {
+                    if (objTag.data.length === 0 && objTag.limit === 0) {
                         this.loadData();
+                    } else {
+                        this.articleShow = objTag.data;
                     }
                 }
                 this.hasMore = (objTag.data.length === objTag.total) ? false : true;
