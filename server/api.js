@@ -104,7 +104,10 @@ module.exports = {
                     data = mergeData(result, false).articles;
                     data[0].content = content || '';
                 } else {
-                    data = result;
+                    data = {
+                        status: false,
+                        msg: '没有找到文章'
+                    }
                 }
                 res.json(data);
                 connection.release();

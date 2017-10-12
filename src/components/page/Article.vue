@@ -3,8 +3,9 @@
         <article class="article-detail">
             <div class="article-title">
                 {{ changeData }}
+                <div v-if="loading"><i class="el-icon-loading"></i></div>
                 <h1>{{ article.title }}</h1>
-                <div class="article-mes">
+                <div class="article-mes" v-if="show">
                     <span class="article-postdata">{{ article.post_time }}</span>
                     <span class="article-view"><i class="el-icon-search title-icon"></i>{{ article.view }}</span>
                     <span class="article-start"><i class="title-icon el-icon-star-on"></i>{{ article.start }}</span>
@@ -39,7 +40,8 @@
             return {
                 article: {},
                 content: '',
-                show: false
+                show: false,
+                loading: false
             }
         },
         created() {
@@ -49,11 +51,12 @@
         methods: {
             getData(options) {
                 this.show = false;
+                this.loading = true;
                 this.$http.get('/api/article/getArticleById', {
                     params: {id: options.id, title: options.title}
                 }).then((res) => {
+                    this.loading = false;
                     if (res.data.status === false) {
-                        this.$message.error(res.data.msg);
                         this.$set(this.article, 'title', res.data.msg);
                         return;
                     }
