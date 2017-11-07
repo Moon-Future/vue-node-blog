@@ -1,5 +1,5 @@
 <template>
-    <div class="article-comment">
+    <div class="article-comment" id="liuyan">
         <commentForm v-if="commentFormShow" @formHanle="formShowState"></commentForm>
         <div class="comment-detail">
             <div class="comment-count">评论：（共 {{ commentLen }} 条）</div>

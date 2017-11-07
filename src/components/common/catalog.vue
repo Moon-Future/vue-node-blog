@@ -35,8 +35,29 @@
                 <el-button v-if="hasMore" type="primary" size="mini" :loading="loadFlag" class="load-more" @click="loadData"><span v-show="!loadFlag">加载更多...</span><span v-show="loadFlag">加载中</span></el-button>
                 <p class="no-more" v-if="!hasMore">没有更多了</p>
             </div>
-            <div class="article-chapter" v-if="crumbFlag[2]">
-                <el-tree :data="currentArticle.catalog" :props="defaultProps" :default-expand-all="true" @node-click="handleNodeClick"></el-tree>
+            <div class="article-chapter" v-if="crumbFlag[2] && currentArticle.catalog.length != 0">
+                <!-- <el-tree :data="currentArticle.catalog" :props="defaultProps" :default-expand-all="true" @node-click="handleNodeClick"></el-tree> -->
+                <ul v-for="(data, i) in currentArticle.catalog" :key="i">
+                    <li><a :href="'#' + data.id" >{{ data.label }}</a></li>
+                    <ul v-for="child1 in data.children">
+                        <li><a :href="'#' + child1.id" >{{ child1.label }}</a></li>
+                        <ul v-for="child2 in child1.children">
+                            <li><a :href="'#' + child2.id" >{{ child2.label }}</a></li>
+                            <ul v-for="child3 in child2.children">
+                                <li><a :href="'#' + child3.id" >{{ child3.label }}</a></li>
+                                <ul v-for="child4 in child3.children">
+                                    <li><a :href="'#' + child4.id" >{{ child4.label }}</a></li>
+                                    <ul v-for="child5 in child4.children">
+                                        <li><a :href="'#' + child5.id" >{{ child5.label }}</a></li>
+                                    </ul>
+                                </ul>
+                            </ul>
+                        </ul>
+                    </ul>
+                </ul>
+                <ul>
+                    <li><a href="#liuyan" >留言</a></li>
+                </ul>
             </div>
         </div>
     </transition>
@@ -334,8 +355,25 @@
         margin-top: 10px;
     }
 
-    .article-chapter .el-tree {
-        background: none;
-        border: none;
+    .article-chapter ul {
+        list-style: none;
+        padding-left: 15px;
+        margin: 5px 0;
+    }
+
+    .article-chapter>ul {
+        padding-left: 0;
+    }
+
+    .article-chapter ul li a {
+        display: block;
+        color: #fff;
+        font-size: 14px;
+        padding: 5px;
+    }
+
+    .article-chapter ul li a:hover {
+        background: #00a8e6;
+        /* background: #444; */
     }
 </style>

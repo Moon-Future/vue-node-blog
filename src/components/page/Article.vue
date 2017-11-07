@@ -48,6 +48,7 @@
         created() {
             let params = this.$route.params;
             this.getData({id: params.id, title: params.title});
+            this.currentArticleHanle({catalog: []});
         },
         methods: {
             ...mapActions({
@@ -70,14 +71,21 @@
                     this.show = true;
                     // 文章目录处理
                     this.treeData = [];
+                    this.currentArticleHanle({catalog: this.treeData});
                     let hs = this.content.match(/<h\d{1}.*<\/h\d{1}>*/g);
-                    hs.shift();
+                    if (!hs) {
+                        return;
+                    }
+                    // hs.shift();
                     for (let i = 0, len = hs.length; i < len; i++) {
                         let h = hs[i],
                             text = h.match(/>(.*)</)[1],
                             tag = h.match(/^<(h\d{1})/)[1],
                             num = h.match(/^<h(\d{1})/)[1],
-                            obj = {label: text, num: num, children: []};
+                            id = "item" + i,
+                            obj = {label: text, num: num, id: id, children: []},
+                            str = h.replace(/id=".*"/, 'id=' + id);
+                        this.content = this.content.replace(h, str);
                         this.treeDataHandle(obj, this.treeData);
                     }
                     this.currentArticleHanle({catalog: this.treeData});
