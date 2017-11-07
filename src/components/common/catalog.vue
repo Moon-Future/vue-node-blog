@@ -36,7 +36,7 @@
                 <p class="no-more" v-if="!hasMore">没有更多了</p>
             </div>
             <div class="article-chapter" v-if="crumbFlag[2]">
-                {{ crumbFlag[2] }}
+                <el-tree :data="currentArticle.catalog" :props="defaultProps" :default-expand-all="true" @node-click="handleNodeClick"></el-tree>
             </div>
         </div>
     </transition>
@@ -60,7 +60,11 @@
                 loadFlag: false,
                 hasMore: true,
                 articleShow: [],
-                key: 'all'
+                key: 'all',
+                defaultProps: {
+                    children: 'children',
+                    label: 'label'
+                }
             }
         },
         created() {
@@ -176,6 +180,10 @@
                     }
                 })
             },
+            // 点击目录
+            handleNodeClick() {
+
+            }
         },
         computed: {
             ...mapState(['catalogDisplay', 'crumbFlag', 'currentArticle']),
@@ -320,5 +328,14 @@
     .no-more {
         color: #97a8be;
         font-size: 13px;
+    }
+
+    .article-chapter {
+        margin-top: 10px;
+    }
+
+    .article-chapter .el-tree {
+        background: none;
+        border: none;
     }
 </style>

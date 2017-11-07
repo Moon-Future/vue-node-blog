@@ -23,7 +23,7 @@
 </template>
 
 <script>
-    import {mapState} from 'vuex'
+    import {mapState, mapActions} from 'vuex'
     import marked from 'marked'
     import Comment from './Comment'
     marked.setOptions({
@@ -41,7 +41,8 @@
                 article: {},
                 content: '',
                 show: false,
-                loading: false
+                loading: false,
+                treeData: []
             }
         },
         created() {
@@ -49,6 +50,9 @@
             this.getData({id: params.id, title: params.title});
         },
         methods: {
+            ...mapActions({
+                currentArticleHanle: 'currentArticle'
+            }),
             getData(options) {
                 this.show = false;
                 this.loading = true;
@@ -64,9 +68,34 @@
                     this.article.post_time = this.timeFormat(this.article.post_time);
                     this.content = marked(this.article.content);
                     this.show = true;
+                    // 文章目录处理
+                    this.treeData = [];
+                    let hs = this.content.match(/<h\d{1}.*<\/h\d{1}>*/g);
+                    hs.shift();
+                    for (let i = 0, len = hs.length; i < len; i++) {
+                        let h = hs[i],
+                            text = h.match(/>(.*)</)[1],
+                            tag = h.match(/^<(h\d{1})/)[1],
+                            num = h.match(/^<h(\d{1})/)[1],
+                            obj = {label: text, num: num, children: []};
+                        this.treeDataHandle(obj, this.treeData);
+                    }
+                    this.currentArticleHanle({catalog: this.treeData});
                 }).catch((err) => {
                     console.log('err', err);
                 });
+            },
+            treeDataHandle(obj, arr) {
+                let len = arr.length, index = len - 1;
+                if (arr.length === 0) {
+                    arr.push(obj);
+                } else {
+                    if (arr[index].num < obj.num) {
+                        this.treeDataHandle(obj, arr[index].children);
+                    } else {
+                        arr.push(obj);
+                    }
+                }
             }
         },
         computed: {

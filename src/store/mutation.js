@@ -13,6 +13,7 @@ export default {
         obj.id == undefined ? false : state.currentArticle.id = obj.id;
         obj.title == undefined ? false : state.currentArticle.title = obj.title;
         obj.tag == undefined ? false : state.currentArticle.tag = obj.tag;
+        obj.catalog == undefined ? false : state.currentArticle.catalog = obj.catalog;
     },
     [types.BOX_SWITCH](state) {
         state.boxCol = state.boxCol == 12 ? 24 : 12;
