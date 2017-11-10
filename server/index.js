@@ -16,6 +16,9 @@ app.use(session({
     saveUninitialized: true
 }));
 
+// 部署上线时读取静态文件
+// app.use(express.static(path.join(__dirname, '../dist')));
+
 // 后端api路由
 app.use('/api', routerApi);
 

@@ -17,7 +17,7 @@ Vue + Node + MySql 搭建个人博客，一步一个脚印
 ```npm install cnpm -g --registry=https://registry.npm.taobao.org```   
 cnpm跟npm用法完全一致，只是在执行命令时将npm改为cnpm。  
 现在来安装vue-cli：输入  
-```cnpm install -g vue-cli``` 或者 ```cnpm install -g vue-cli```  
+```npm install -g vue-cli``` 或者 ```cnpm install -g vue-cli```  
 命令中 -g 表示全局安装，会安装到node安装目录下的node_modules文件夹下，看看里面是不是多了vue-cli文件夹
 
 ## vue-cli快速构建项目
