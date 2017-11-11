@@ -84,7 +84,7 @@
                             num = h.match(/^<h(\d{1})/)[1],
                             id = "item" + i,
                             obj = {label: text, num: num, id: id, children: []},
-                            str = h.replace(/id=".*"/, 'id=' + id);
+                            str = h.replace(/id=".*"/, 'id="' + id + '"');
                         this.content = this.content.replace(h, str);
                         this.treeDataHandle(obj, this.treeData);
                     }

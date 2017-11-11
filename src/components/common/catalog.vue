@@ -37,17 +37,17 @@
             </div>
             <div class="article-chapter" v-if="crumbFlag[2] && currentArticle.catalog.length != 0">
                 <!-- <el-tree :data="currentArticle.catalog" :props="defaultProps" :default-expand-all="true" @node-click="handleNodeClick"></el-tree> -->
-                <ul v-for="(data, i) in currentArticle.catalog" :key="i">
+                <ul v-for="data in currentArticle.catalog" :key="data.num">
                     <li><a :href="'#' + data.id" >{{ data.label }}</a></li>
-                    <ul v-for="child1 in data.children">
+                    <ul v-for="child1 in data.children" :key="child1.num">
                         <li><a :href="'#' + child1.id" >{{ child1.label }}</a></li>
-                        <ul v-for="child2 in child1.children">
+                        <ul v-for="child2 in child1.children" :key="child2.num">
                             <li><a :href="'#' + child2.id" >{{ child2.label }}</a></li>
-                            <ul v-for="child3 in child2.children">
+                            <ul v-for="child3 in child2.children" :key="child3.num">
                                 <li><a :href="'#' + child3.id" >{{ child3.label }}</a></li>
-                                <ul v-for="child4 in child3.children">
+                                <ul v-for="child4 in child3.children" :key="child4.num">
                                     <li><a :href="'#' + child4.id" >{{ child4.label }}</a></li>
-                                    <ul v-for="child5 in child4.children">
+                                    <ul v-for="child5 in child4.children" :key="child5.num">
                                         <li><a :href="'#' + child5.id" >{{ child5.label }}</a></li>
                                     </ul>
                                 </ul>
