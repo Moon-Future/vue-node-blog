@@ -4,6 +4,7 @@ var sqlMap = require('./sqlMap');
 var formidable = require('formidable');
 var fs = require('fs');
 var uuid = require('node-uuid');
+var marked = require('marked');
 const LIMIT = 10;
 
 // 连接数据库
@@ -14,6 +15,12 @@ var pool = mysql.createPool({
     database: mysqlConf.mysql.database,
     port: mysqlConf.mysql.port,
     multipleStatements: true    // 多语句查询
+});
+
+marked.setOptions({
+    highlight: function (code) {
+        return require('highlight.js').highlightAuto(code).value;
+    }
 });
 
 // 向前台返回JSON方法的简单封装
@@ -88,15 +95,23 @@ module.exports = {
     getArticleById(req, res, next) {
         let params = req.query, id = params.id, title = params.title,
             filePath = '../static/articles/' + title + '.md',
-            content, data;
+            fileHtml = '../static/articles/' + title + '.html',
+            content, data, stat;
         try {
-            content = fs.readFileSync(filePath, 'utf-8');
+            stat = fs.statSync(fileHtml);
+            content = fs.readFileSync(fileHtml, 'utf-8');
         } catch(e) {
-            res.json({
-                status: false,
-                msg: '没有找到文章'
-            })
-            return;
+            try {
+                content = fs.readFileSync(filePath, 'utf-8');
+                content = marked(content);
+                fs.writeFileSync(fileHtml, content);
+            } catch(e) {
+                res.json({
+                    status: false,
+                    msg: '没有找到文章'
+                })
+                return;
+            }
         }
         pool.getConnection((err, connection) => {
             connection.query(sqlMap.article.queryById, [id], (err, result) => {

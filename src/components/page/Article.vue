@@ -24,13 +24,13 @@
 
 <script>
     import {mapState, mapActions} from 'vuex'
-    import marked from 'marked'
+    // import marked from 'marked'
     import Comment from './Comment'
-    marked.setOptions({
-        highlight: function (code) {
-            return require('highlight.js').highlightAuto(code).value;
-        }
-    });
+    // marked.setOptions({
+    //     highlight: function (code) {
+    //         return require('highlight.js').highlightAuto(code).value;
+    //     }
+    // });
     export default {
         name: 'article',
         components: {
@@ -67,7 +67,8 @@
                     }
                     this.article = res.data[0];
                     this.article.post_time = this.timeFormat(this.article.post_time);
-                    this.content = marked(this.article.content);
+                    // this.content = marked(this.article.content);
+                    this.content = this.article.content;
                     this.show = true;
                     // 文章目录处理
                     this.treeData = [];
