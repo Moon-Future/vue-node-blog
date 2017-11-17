@@ -3,8 +3,8 @@ module.exports = {
     mysql: {
         host: 'localhost',
         user: 'root',
-        password: '0717',
-        database: 'node_blog',
+        password: '8023',
+        database: 'myblog',
         port: '3306'
     }
 }
