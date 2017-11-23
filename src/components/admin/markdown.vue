@@ -10,7 +10,6 @@
             <div class="title">
                 标题：<input type="text" v-model="title" :title="title">
             </div>
-            <el-button size="small" type="primary" class="coverPic">来张封面图？</el-button>
             <markdown-editor v-model="content" :configs="configs" ref="markdownEditor"></markdown-editor>
             <div class="tag">
                 标签：
@@ -77,7 +76,7 @@
             if (query.title) {
                 this.title = query.title;
                 this.$http.get('/api/article/getArticleById', {
-                        params: {id: query.id, title: this.title}
+                        params: {id: query.id, title: this.title, editor: true}
                     }).then((res) => {
                         let data = res.data;
                         if (data.length !== 0) {
@@ -123,6 +122,7 @@
                     this.$message.error('提交失败,请完善内容');
                     return;
                 }
+                let summary = '', len = 250;
                 this.$http.post('/api/article/addArticle', {
                     user_id: this.userData.id,
                     title: this.title,

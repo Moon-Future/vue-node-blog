@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Marked TOC</title>
+</head>
+<body>
+    <h1 id="vue-node-blog">Vue-Node-Blog</h1>
+<p>Vue + Node + MySql 搭建个人博客，一步一个脚印</p>
+<p>[TOC]</p>
+<h1 id="1-">1、准备工作</h1>
+<h2 id="-node-">安装node，这是必须的</h2>
+<p>新版node自带npm，安装Node.js时会一起安装，npm的作用就是对Node.js依赖的包进行管理，也可以理解为用来安装/卸载Node.js需要装的东西。
+验证是否安装成功：<br><img src="http://otr9a8wg0.bkt.clouddn.com/17-7-28/48974756.jpg" alt="验证是否安装成功"><br>推荐windows下终端工具：<a href="http://cmder.net/">cmder</a></p>
+<h3 id="npm-vue-cli">npm安装vue-cli</h3>
+<h4 id="npm-vue-cli">npm安装vue-cli</h4>
+<h4 id="npm-vue-cli">npm安装vue-cli</h4>
+<h4 id="npm-vue-cli">npm安装vue-cli</h4>
+<h3 id="npm-vue-cli">npm安装vue-cli</h3>
+<h4 id="npm-vue-cli">npm安装vue-cli</h4>
+<h4 id="npm-vue-cli">npm安装vue-cli</h4>
+<h2 id="npm-vue-cli">npm安装vue-cli</h2>
+
+<p>使用npm下载依赖包是可能有些慢，所以这里可以换上淘宝的镜像cnpm。<br>打开终端(可以在任何位置)，输入<br><code>npm install cnpm -g --registry=https://registry.npm.taobao.org</code><br>cnpm跟npm用法完全一致，只是在执行命令时将npm改为cnpm。<br>现在来安装vue-cli：输入<br><code>cnpm install -g vue-cli</code> 或者 <code>cnpm install -g vue-cli</code><br>命令中 -g 表示全局安装，会安装到node安装目录下的node_modules文件夹下，看看里面是不是多了vue-cli文件夹</p>
+<h2 id="vue-cli-">vue-cli快速构建项目</h2>
+<ul>
+<li>选定一个你喜欢的文件夹，进入该文件夹下，之后创建的项目目录就在文件夹下</li>
+<li>打开终端，进入目标文件夹，以 D:\ 为例，使用webpack模板构建项目，输入 
+<code>vue init webpack my-blog</code><br>此时会自动从github下载文件目录到目标文件夹，上不了github的只能想办法了，从别处把构建好的文件全部拷过来也是可以的。</li>
+</ul>
+<h2 id="-">运行项目</h2>
+<ul>
+<li>进入my-blog文件夹，首先可以看到文件夹下有一个package.json文件，这个文件很重要，里面记录的项目的一些信息和运行成功运行项目必须的一些依赖包，之后安装的一些包也要记录到里面，方便别人拷贝过来你的项目时安装依赖，顺利运行。</li>
+<li>终端输入（要在此文件夹下）输入：<code>cnpm install</code> install可以简写为 i 即 <code>cnpm i</code>，cnpm安装应该挺快的，安装完成后会看到文件夹下多了个node_modules文件夹，里面就是运行项目所需要的一些依赖包，可以看到此文件夹虽然不大，但是里面文件个数有上千个，所以拷贝起来也是挺麻烦的，所以把依赖包记录到package.json里面，别人只要重新下载安装一下就好了，上传到github上也方便。</li>
+<li>启动项目：<br>输入 <code>npm run dev</code>，等待浏览器自动打开。<br>npm run dev 执行的命令即是package.json里 scripts下的dev：node build/dev-server.js<pre><code><span class="hljs-string">"scripts"</span>: {
+  <span class="hljs-string">"dev"</span>: <span class="hljs-string">"node build/dev-server.js"</span>,
+  <span class="hljs-string">"start"</span>: <span class="hljs-string">"node build/dev-server.js"</span>,
+  <span class="hljs-string">"build"</span>: <span class="hljs-string">"node build/build.js"</span>
+},
+</code></pre><img src="http://otr9a8wg0.bkt.clouddn.com/17-8-2/419050.jpg" alt="构建项目"> </li>
+</ul>
+<p>默认端口为8080，若此时8080端口被占用则会出错</p>
+<pre><code>...
+&gt; Starting dev server...
+events.js:160
+ throw er; // Unhandled 'error' event
+      ^
+<span class="hljs-keyword">Error: </span>listen EADDRINUSE :::8080  
+.....
+</code></pre><p>可以在D:\my-blog\config\index.js里修改端口  </p>
+<pre><code><span class="hljs-attribute">dev</span>: {
+    <span class="hljs-attribute">env</span>: require(<span class="hljs-string">'./dev.env'</span>),
+    <span class="hljs-attribute">port</span>: <span class="hljs-number">8080</span>, <span class="hljs-comment">// 端口号</span>
+    <span class="hljs-attribute">autoOpenBrowser</span>: true,
+    <span class="hljs-attribute">assetsSubDirectory</span>: <span class="hljs-string">'static'</span>,
+    <span class="hljs-attribute">assetsPublicPath</span>: <span class="hljs-string">'/'</span>,
+    <span class="hljs-attribute">proxyTable</span>: {},
+    <span class="hljs-comment">// CSS Sourcemaps off by default because relative paths are "buggy"</span>
+    <span class="hljs-comment">// with this option, according to the CSS-Loader README</span>
+    <span class="hljs-comment">// (https://github.com/webpack/css-loader#sourcemaps)</span>
+    <span class="hljs-comment">// In our experience, they generally work as expected,</span>
+    <span class="hljs-comment">// just be aware of this issue when enabling this option.</span>
+    <span class="hljs-attribute">cssSourceMap</span>: false
+  }
+</code></pre><p>启动成功后：</p>
+<pre><code>...
+Compiled successfully <span class="hljs-keyword">in</span> <span class="hljs-number">2057</span>ms 
+&gt; Listening at http:<span class="hljs-comment">//localhost:8080</span>
+</code></pre><p><img src="http://otr9a8wg0.bkt.clouddn.com/17-7-28/73659113.jpg" alt="启动成功"></p>
+<h1 id="2-">2、前段页面搭建</h1>
+<p><code>页面都是自己在网上搜索一些博客，然后仿照加点自己的想法写的，。。。</code></p>
+<h2 id="-">安装依赖</h2>
+<p>首先安装项目要用到的一些组件：</p>
+<ul>
+<li>element-ui：饿了么前段组件库，可以帮助快速建立起前段页面，少些很多样式</li>
+<li>vuex：vue状态管理</li>
+<li>axios：http...  </li>
+<li>mysql：</li>
+<li>express：</li>
+<li>body-parser：</li>
+</ul>
+<p>可以依次安装：  </p>
+<pre><code>cnpm <span class="hljs-keyword">install</span> <span class="hljs-keyword">element</span>-ui <span class="hljs-comment">--save  （回车）</span>
+cnpm <span class="hljs-keyword">install</span> vuex <span class="hljs-comment">--save  （回车）</span>
+cnpm <span class="hljs-keyword">install</span> axios <span class="hljs-comment">--save  （回车）</span>
+cnpm <span class="hljs-keyword">install</span> mysql： <span class="hljs-comment">--save  （回车）</span>
+cnpm <span class="hljs-keyword">install</span> express： <span class="hljs-comment">--save  （回车）</span>
+cnpm <span class="hljs-keyword">install</span> <span class="hljs-keyword">body</span>-parser <span class="hljs-comment">--save  （回车）</span>
+</code></pre><p>也可以一起安装：</p>
+<pre><code>cnpm <span class="hljs-keyword">install</span> <span class="hljs-keyword">element</span>-ui vuex axios mysql express <span class="hljs-keyword">body</span>-parser <span class="hljs-comment">--save  （回车）</span>
+</code></pre><p>--save意思就是将次依赖记录在package.json里，方便别人通过npm install下载使用</p>
+<pre><code><span class="hljs-string">"dependencies"</span>: {
+    <span class="hljs-string">"axios"</span>: <span class="hljs-string">"^0.16.2"</span>,
+    <span class="hljs-string">"element-ui"</span>: <span class="hljs-string">"^1.3.7"</span>,
+    <span class="hljs-string">"vue"</span>: <span class="hljs-string">"^2.3.3"</span>,  <span class="hljs-regexp">//</span> 项目构建完就有了
+    <span class="hljs-string">"vue-router"</span>: <span class="hljs-string">"^2.5.3"</span>,  <span class="hljs-regexp">//</span> 项目构建完就有了 当时<span class="hljs-string">"Install vue-router"</span>选了Yes
+    <span class="hljs-string">"vuex"</span>: <span class="hljs-string">"^2.3.1"</span>,
+    <span class="hljs-string">"mysql"</span>: <span class="hljs-string">"^2.14.0"</span>,
+    <span class="hljs-string">"body-parser"</span>: <span class="hljs-string">"^1.17.2"</span>,
+    <span class="hljs-string">"express"</span>: <span class="hljs-string">"^4.14.1"</span>
+  },
+</code></pre><h2 id="-">写页面</h2>
+<p>1、打开入口js文件main.js，引入element-ui组件来搭建页面 <a href="http://element.eleme.io/#/zh-CN/component/installation">element-ui 查看官网文档</a></p>
+<pre><code>&lt;!-- main.js<span class="hljs-function"> --&gt;</span>
+<span class="hljs-regexp">// The Vue build version to load with the `import` command
+//</span> (runtime-only <span class="hljs-keyword">or</span> standalone) has been set <span class="hljs-keyword">in</span> webpack.base.conf <span class="hljs-keyword">with</span> an alias.
+<span class="hljs-keyword">import</span> Vue <span class="hljs-keyword">from</span> <span class="hljs-string">'vue'</span>
+<span class="hljs-keyword">import</span> App <span class="hljs-keyword">from</span> <span class="hljs-string">'./App'</span>
+<span class="hljs-keyword">import</span> router <span class="hljs-keyword">from</span> <span class="hljs-string">'./router/index'</span>
+<span class="hljs-keyword">import</span> ElementUI <span class="hljs-keyword">from</span> <span class="hljs-string">'element-ui'</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">'element-ui/lib/theme-default/index.css'</span>
+
+Vue.use(ElementUI)
+Vue.config.productionTip = <span class="hljs-literal">false</span>
+
+<span class="hljs-comment">/* eslint-disable no-new */</span>
+<span class="hljs-keyword">new</span> Vue({
+  el: <span class="hljs-string">'#app'</span>,
+  router,
+  store,
+  template: <span class="hljs-string">'&lt;App/&gt;'</span>,
+  components: { App }
+})
+</code></pre><p>2、每个页面都相当于一个组件，文件以.vue结尾，第一次启动成功时看到的页面就是组件Hello.vue，路径src/components/Hello.vue。路由地址在 src/router/index.js 中配置，打开修改我们待会自己要用的：</p>
+<pre><code>&lt;!-- src/router/index.js --&gt;
+<span class="hljs-keyword">import</span> Vue <span class="hljs-keyword">from</span> <span class="hljs-string">'vue'</span>
+<span class="hljs-keyword">import</span> Router <span class="hljs-keyword">from</span> <span class="hljs-string">'vue-router'</span>
+<span class="hljs-keyword">import</span> Hello <span class="hljs-keyword">from</span> <span class="hljs-string">'@/components/Hello'</span>
+<span class="hljs-keyword">import</span> Home <span class="hljs-keyword">from</span> <span class="hljs-string">'@/components/page/Home'</span> <span class="hljs-comment">// 引入组件Home（待会创建）</span>
+<span class="hljs-keyword">import</span> Article <span class="hljs-keyword">from</span> <span class="hljs-string">'@/components/page/Article'</span> <span class="hljs-comment">// 引入组件Article（待会创建）</span>
+
+Vue.use(Router)
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">new</span> Router({
+  <span class="hljs-attr">routes</span>: [
+    <span class="hljs-comment">// {    默认的</span>
+    <span class="hljs-comment">//   path: '/', // http://localhost:8080/#/</span>
+    <span class="hljs-comment">//   name: 'Hello',</span>
+    <span class="hljs-comment">//   component: Hello</span>
+    <span class="hljs-comment">// },</span>
+    {
+      <span class="hljs-attr">path</span>: <span class="hljs-string">'/'</span>,  <span class="hljs-comment">// http://localhost:8080/#/</span>
+      name: <span class="hljs-string">'Home'</span>,
+      <span class="hljs-attr">component</span>: Home,
+    },
+    {
+      <span class="hljs-attr">path</span>: <span class="hljs-string">'/'</span>,  
+      <span class="hljs-attr">name</span>: <span class="hljs-string">'Article'</span>,
+      <span class="hljs-attr">component</span>: Article,
+      <span class="hljs-comment">// children里的组件页面都包含在在Article组件里，&lt;router-view&gt;&lt;/router-view&gt;路由切换来显示</span>
+      children: [
+        {
+          <span class="hljs-attr">path</span>: <span class="hljs-string">'blog'</span>, <span class="hljs-comment">// http://localhost:8080/#/blog</span>
+          name: <span class="hljs-string">'Blog'</span>,
+          <span class="hljs-attr">component</span>: <span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> <span class="hljs-built_in">require</span>([<span class="hljs-string">'@/components/page/Blog'</span>], resolve)  <span class="hljs-comment">// 懒加载引入</span>
+        },
+        {
+          <span class="hljs-attr">path</span>: <span class="hljs-string">''</span>, <span class="hljs-comment">// http://localhost:8080/#/about</span>
+          name: <span class="hljs-string">'About'</span>,
+          <span class="hljs-attr">component</span>: <span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> <span class="hljs-built_in">require</span>([<span class="hljs-string">'@/components/page/About'</span>], resolve)
+        },
+        {
+          <span class="hljs-attr">path</span>: <span class="hljs-string">'comment'</span>, <span class="hljs-comment">// http://localhost:8080/#/comment</span>
+          name: <span class="hljs-string">'Comment'</span>,
+          <span class="hljs-attr">conponent</span>: <span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> <span class="hljs-built_in">require</span>([<span class="hljs-string">'@/components/page/Comment'</span>], resolve)
+        },
+        {
+          <span class="hljs-attr">path</span>: <span class="hljs-string">'contact'</span>, <span class="hljs-comment">// http://localhost:8080/#/contact</span>
+          name: <span class="hljs-string">'Contact'</span>,
+          <span class="hljs-attr">component</span>: <span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> <span class="hljs-built_in">require</span>([<span class="hljs-string">'@/components/page/Contact'</span>], resolve)
+        }
+      ]
+    }
+  ]
+})
+</code></pre><p>3、编写组件<br>在src/components下新建两个文件夹，分别叫common、page，用来存放我们自己创建的组件。详细代码github上查看<a href="https://github.com/Moon-Future/Vue-Node-Blog">Vue-Node-Blog</a></p>
+<p>...</p>
+<h1 id="express-mysql-">Express后端配置，MySql数据库连接</h1>
+<blockquote>
+<p>先说明为什么选用MySql数据库，网上大多都是关于mongodb的教程，我原本也是想使用mongodb，无奈公司网络限制，没有权限安装任何东西（github上不了，各种网站打不开，好苦逼的，好在npm可以使用），mongodb也是无法安装，压缩包版又缺少什么dll文件，电脑上只有MySql数据库，并且有可视化工具Navicat for MySQL操作起来也是很方便。 之前MySql基本没怎么用过，所以现在也是边学边用，一些sql语句还是找同事帮忙的，在此只为能完成功能即可，优化什么的以后再慢慢搞。</p>
+</blockquote>
+<p>后端使用Express做服务端提供数据接口，不了解的可以先去官网文档大致了解一下 <a href="http://expressjs.com/en/starter/installing.html">Express官网</a>，在根目录my-blog下创建文件夹server用来存放后端数据库配置数据和相关方法api。<br>server文件夹下创建文件：index.js, router.js, api.js, db.js, sqlMap.js</p>
+<h2 id="1-index-js">1、启动文件 index.js</h2>
+<pre><code><span class="hljs-keyword">const</span> routerApi = <span class="hljs-keyword">require</span>(<span class="hljs-string">'./router'</span>);
+<span class="hljs-keyword">const</span> fs = <span class="hljs-keyword">require</span>(<span class="hljs-string">'fs'</span>);
+<span class="hljs-keyword">const</span> path = <span class="hljs-keyword">require</span>(<span class="hljs-string">'path'</span>);
+<span class="hljs-keyword">const</span> bodyParser = <span class="hljs-keyword">require</span>(<span class="hljs-string">'body-parser'</span>);
+<span class="hljs-keyword">const</span> express = <span class="hljs-keyword">require</span>(<span class="hljs-string">'express'</span>);
+<span class="hljs-keyword">const</span> app = express();
+
+app.<span class="hljs-keyword">use</span>(bodyParser.json());
+app.<span class="hljs-keyword">use</span>(bodyParser.urlencoded({extended: <span class="hljs-keyword">false</span>}));
+
+<span class="hljs-comment">// 后端api路由</span>
+app.<span class="hljs-keyword">use</span>(<span class="hljs-string">'/api'</span>, routerApi);
+
+<span class="hljs-comment">// 监听端口</span>
+app.listen(<span class="hljs-number">3000</span>);
+console.log(<span class="hljs-string">'success listen at port:3000......'</span>);
+</code></pre><h2 id="2-express-router-js">2、express路由配置 router.js</h2>
+<pre><code><span class="hljs-keyword">var</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>)
+<span class="hljs-keyword">var</span> router = express.Router();
+<span class="hljs-keyword">var</span> api = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./api'</span>)
+
+router.get(<span class="hljs-string">'/blog/getBlogAll'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req, res, next</span>) </span>{
+  <span class="hljs-comment">// api.getBlogAll(req, res, next);</span>
+  res.send(<span class="hljs-string">'Hello World!'</span>);
+})
+
+<span class="hljs-built_in">module</span>.exports = router;
+</code></pre><h2 id="3-db-js">3、数据库连接配置（登录数据库）db.js</h2>
+<pre><code><span class="xml"><span class="hljs-comment">&lt;!-- db.js --&gt;</span>
+// 数据库连接配置
+module.exports = </span><span class="hljs-template-variable">{
+  mysql: {
+    host: 'localhost',
+    user: 'root',
+    password: '123456',
+    database: 'node_blog',
+    port: '3306'
+  }</span><span class="xml">
+}</span>
+</code></pre><p>user、password视自己数据库的连接信息配置，不懂的百度哈，后面也可以测试看是否连接成功，我的数据库连接信息如下：<br><img src="http://otr9a8wg0.bkt.clouddn.com/17-8-2/84026052.jpg" alt="连接信息">  </p>
+<h2 id="4-sql-sqlmap-js">4、sql语句 sqlMap.js</h2>
+<pre><code><span class="hljs-built_in">var</span> sqlMap = {
+  blog: {
+    insert:'INSERT INTO user(user_id,author,title,tyep,loadURL,tag,summary,posy_time,upd_time) VALUES(<span class="hljs-number">8023</span>,陈亮,?,<span class="hljs-number">0</span>,$,tag,?,?,?)',
+    <span class="hljs-keyword">update</span>:'<span class="hljs-keyword">update</span> blog <span class="hljs-built_in">set</span> name=?, age=? <span class="hljs-built_in">where</span> id=?',
+    <span class="hljs-keyword">delete</span>: '<span class="hljs-keyword">delete</span> <span class="hljs-keyword">from</span> blog <span class="hljs-built_in">where</span> id=?',
+    queryById: '<span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> blog <span class="hljs-built_in">where</span> id=?',
+    queryAll: '<span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> blog'
+  },
+}
+
+module.exports = sqlMap;
+</code></pre><h2 id="5-api-api-js">5、数据库连接、api接口 api.js</h2>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> mysql = <span class="hljs-built_in">require</span>(<span class="hljs-string">'mysql'</span>);
+<span class="hljs-keyword">var</span> mysqlConf = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./db'</span>);
+<span class="hljs-keyword">var</span> sqlMap = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./sqlMapping'</span>);
+
+<span class="hljs-comment">// 连接数据库</span>
+<span class="hljs-keyword">var</span> pool = mysql.createPool({
+  host: mysqlConf.mysql.host,
+  user: mysqlConf.mysql.user,
+  password: mysqlConf.mysql.password,
+  database: mysqlConf.mysql.database,
+  port: mysqlConf.mysql.port
+})
+
+<span class="hljs-comment">// 向前台返回JSON方法的简单封装</span>
+<span class="hljs-keyword">var</span> jsonWrite = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">res, data</span>) </span>{
+  <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> data === <span class="hljs-string">'undefined'</span>) {
+    res.json({
+      code:<span class="hljs-string">'1'</span>,
+      msg: <span class="hljs-string">'操作失败'</span>
+    });
+  } <span class="hljs-keyword">else</span> {
+    res.json(data);
+  }
+};
+
+<span class="hljs-built_in">module</span>.exports = {
+  getBlogAll(req, res, next) {
+    pool.getConnection(<span class="hljs-function">(<span class="hljs-params">err, connection</span>) =&gt;</span> {
+      connection.query(sqlMap.blog.queryAll, <span class="hljs-function">(<span class="hljs-params">err, result</span>) =&gt;</span> {
+        jsonWrite(res, result);
+        connection.release();
+      })
+    })
+  },
+  getTagAll(req, res, next) {
+    pool.getConnection(<span class="hljs-function">(<span class="hljs-params">err, connection</span>) =&gt;</span> {
+      connection.query(sqlMap.tag.queryAll, <span class="hljs-function">(<span class="hljs-params">err, result</span>) =&gt;</span> {
+        jsonWrite(res, result);
+        connection.release();
+      })
+    })
+  },
+}
+</code></pre>
+
+    <script>
+        var content = document.getElementsByTagName('body')[0].innerHTML;
+        // var hs = content.match(/<h\d{1}.*<\/h\d{1}>*/g);
+        // var data = [];
+        // hs.shift();
+        // console.log(hs);
+
+        // var treeData = function(obj, arr) {
+        //   let len = arr.length, index = len - 1;
+        //   if(arr.length === 0){
+        //     arr.push(obj);
+        //   }else{
+        //     if(arr[index].num < obj.num){
+        //       treeData(obj, arr[index].children);
+        //     }else{
+        //       arr.push(obj);
+        //     }
+        //   }
+        // }
+
+        // for (let i = 0, len = hs.length; i < len; i++) {
+        //     let h = hs[i],
+        //         text = h.match(/>(.*)</)[1],
+        //         tag = h.match(/^<(h\d{1})/)[1],
+        //         num = h.match(/^<h(\d{1})/)[1],
+        //         obj = {label: text, num: num, children: []};
+        //     treeData(obj, data);
+        // }
+        // console.log('data', data);
+
+
+        // var a = [
+        //   {
+        //     label: '',
+        //     children: []
+        //   },
+        //   {},
+        //   {}
+        // ]
+        var arr = content.match(/<.*<\/.*>/g);
+        var htmlStr = '', limit = 5, tag;
+        // console.log(arr);
+
+        for(let i = 0, len = arr.length; i < len; i++) {
+          tag = arr[i].match(/^<(.)/)[1];
+          console.log(tag);
+          if(i > limit) {
+            break;
+          }
+          htmlStr += arr[i];
+        }
+
+    </script>
+
+</body>
+</html>

@@ -93,24 +93,36 @@ module.exports = {
         })
     },
     getArticleById(req, res, next) {
-        let params = req.query, id = params.id, title = params.title,
+        let params = req.query, id = params.id, title = params.title, editor = params.editor,
             filePath = '../static/articles/' + title + '.md',
             fileHtml = '../static/articles/' + title + '.html',
             content, data, stat;
-        try {
-            stat = fs.statSync(fileHtml);
-            content = fs.readFileSync(fileHtml, 'utf-8');
-        } catch(e) {
+        if (editor) {
             try {
                 content = fs.readFileSync(filePath, 'utf-8');
-                content = marked(content);
-                fs.writeFileSync(fileHtml, content);
             } catch(e) {
                 res.json({
                     status: false,
                     msg: '没有找到文章'
                 })
                 return;
+            }
+        } else {
+            try {
+                stat = fs.statSync(fileHtml);
+                content = fs.readFileSync(fileHtml, 'utf-8');
+            } catch(e) {
+                try {
+                    content = fs.readFileSync(filePath, 'utf-8');
+                    content = marked(content);
+                    fs.writeFileSync(fileHtml, content);
+                } catch(e) {
+                    res.json({
+                        status: false,
+                        msg: '没有找到文章'
+                    })
+                    return;
+                }
             }
         }
         pool.getConnection((err, connection) => {
@@ -191,11 +203,13 @@ module.exports = {
                 title = postData.title,
                 fileDir = '../static/articles/',
                 fileName = title + '.md',
-                filePath = fileDir + fileName;
+                filePath = fileDir + fileName,
+                markedHtml;
             if (!title || !content) {
                 res.json({status: true, msg: '提交失败,请完善内容'});
                 return;
-            }   
+            }
+            markedHtml = marked(content);
             connection.query(sqlMap.article.queryByTitle, [title], (err, result) => {
                 if (result.length === 0) {
                     if (req.session.userData.root !== 1) {
