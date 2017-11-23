@@ -130,7 +130,6 @@
                     state: state,   // 1:发布 2:存稿
                     type: 1,        // 1:原创 2:转载
                     loadURL: '#',   // 转载地址
-                    summary: '啦啦啦啦',    // 摘要
                     view: 0,
                     start: 0,
                     cover: '',

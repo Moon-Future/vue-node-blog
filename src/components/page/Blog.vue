@@ -63,12 +63,13 @@
         position: absolute;
         right: 0;
         box-sizing: border-box;
-        padding: 20px 80px;
+        padding: 20px 250px;
         width: 80%;
         height: 100%;
         /* background: #EBEBEB; */
         overflow-y: auto;
-        background: url(../../../static/images/bg1.jpg) no-repeat;
+        /* background: url(../../../static/images/bg1.jpg) no-repeat; */
+        background: #f5f5f5;
         background-size: cover;
     }
     @media only screen and (max-width: 992px) {

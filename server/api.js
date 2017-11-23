@@ -204,18 +204,30 @@ module.exports = {
                 fileDir = '../static/articles/',
                 fileName = title + '.md',
                 filePath = fileDir + fileName,
-                markedHtml;
+                markedHtml, htmlTags, summary = '', count = 0, limit = 2;
             if (!title || !content) {
                 res.json({status: true, msg: '提交失败,请完善内容'});
                 return;
             }
             markedHtml = marked(content);
+            htmlTags = markedHtml.match(/<(.|\n)*?<\/.*>/g);
+            for(let i = 0, len = htmlTags.length; i < len; i++) {
+                let tag = htmlTags[i].match(/^<(.)/)[1];
+                if (tag === 'h') {
+                    count += 1;
+                }
+                if (count > limit && tag === 'h') {
+                    break;
+                }
+                summary += htmlTags[i];
+            }
+            summary += '<p>......</p>'
             connection.query(sqlMap.article.queryByTitle, [title], (err, result) => {
                 if (result.length === 0) {
                     if (req.session.userData.root !== 1) {
                         postData.state = 2;
                     }
-                    connection.query(sqlMap.article.insert, [postData.user_id,title,postData.state,postData.type,postData.loadURL,postData.summary,curTime,null,0,0,''], (err, result) => {
+                    connection.query(sqlMap.article.insert, [postData.user_id,title,postData.state,postData.type,postData.loadURL,summary,curTime,null,0,0,''], (err, result) => {
                         fs.writeFileSync(filePath, content);
                         res.json({status: true, msg: '提交成功'});
                         connection.release();

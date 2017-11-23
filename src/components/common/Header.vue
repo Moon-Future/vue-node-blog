@@ -48,7 +48,7 @@
             return {
                 avatarRoot: '../../../static/images/avatar/',
                 menuOpen: false,
-                switchType: true,
+                switchType: false
             }
         },
         methods: {
@@ -56,8 +56,8 @@
                 this.menuOpen = !this.menuOpen;
             },
             switchHandle() {
-                this.switchType = !this.switchType;
-                this.boxSwitchType();
+                // this.switchType = !this.switchType;
+                // this.boxSwitchType();
             },
             backBlog() {
                 this.currentArticleHanle({'title': ''});

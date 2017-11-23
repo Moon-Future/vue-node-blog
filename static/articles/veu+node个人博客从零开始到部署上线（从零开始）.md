@@ -1,8 +1,3 @@
-# Vue-Node-Blog
-Vue + Node + MySql 搭建个人博客，一步一个脚印
-
-[TOC]
-
 # 1、准备工作
 
 ## 安装node，这是必须的

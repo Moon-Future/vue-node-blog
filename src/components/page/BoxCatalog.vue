@@ -18,9 +18,10 @@
                         <img v-if="article.cover" :src="article.cover" class="box-card-image">
                         <!-- <img v-else :src="imageDefault" class="box-card-image"> -->
                         <div class="article-summary">
-                            <p :title="article.summary">{{ article.summary }}</p>
+                            <!-- <p :title="article.summary">{{ article.summary }}</p> -->
+                            <div :title="article.summary" class="markdown-body" v-html="article.summary" ></div>
                             <!-- <el-button type="primary" @click="readAll(article.id, article.title)">阅读全文</el-button> -->
-                            <a type="primary" @click="readAll(article.id, article.title)">阅读全文</a>
+                            <a type="primary" @click="readAll(article.id, article.title)">阅读全文 »</a>
                         </div>
                     </el-card>
                 </el-col>
@@ -132,25 +133,27 @@
         cursor: pointer;
     }
 
-    .article-summary p {
+    .article-summary div {
         text-align: left;
-        text-indent: 2em;
-        height: 4em;
+        /* text-indent: 2em; */
+        /* height: 4em; */
         text-overflow: ellipsis;
         overflow: hidden;
         display: -webkit-box;
-        -webkit-line-clamp: 3;
+        /* -webkit-line-clamp: 3; */
         -webkit-box-orient: vertical;
     }
 
     .article-summary a {
-        float: right;
-        margin-bottom: 20px;
+        float: left;
+        margin: 20px 0;
         cursor: pointer;
-        color: #64b5f6;
+        color: #555;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #666;
         text-decoration: none;
     }
-    .article-summary a:hover {
+    /* .article-summary a:hover {
         text-decoration: underline
-    }
+    } */
 </style>

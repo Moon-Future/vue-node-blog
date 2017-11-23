@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2017-11-18 03:31:10
+Date: 2017-11-24 02:14:07
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,20 +26,20 @@ CREATE TABLE `articles` (
   `state` tinyint(2) DEFAULT NULL,
   `type` tinyint(2) DEFAULT NULL,
   `loadURL` varchar(255) DEFAULT NULL,
-  `summary` varchar(255) DEFAULT NULL,
+  `summary` varchar(10000) DEFAULT NULL,
   `post_time` bigint(20) NOT NULL,
   `upd_time` bigint(20) DEFAULT NULL,
   `view` bigint(20) NOT NULL,
   `start` bigint(20) NOT NULL,
   `cover` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of articles
 -- ----------------------------
-INSERT INTO `articles` VALUES ('1', '8023', 'README', '1', '1', '#', '一步一个脚印11', '1504112522100', '1504112522100', '222', '333', null);
-INSERT INTO `articles` VALUES ('2', '8023', '二、部署上线', '1', '1', '#', '一步一个脚印33', '1504112522100', '1504112522100', '55', '66', '');
+INSERT INTO `articles` VALUES ('1', '8023', 'veu+node个人博客从零开始到部署上线（从零开始）', '1', '1', '#', '<h1 id=\"1-\">1、准备工作</h1><h2 id=\"-node-\">安装node，这是必须的</h2><p>新版node自带npm，安装Node.js时会一起安装，npm的作用就是对Node.js依赖的包进行管理，也可以理解为用来安装/卸载Node.js需要装的东西。\n验证是否安装成功：<br><img src=\"http://otr9a8wg0.bkt.clouddn.com/17-7-28/48974756.jpg\" alt=\"验证是否安装成功\"><br>推荐windows下终端工具：<a href=\"http://cmder.net/\">cmder</a></p><p>......</p>', '1504112522100', '1504112522100', '222', '333', null);
+INSERT INTO `articles` VALUES ('2', '8023', 'veu+node个人博客从零开始到部署上线（部署上线）', '1', '1', '#', '<h1 id=\"-\">云服务器</h1><h2 id=\"-or-\">阿里云 or 腾讯云</h2><ul>\n<li>阿里云服务器品牌：ECS（Elastic Compute Service）</li><li>腾讯云服务器品牌：VCM（Cloud Virtual Machine）</li></ul>\n<p><img src=\"http://otr9a8wg0.bkt.clouddn.com/%E9%98%BF%E9%87%8C%E4%BA%91or%E8%85%BE%E8%AE%AF%E4%BA%91.jpg\" alt=\"腾讯云or阿里云\"></p><p>两者都可以，具体可以根据自己的需求，都说阿里云稳定，腾讯云便宜，我自己买时发现两者入门级的价格都差不多，就买了阿里云的，以下即以阿里云的服务器操作。（腾讯云服务器操作应该也类似）</p><h2 id=\"-ecs\">购买阿里云服务器ECS</h2><p>入门级最低配即可，一年300多，每月几十块钱，也可以月付，那样就贵点。\n<img src=\"http://otr9a8wg0.bkt.clouddn.com/%E8%B4%AD%E4%B9%B0%E9%98%BF%E9%87%8C%E4%BA%91ECS.jpg\" alt=\"\">\n中间有些选项默认就可，镜像选择 公共镜像-CentOS-7.4 64位（最新的）\n图中密码用来之后远程登陆服务器使用。</p><p>......</p>', '1504112522100', '1504112522100', '55', '66', '');
 INSERT INTO `articles` VALUES ('3', '8023', 'node+vue搭建个人博客3', '1', '1', '#', '一步一个脚印55', '1504112522100', '1504112522100', '55', '66', '5');
 INSERT INTO `articles` VALUES ('4', '8023', 'node+vue搭建个人博客4', '1', '1', '#', '一步一个脚印55', '1504112522100', '1504112522100', '55', '66', '5');
 INSERT INTO `articles` VALUES ('5', '8023', 'node+vue搭建个人博客5', '1', '1', '#', '一步一个脚印55', '1504112522100', '1504112522100', '55', '66', '5');
