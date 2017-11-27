@@ -63,7 +63,7 @@
         position: absolute;
         right: 0;
         box-sizing: border-box;
-        padding: 20px 250px;
+        padding: 20px 10%;
         width: 80%;
         height: 100%;
         /* background: #EBEBEB; */
