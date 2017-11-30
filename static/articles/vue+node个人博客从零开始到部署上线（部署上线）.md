@@ -261,12 +261,214 @@ tcp6       0      0 :::3306                 :::*                    LISTEN      
 #### 14. 本地连接数据库
 
 我本地使用的是 Navicat for MySQL
-![远程连接数据库](http://otr9a8wg0.bkt.clouddn.com/%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1%E5%99%A8.jpg)
+![远程连接数据库](http://otr9a8wg0.bkt.clouddn.com/%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1%E5%99%A8.jpg)  
+远程连接数据库后，创建数据表（可以导出本地数据表，然后Navicat中导入到服务器MySQL中）
 
 # 上传文件
 
+#### 打包文件
+项目根目录下运行
+```
+npm run build
+```
+等待命令运行结束后，会发现目录下多了 dist 文件夹，这个文件夹就是我们等下要放到服务器中的。
+
+#### 文件传输
+1. 下载文件传输工具 Xftp
+2. 打开 Xftp 新建连接，类似Xshell
+![Xftp连接](http://otr9a8wg0.bkt.clouddn.com/Xftp%E8%BF%9E%E6%8E%A5.jpg)
+连接成功后可以看到左侧是本地文件目录，右侧是服务器文件目录，可以很方便的来回拖放文件。
+3. 创建目录文件 /root/projec/myblog (目录层级、名称随意，这里我以次为项目目录)
+4. 将刚刚的 dist 文件夹复制到 /root/project/myblog 目录下，前端资源就OK了
+5. 将 server 文件夹也复制到 /root/project/myblog 目录下
+
+#### 初始化项目
+Xshell 连接服务器
+```
+// 进入项目目录
+[root@izwz9e9bjg74ljcpzr7stvz ~]# cd /root/project/myblog
+[root@izwz9e9bjg74ljcpzr7stvz myblog]# ls
+dist server
+```
+初始化创建 package.json，这一步也可以在本地创建编辑好后上传到服务器目录即可
+```
+[root@izwz9e9bjg74ljcpzr7stvz myblog]# npm init
+This utility will walk you through creating a package.json file.
+It only covers the most common items, and tries to guess sensible defaults.
+
+See `npm help json` for definitive documentation on these fields
+and exactly what they do.
+
+Use `npm install <pkg>` afterwards to install a package and
+save it as a dependency in the package.json file.
+
+Press ^C at any time to quit.
+package name: (myblog) 
+version: (1.0.0) 
+description: 
+entry point: (index.js) 
+test command: 
+git repository: 
+keywords: 
+author: 
+license: (ISC) 
+About to write to /root/project/test/myblog/package.json:
+
+{
+  "name": "myblog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
+
+
+Is this ok? (yes) yes
+
+// 全部回车即可
+[root@izwz9e9bjg74ljcpzr7stvz myblog]# ls
+dist  package.json  server
+
+// 打开 package.json 编辑（也可在 Xftp 中右键文件编辑）
+[root@izwz9e9bjg74ljcpzr7stvz myblog]# vim package.json
+
+    {
+        "name": "my-blog",
+        "version": "1.0.0",
+        "description": "A Vue.js project",
+        "author": "ChenLiang <236338364@qq.com>",
+        "private": true,
+        "scripts": {
+            "dev": "node build/dev-server.js",
+            "start": "node build/dev-server.js",
+            "build": "node build/build.js"
+        },
+        "dependencies": {
+            "body-parser": "^1.17.2",
+            "cookie-parser": "^1.4.3",
+            "express": "^4.16.2",
+            "express-session": "^1.15.5",
+            "formidable": "^1.1.1",
+            "highlight.js": "^9.12.0",
+            "marked": "^0.3.6",
+            "mysql": "^2.14.0",
+            "node-sass": "^4.5.3",
+            "node-uuid": "^1.4.8"
+        },
+        "engines": {
+            "node": ">= 4.0.0",
+            "npm": ">= 3.0.0"
+        },
+        "browserslist": [
+            "> 1%",
+            "last 2 versions",
+            "not ie <= 8"
+        ]
+    }
+```
+保存退出，运行
+```
+[root@izwz9e9bjg74ljcpzr7stvz myblog]# npm install
+```
+安装"dependencies"中项目运行需要的所有依赖
+
+#### 修改资源路径
+进入文件夹 server，打开 index.js
+```
+[root@izwz9e9bjg74ljcpzr7stvz server]# vim index.js
+
+const routerApi = require('./router');
+const path = require('path');
+const bodyParser = require('body-parser');
+const express = require('express');
+const app = express();
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(cookieParser());
+app.use(session({
+    secret: '8023',
+    // cookie: {maxAge: 60000},
+    resave: false,
+    saveUninitialized: true
+}));
+
+// 部署上线时读取静态文件
+app.use(express.static(path.join(__dirname, '../dist')));
+
+// 后端api路由
+app.use('/api', routerApi);
+
+// 监听端口
+app.listen(80);
+console.log('success listen at port:80......');
+
+```
+设置静态资源路径，并修改监听端口为80（HTTP端口），api.js 中文件路径相关的也要更改为 ../dist/static.....，嫌麻烦的也可以直接将 server 文件夹移到 dist 下就不用这么麻烦改了。
+
+#### 开放 80 端口
+登陆阿里云，进入控制管理台 -> 云服务器 ECS -> 安全组 -> 配置规则 -> 快速创建规则
+![开放80端口](http://otr9a8wg0.bkt.clouddn.com/80%E7%AB%AF%E5%8F%A3.jpg)
+
+#### 启动服务
+```
+[root@izwz9e9bjg74ljcpzr7stvz server]# node index.js
+success listen at port:80......
+```
+浏览器打开 服务器IP:80（如：263.182.35.68:80），如无意外，即正常运行访问啦。
+
+#### 绑定域名
+进入域名管理后台，解析域名，添加解析  
+![域名绑定](http://otr9a8wg0.bkt.clouddn.com/%E5%9F%9F%E5%90%8D%E7%BB%91%E5%AE%9A.jpg)  
+添加主机 @.xxx.com 可以通过 xxx.com 直接访问
+绑定成功后，直接输入域名即可访问。
+
+#### 安装 pm2
+> pm2 是一个带有负载均衡功能的Node应用的进程管理器.
+
+上面我们以 node index.js 启动了项目，当我们退出 Xshell 时，进程就会关闭，无法在访问到项目，而 pm2 就是
+解决这种问题的，以 pm2 启动项目后，退出 Xshell 后依然可以正常访问。
+
+```
+// 安装 pm2
+[root@izwz9e9bjg74ljcpzr7stvz /]# npm install -g pm2
+
+// 以 -g 全局安装的插件都在 node 安装目录 bin 文件下，
+[root@izwz9e9bjg74ljcpzr7stvz bin]# ls
+cnpm  node  npm  npx  pm2  pm2-dev  pm2-docker  pm2-runtime
+```
+bin 下都是命令语句，为了可以在任何目录都可以使用命令，我们将此文件夹加入环境变量
+1. 查看环境变量 [root@izwz9e9bjg74ljcpzr7stvz ~]# echo $PATH
+2. 永久添加环境变量（影响所有用户）
+```
+[root@izwz9e9bjg74ljcpzr7stvz ~]# vim /etc/profile
+// 在文档最后，添加:
+# node
+export NODE_HOME=/root/node-v8.9.1-linux-x64
+export PATH=$PATH:$NODE_HOME/bin
+```
+保存，退出，然后运行
+```
+[root@izwz9e9bjg74ljcpzr7stvz ~]# source /etc/profile
+```
+
+pm2 启动项目
+```
+[root@izwz9e9bjg74ljcpzr7stvz ~]# cd /root/project/myblog/server
+// 启动进程
+[root@izwz9e9bjg74ljcpzr7stvz server]# pm2 start index.js
+// 停止进程
+[root@izwz9e9bjg74ljcpzr7stvz server]# pm2 stop index.js
+// 查看进程
+[root@izwz9e9bjg74ljcpzr7stvz server]# pm2 list
+```
 
 # Linux中文乱码 （修改默认编码）
+如文件或文件夹含有中文字符时，可能会读取乱码，读取不到文章，需要修改系统默认编码
 [修改默认编码](http://www.linuxidc.com/Linux/2017-07/145572.htm)
-
-
