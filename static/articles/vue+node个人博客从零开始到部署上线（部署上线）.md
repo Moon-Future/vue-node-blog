@@ -410,9 +410,9 @@ app.listen(80);
 console.log('success listen at port:80......');
 
 ```
-设置静态资源路径，并修改监听端口为80（HTTP端口），api.js 中文件路径相关的也要更改为 ../dist/static.....，嫌麻烦的也可以直接将 server 文件夹移到 dist 下就不用这么麻烦改了。
+设置静态资源路径，并修改监听端口为80（HTTP端口），端口也可以设置其他值（如3000），但这样在访问地址时就需要加上端口号 www.xxx.com:3000，80端口可以省略不写，api.js 中文件路径相关的也要更改为 ../dist/static.....，嫌麻烦的也可以直接将 server 文件夹移到 dist 下就不用这么麻烦改了。
 
-#### 开放 80 端口
+#### 开放 80 端口或其他端口（监听端口）
 登陆阿里云，进入控制管理台 -> 云服务器 ECS -> 安全组 -> 配置规则 -> 快速创建规则
 ![开放80端口](http://otr9a8wg0.bkt.clouddn.com/80%E7%AB%AF%E5%8F%A3.jpg)
 
@@ -472,3 +472,130 @@ pm2 启动项目
 # Linux中文乱码 （修改默认编码）
 如文件或文件夹含有中文字符时，可能会读取乱码，读取不到文章，需要修改系统默认编码
 [修改默认编码](http://www.linuxidc.com/Linux/2017-07/145572.htm)
+
+
+# Nginx安装
+
+[Nginx安装](http://blog.csdn.net/o0mm0o/article/details/73841660?utm_source=itdadao&utm_medium=referral)
+```
+#! /bin/sh
+# chkconfig: 2345 55 25
+# Description: Startup script for nginx webserver on Debian. Place in /etc/init.d and
+# run 'update-rc.d -f nginx defaults', or use the appropriate command on your
+# distro. For CentOS/Redhat run: 'chkconfig --add nginx'
+
+### BEGIN INIT INFO
+# Provides:          nginx
+# Required-Start:    $all
+# Required-Stop:     $all
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: starts the nginx web server
+# Description:       starts nginx using start-stop-daemon
+### END INIT INFO
+
+# Author:   licess
+# website:  http://lnmp.org
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+NAME=nginx
+NGINX_BIN=/usr/local/nginx/sbin/$NAME
+CONFIGFILE=/usr/local/nginx/conf/$NAME.conf
+PIDFILE=/usr/local/nginx/logs/$NAME.pid
+
+case "$1" in
+    start)
+        echo -n "Starting $NAME... "
+
+        if netstat -tnpl | grep -q nginx;then
+            echo "$NAME (pid `pidof $NAME`) already running."
+            exit 1
+        fi
+
+        $NGINX_BIN -c $CONFIGFILE
+
+        if [ "$?" != 0 ] ; then
+            echo " failed"
+            exit 1
+        else
+            echo " done"
+        fi
+        ;;
+
+    stop)
+        echo -n "Stoping $NAME... "
+
+        if ! netstat -tnpl | grep -q nginx; then
+            echo "$NAME is not running."
+            exit 1
+        fi
+
+        $NGINX_BIN -s stop
+
+        if [ "$?" != 0 ] ; then
+            echo " failed. Use force-quit"
+            exit 1
+        else
+            echo " done"
+        fi
+        ;;
+
+    status)
+        if netstat -tnpl | grep -q nginx; then
+            PID=`pidof nginx`
+            echo "$NAME (pid $PID) is running..."
+        else
+            echo "$NAME is stopped"
+            exit 0
+        fi
+        ;;
+
+    force-quit)
+        echo -n "Terminating $NAME... "
+
+        if ! netstat -tnpl | grep -q nginx; then
+            echo "$NAME is not running."
+            exit 1
+        fi
+
+        kill `pidof $NAME`
+
+        if [ "$?" != 0 ] ; then
+            echo " failed"
+            exit 1
+        else
+            echo " done"
+        fi
+        ;;
+
+    restart)
+        $0 stop
+        sleep 1
+        $0 start
+        ;;
+
+    reload)
+        echo -n "Reload service $NAME... "
+
+        if netstat -tnpl | grep -q nginx; then
+            $NGINX_BIN -s reload
+            echo " done"
+        else
+            echo "$NAME is not running, can't reload."
+            exit 1
+        fi
+        ;;
+
+    configtest)
+        echo -n "Test $NAME configure files... "
+
+        $NGINX_BIN -t
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop|force-quit|restart|reload|status|configtest}"
+        exit 1
+        ;;
+
+esac
+```
