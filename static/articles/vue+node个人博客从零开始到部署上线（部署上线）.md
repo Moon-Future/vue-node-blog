@@ -424,8 +424,8 @@ success listen at port:80......
 浏览器打开 服务器IP:80（如：263.182.35.68:80），如无意外，即正常运行访问啦。
 
 #### 绑定域名
-进入域名管理后台，解析域名，添加解析
-![域名绑定](http://otr9a8wg0.bkt.clouddn.com/%E5%9F%9F%E5%90%8D%E7%BB%91%E5%AE%9A.jpg)
+进入域名管理后台，解析域名，添加解析  
+![域名绑定](http://otr9a8wg0.bkt.clouddn.com/%E5%9F%9F%E5%90%8D%E7%BB%91%E5%AE%9A.jpg)  
 添加主机 @.xxx.com 可以通过 xxx.com 直接访问
 绑定成功后，直接输入域名即可访问。
 
@@ -485,7 +485,7 @@ Nginx依赖下面3个包:
 3. gzip模块需要zlib库，下载地址 [http://www.zlib.net/](http://www.zlib.net/)
 4. Nginx安装包
 
-进入任意目录下载以上压缩包：
+进入任意目录下载以上压缩包(版本号改为最新即可)：
 ```
 [root@izwz9e9bjg74ljcpzr7stvz download]# wget http://www.zlib.net/zlib-1.2.11.tar.gz
 [root@izwz9e9bjg74ljcpzr7stvz download]# wget https://ftp.pcre.org/pub/pcre/pcre-8.41.tar.gz
@@ -495,7 +495,7 @@ Nginx依赖下面3个包:
 pcre-8.41.tar.gz   zlib-1.2.11.tar.gz
 nginx-1.13.7.tar.gz  openssl-fips-2.0.16.tar.gz
 ```
-版本号改为最新即可，解压压缩包：
+解压压缩包：
 ```
 [root@izwz9e9bjg74ljcpzr7stvz download]# tar zxvf zlib-1.2.11.tar.gz
 [root@izwz9e9bjg74ljcpzr7stvz download]# tar tar zxvf pcre-8.41.tar.gz
@@ -542,146 +542,145 @@ tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      
 ## 使用server命令启动nginx服务
 现在nginx启动、关闭比较麻烦，关闭要找到PID号，然后杀死进程，启动要进入到 /usr/local/nginx/sbin 目录下使用命令，为此我们通过设置System V脚本来使用server命令启动、关闭、重启nginx服务。
 1. 在 /etc/init.d 目录下创建nginx启动脚本文件
-```
-[root@izwz9e9bjg74ljcpzr7stvz ~]# cd /etc/init.d
-[root@izwz9e9bjg74ljcpzr7stvz init.d]# vim nginx
-```
-2. 将以下代码复制粘贴进去，然后保存。 注意 NGINX_BIN、CONFIGFILE、PIDFILE 三个目录要对应好，默认是对应好的。
-在网上找了好多相关脚本代码，都有很多问题，好像是和 CentOS 版本有关，下面脚本我在 CentOS 7 下使用正常。
-```
-#! /bin/sh
-# chkconfig: 2345 55 25
-# Description: Startup script for nginx webserver on Debian. Place in /etc/init.d and
-# run 'update-rc.d -f nginx defaults', or use the appropriate command on your
-# distro. For CentOS/Redhat run: 'chkconfig --add nginx'
+    ```
+    [root@izwz9e9bjg74ljcpzr7stvz ~]# cd /etc/init.d
+    [root@izwz9e9bjg74ljcpzr7stvz init.d]# vim nginx
+    ```
+2. 将以下代码复制粘贴进去，然后保存。 注意 NGINX_BIN、CONFIGFILE、PIDFILE 三个目录要对应好，默认是对应好的。在网上找了好多相关脚本代码，都有很多问题，好像是和 CentOS 版本有关，下面脚本我在 CentOS 7 下使用正常。
+    ```
+    #! /bin/sh
+    # chkconfig: 2345 55 25
+    # Description: Startup script for nginx webserver on Debian. Place in /etc/init.d and
+    # run 'update-rc.d -f nginx defaults', or use the appropriate command on your
+    # distro. For CentOS/Redhat run: 'chkconfig --add nginx'
 
-### BEGIN INIT INFO
-# Provides:          nginx
-# Required-Start:    $all
-# Required-Stop:     $all
-# Default-Start:     2 3 4 5
-# Default-Stop:      0 1 6
-# Short-Description: starts the nginx web server
-# Description:       starts nginx using start-stop-daemon
-### END INIT INFO
+    ### BEGIN INIT INFO
+    # Provides:          nginx
+    # Required-Start:    $all
+    # Required-Stop:     $all
+    # Default-Start:     2 3 4 5
+    # Default-Stop:      0 1 6
+    # Short-Description: starts the nginx web server
+    # Description:       starts nginx using start-stop-daemon
+    ### END INIT INFO
 
-# Author:   licess
-# website:  http://lnmp.org
+    # Author:   licess
+    # website:  http://lnmp.org
 
-PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-NAME=nginx
-NGINX_BIN=/usr/local/nginx/sbin/$NAME
-CONFIGFILE=/usr/local/nginx/conf/$NAME.conf
-PIDFILE=/usr/local/nginx/logs/$NAME.pid
+    PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+    NAME=nginx
+    NGINX_BIN=/usr/local/nginx/sbin/$NAME
+    CONFIGFILE=/usr/local/nginx/conf/$NAME.conf
+    PIDFILE=/usr/local/nginx/logs/$NAME.pid
 
-case "$1" in
-    start)
-        echo -n "Starting $NAME... "
+    case "$1" in
+        start)
+            echo -n "Starting $NAME... "
 
-        if netstat -tnpl | grep -q nginx;then
-            echo "$NAME (pid `pidof $NAME`) already running."
+            if netstat -tnpl | grep -q nginx;then
+                echo "$NAME (pid `pidof $NAME`) already running."
+                exit 1
+            fi
+
+            $NGINX_BIN -c $CONFIGFILE
+
+            if [ "$?" != 0 ] ; then
+                echo " failed"
+                exit 1
+            else
+                echo " done"
+            fi
+            ;;
+
+        stop)
+            echo -n "Stoping $NAME... "
+
+            if ! netstat -tnpl | grep -q nginx; then
+                echo "$NAME is not running."
+                exit 1
+            fi
+
+            $NGINX_BIN -s stop
+
+            if [ "$?" != 0 ] ; then
+                echo " failed. Use force-quit"
+                exit 1
+            else
+                echo " done"
+            fi
+            ;;
+
+        status)
+            if netstat -tnpl | grep -q nginx; then
+                PID=`pidof nginx`
+                echo "$NAME (pid $PID) is running..."
+            else
+                echo "$NAME is stopped"
+                exit 0
+            fi
+            ;;
+
+        force-quit)
+            echo -n "Terminating $NAME... "
+
+            if ! netstat -tnpl | grep -q nginx; then
+                echo "$NAME is not running."
+                exit 1
+            fi
+
+            kill `pidof $NAME`
+
+            if [ "$?" != 0 ] ; then
+                echo " failed"
+                exit 1
+            else
+                echo " done"
+            fi
+            ;;
+
+        restart)
+            $0 stop
+            sleep 1
+            $0 start
+            ;;
+
+        reload)
+            echo -n "Reload service $NAME... "
+
+            if netstat -tnpl | grep -q nginx; then
+                $NGINX_BIN -s reload
+                echo " done"
+            else
+                echo "$NAME is not running, can't reload."
+                exit 1
+            fi
+            ;;
+
+        configtest)
+            echo -n "Test $NAME configure files... "
+
+            $NGINX_BIN -t
+            ;;
+
+        *)
+            echo "Usage: $0 {start|stop|force-quit|restart|reload|status|configtest}"
             exit 1
-        fi
+            ;;
 
-        $NGINX_BIN -c $CONFIGFILE
-
-        if [ "$?" != 0 ] ; then
-            echo " failed"
-            exit 1
-        else
-            echo " done"
-        fi
-        ;;
-
-    stop)
-        echo -n "Stoping $NAME... "
-
-        if ! netstat -tnpl | grep -q nginx; then
-            echo "$NAME is not running."
-            exit 1
-        fi
-
-        $NGINX_BIN -s stop
-
-        if [ "$?" != 0 ] ; then
-            echo " failed. Use force-quit"
-            exit 1
-        else
-            echo " done"
-        fi
-        ;;
-
-    status)
-        if netstat -tnpl | grep -q nginx; then
-            PID=`pidof nginx`
-            echo "$NAME (pid $PID) is running..."
-        else
-            echo "$NAME is stopped"
-            exit 0
-        fi
-        ;;
-
-    force-quit)
-        echo -n "Terminating $NAME... "
-
-        if ! netstat -tnpl | grep -q nginx; then
-            echo "$NAME is not running."
-            exit 1
-        fi
-
-        kill `pidof $NAME`
-
-        if [ "$?" != 0 ] ; then
-            echo " failed"
-            exit 1
-        else
-            echo " done"
-        fi
-        ;;
-
-    restart)
-        $0 stop
-        sleep 1
-        $0 start
-        ;;
-
-    reload)
-        echo -n "Reload service $NAME... "
-
-        if netstat -tnpl | grep -q nginx; then
-            $NGINX_BIN -s reload
-            echo " done"
-        else
-            echo "$NAME is not running, can't reload."
-            exit 1
-        fi
-        ;;
-
-    configtest)
-        echo -n "Test $NAME configure files... "
-
-        $NGINX_BIN -t
-        ;;
-
-    *)
-        echo "Usage: $0 {start|stop|force-quit|restart|reload|status|configtest}"
-        exit 1
-        ;;
-
-esac
-```
+    esac
+    ```
 3. 修改脚本权限
-```
-chmod a+x /etc/init.d/nginx
-```
+    ```
+    chmod a+x /etc/init.d/nginx
+    ```
 4. 注册成服务
-```
-chkconfig --add nginx
-```
+    ```
+    chkconfig --add nginx
+    ```
 5. 设置开机启动
-```
-chkconfig nginx on
-```
+    ```
+    chkconfig nginx on
+    ```
 这样就可以在任意目录通过service启动、关闭nginx
 ```
 [root@izwz9e9bjg74ljcpzr7stvz ~]# service nginx start
@@ -690,3 +689,60 @@ chkconfig nginx on
 ```
 
 ## 配置nginx.conf反向代理多个node项目
+1. 启动多个node项目，分别监听不同端口，如
+    - 项目1，监听端口3000，为博客项目，域名访问 www.cl8023.com 或 cl8023.com
+    - 项目2，监听端口8023，为游戏项目，域名访问 game.cl8023.com
+2. 在阿里云服务区控制台开放端口3000和8023，（80端口是必须的，nginx监听）
+3. 绑定二级域名 game.cl8023.com，添加域名解析
+    - 记录类型：A
+    - 主机记录：game
+    - 解析线路：默认
+    - 记录纸：IP地址
+    - TTL至：10分钟（默认）
+4. 修改nginx配置  
+    进入目录 /usr/local/nginx/conf 修改配置文件nginx.conf
+    ```
+    [root@izwz9e9bjg74ljcpzr7stvz ~]# cd /usr/local/nginx/conf
+    [root@izwz9e9bjg74ljcpzr7stvz conf]# ls
+    fastcgi.conf          fastcgi_params          koi-utf  mime.types          nginx.conf          scgi_params          uwsgi_params          win-utf
+    fastcgi.conf.default  fastcgi_params.default  koi-win  mime.types.default  nginx.conf.default  scgi_params.default  uwsgi_params.default
+    [root@izwz9e9bjg74ljcpzr7stvz conf]# vim nginx.conf
+    // server 内容替换为
+        server {
+            listen 80;
+            server_name game.cl8023.com;
+            location / {
+                proxy_set_header   Host      $http_host;
+                proxy_pass         http://127.0.0.1:8023;
+                proxy_redirect     off;
+                proxy_set_header   X-Real-IP       $remote_addr;
+                proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+            }
+        }
+
+        server {
+            listen 80;
+            server_name cl8023.com www.cl8023.com;
+            location / {
+                proxy_set_header   Host      $http_host;
+                proxy_pass         http://127.0.0.1:3000;
+                proxy_redirect     off;
+                proxy_set_header   X-Real-IP       $remote_addr;
+                proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+            }
+        }
+    ```
+    若只配置一个server，game.cl8023.com、cl8023.com、www.cl8023.com 都将可以访问到这个端口。想要反响代理更多端口，可再增加server，也可以将server单独出来为一个文件，如game-8023.conf，blog-3000.conf，然后在nginx.conf中引入文件地址即可
+    ```
+    http {
+        ......
+        include ./vhost/game-8023.conf; 
+        include ./vhost/blog-3000.conf;
+        ......
+    }
+    ```
+5. 重启nginx
+    ```
+    [root@izwz9e9bjg74ljcpzr7stvz ~]# service nginx restart
+    ```
+无误的话便可以使用不同的域名访问不同的项目。
