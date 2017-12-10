@@ -446,17 +446,17 @@ cnpm  node  npm  npx  pm2  pm2-dev  pm2-docker  pm2-runtime
 bin 下都是命令语句，为了可以在任何目录都可以使用命令，我们将此文件夹加入环境变量
 1. 查看环境变量 [root@izwz9e9bjg74ljcpzr7stvz ~]# echo $PATH
 2. 永久添加环境变量（影响所有用户）
-```
-[root@izwz9e9bjg74ljcpzr7stvz ~]# vim /etc/profile
-// 在文档最后，添加:
-# node
-export NODE_HOME=/root/node-v8.9.1-linux-x64
-export PATH=$PATH:$NODE_HOME/bin
-```
-保存，退出，然后运行
-```
-[root@izwz9e9bjg74ljcpzr7stvz ~]# source /etc/profile
-```
+    ```
+    [root@izwz9e9bjg74ljcpzr7stvz ~]# vim /etc/profile
+    // 在文档最后，添加:
+    # node
+    export NODE_HOME=/root/node-v8.9.1-linux-x64
+    export PATH=$PATH:$NODE_HOME/bin
+    ```
+    保存，退出，然后运行
+    ```
+    [root@izwz9e9bjg74ljcpzr7stvz ~]# source /etc/profile
+    ```
 
 pm2 启动项目
 ```
