@@ -24,14 +24,17 @@
             <div class="heart-right"></div>
         </div>
         <div class="area">
-            <div class="area-top">
-                <img src="../../../static/images/LOVE_HAND.png" alt="LOVE">
-            </div>
-            <div class="area-bottom">
+            <div class="area-left"></div>
+            <div class="area-right"></div>
+
+            <!-- <div class="area-top"> -->
+                <!-- <img src="../../../static/images/LOVE_HAND.png" alt="LOVE"> -->
+            <!-- </div> -->
+            <!-- <div class="area-bottom"> -->
                 <!-- <p>L</p><p>O</p><p>V</p><p>E</p> -->
                 <!-- <div>LOVE</div> -->
-                LOVE
-            </div>
+                <!-- LOVE -->
+            <!-- </div> -->
         </div>
     </div>
 </template>
@@ -121,8 +124,8 @@
         padding: 0 5px 5px 5px;
     }
     .blog-nav ul li a:hover{
-        border-bottom: 3px solid #20a0ff;
-        /* color: #f52323; */
+        /* border-bottom: 3px solid #20a0ff; */
+        color: #20a0ff;
     }
     .blog-sear{
         position: absolute;
@@ -187,6 +190,21 @@
         width: 100%;
         height: 100%;
     }
+
+    .area-left, .area-right {
+        width: 50%;
+        height: 100%;
+        position: relative;
+        display: block;
+        float: left;
+    }
+    .area-left {
+        background-color: #fab27b; 
+    }
+    .area-right {
+        background-color: #cde6c7; 
+    }
+
     .area-top, .area-bottom {
         width: 100%;
         height: 50%;

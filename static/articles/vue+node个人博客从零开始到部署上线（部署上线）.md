@@ -469,6 +469,10 @@ pm2 启动项目
 [root@izwz9e9bjg74ljcpzr7stvz server]# pm2 list
 ```
 
+#### 刷新页面404
+[HTML5 History 模式](https://router.vuejs.org/zh-cn/essentials/history-mode.html)，
+最后有nginx的配置。
+
 # Linux中文乱码 （修改默认编码）
 如文件或文件夹含有中文字符时，可能会读取乱码，读取不到文章，需要修改系统默认编码
 [修改默认编码](http://www.linuxidc.com/Linux/2017-07/145572.htm)
@@ -723,6 +727,12 @@ tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      
         server {
             listen 80;
             server_name cl8023.com www.cl8023.com;
+
+            # 解决刷新404的问题
+            location /blog {
+                try_files $uri $uri/ /index.html;
+            }
+
             location / {
                 proxy_set_header   Host      $http_host;
                 proxy_pass         http://127.0.0.1:3000;

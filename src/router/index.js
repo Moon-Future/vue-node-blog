@@ -6,7 +6,7 @@ import Home from '@/components/page/Home'
 Vue.use(Router)
 
 export default new Router({
-    mode: 'history',
+    // mode: 'history',
     scrollBehavior (to, from, savedPosition) {
         // 如果你的連結是帶 # 這種
         // to.hash 就會有值(值就是連結)
@@ -84,6 +84,11 @@ export default new Router({
                     component: resolve => require(['@/components/admin/User'], resolve),
                 }
             ]
-        }
+        },
+        {
+            path: '*',
+            name: 'Error',
+            component: resolve => require(['@/components/page/ErrorPage'], resolve),
+        },
     ]
 })
