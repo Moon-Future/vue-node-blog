@@ -8,7 +8,7 @@
                 <div class="article-mes" v-if="show">
                     <span class="article-postdata">{{ article.post_time }}</span>
                     <span class="article-view"><i class="el-icon-search title-icon"></i>{{ article.view }}</span>
-                    <span class="article-start"><i class="title-icon el-icon-star-on"></i>{{ article.start }}</span>
+                    <span class="article-start" @click="addStart"><i :class="['title-icon', hasAddSatrt ? 'el-icon-star-on' : 'el-icon-star-off']"></i>{{ article.start }}</span>
                     <span class="article-tags">
                         <template v-for="tag in article.tags">
                             <el-tag type="primary" :key="tag.id">{{ tag.name }}</el-tag>
@@ -36,12 +36,13 @@
                 content: '',
                 show: false,
                 loading: false,
-                treeData: []
+                treeData: [],
+                hasAddSatrt: false
             }
         },
         created() {
-            let params = this.$route.params;
-            this.getData({id: params.id, title: params.title});
+            // let params = this.$route.params;
+            // this.getData({id: params.id, title: params.title});
             this.currentArticleHanle({catalog: []});
         },
         methods: {
@@ -83,6 +84,7 @@
                         this.treeDataHandle(obj, this.treeData);
                     }
                     this.currentArticleHanle({catalog: this.treeData});
+                    this.addViewOrStart('view');
                 }).catch((err) => {
                     console.log('err', err);
                 });
@@ -98,6 +100,24 @@
                         arr.push(obj);
                     }
                 }
+            },
+            addViewOrStart(type) {
+                this.$http.post('/api/article/addViewOrStart', {
+                    id: this.article.id,
+                    count: this.article[type] + 1,
+                    type
+                }).then((res) => {
+                    this.article[type] += 1;
+                }).catch((err) => {
+                    throw err;
+                })
+            },
+            addStart() {
+                if(this.hasAddSatrt) {
+                    return false;
+                }
+                this.addViewOrStart('start');
+                this.hasAddSatrt = true;
             }
         },
         computed: {
@@ -135,5 +155,9 @@
 
     .article-tags span {
         margin-right: 5px;
+    }
+
+    .article-start {
+        cursor: pointer;
     }
 </style>

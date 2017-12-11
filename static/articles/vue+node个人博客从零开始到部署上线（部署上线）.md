@@ -27,7 +27,7 @@
 输入购买服务器时设置的实例密码即可
 2. Windows
 - 下载工具 Xshell
-- 打开Xshell - 文件 - 新建
+- 打开Xshell - 文件 - 新建，终端选项选择编码：Unicode(UTF-8)
 ![](http://otr9a8wg0.bkt.clouddn.com/Xshell%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1%E5%99%A8.jpg)
 - 连接成功
 ![](http://otr9a8wg0.bkt.clouddn.com/Xshell%E8%BF%9E%E6%8E%A5%E6%88%90%E5%8A%9F.jpg)
@@ -275,7 +275,7 @@ npm run build
 
 #### 文件传输
 1. 下载文件传输工具 Xftp
-2. 打开 Xftp 新建连接，类似Xshell
+2. 打开 Xftp 新建连接，类似Xshell，选项中勾选 “使用UTF-8编码(E)”
 ![Xftp连接](http://otr9a8wg0.bkt.clouddn.com/Xftp%E8%BF%9E%E6%8E%A5.jpg)
 连接成功后可以看到左侧是本地文件目录，右侧是服务器文件目录，可以很方便的来回拖放文件。
 3. 创建目录文件 /root/projec/myblog (目录层级、名称随意，这里我以次为项目目录)

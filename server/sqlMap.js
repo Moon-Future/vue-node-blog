@@ -3,8 +3,8 @@ var sqlMap = {
         queryById: 'SELECT a.*, GROUP_CONCAT(c.id, "_", c.name) AS tag_string FROM articles AS a LEFT JOIN tag_links AS b ON a.id = b.aid LEFT JOIN tags AS c ON b.tid = c.id WHERE a.id = ? GROUP BY a.id',
         queryAll: 'SELECT a.*, GROUP_CONCAT(c.id, "_", c.name) AS tag_string FROM articles AS a LEFT JOIN tag_links AS b ON a.id = b.aid LEFT JOIN tags AS c ON b.tid = c.id GROUP BY a.id',
         delById: 'DELETE FROM articles WHERE id = ?',
-        updById: 'UPDATE articles SET ? FROM WHERE id = ?',
-        insert: 'INSERT INTO articles(user_id, title, state, type, loadURL, summary, post_time, upd_time, view, start, cover) VALUES (?,?,?,?,?,?,?,?,?,?,?)',
+        updById: 'UPDATE articles SET ? WHERE id = ?',
+        insert: 'INSERT INTO articles(user_id, title, state, type, loadURL, summary, post_time, upd_time, view, start) VALUES (?,?,?,?,?,?,?,?,?,?)',
         queryByTitle: 'SELECT * FROM articles WHERE title = ?',
         queryByTagId: "SELECT "+
                             "c.*, ( "+

@@ -44,6 +44,9 @@ router.post('/article/updArticle', (req, res, next) => {
 router.post('/article/addArticle', (req, res, next) => {
     api.addArticle(req, res, next);
 })
+router.post('/article/addViewOrStart', (req, res, next) => {
+    api.addViewOrStart(req, res, next);
+})
 // 填写评论
 router.post('/comment/writeComment', (req, res, next) => {
     api.writeComment(req, res, next);

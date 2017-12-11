@@ -24,7 +24,7 @@
 输入购买服务器时设置的实例密码即可</li>
 <li>Windows</li>
 <li>下载工具 Xshell</li>
-<li>打开Xshell - 文件 - 新建
+<li>打开Xshell - 文件 - 新建，终端选项选择编码：Unicode(UTF-8)
 <img src="http://otr9a8wg0.bkt.clouddn.com/Xshell%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1%E5%99%A8.jpg" alt=""></li>
 <li>连接成功
 <img src="http://otr9a8wg0.bkt.clouddn.com/Xshell%E8%BF%9E%E6%8E%A5%E6%88%90%E5%8A%9F.jpg" alt=""></li>
@@ -219,7 +219,7 @@ tcp6       0      0 :::3306                 :::*                    LISTEN      
 <h4 id="-">文件传输</h4>
 <ol>
 <li>下载文件传输工具 Xftp</li>
-<li>打开 Xftp 新建连接，类似Xshell
+<li>打开 Xftp 新建连接，类似Xshell，选项中勾选 “使用UTF-8编码(E)”
 <img src="http://otr9a8wg0.bkt.clouddn.com/Xftp%E8%BF%9E%E6%8E%A5.jpg" alt="Xftp连接">
 连接成功后可以看到左侧是本地文件目录，右侧是服务器文件目录，可以很方便的来回拖放文件。</li>
 <li>创建目录文件 /root/projec/myblog (目录层级、名称随意，这里我以次为项目目录)</li>
@@ -370,12 +370,12 @@ cnpm  <span class="hljs-keyword">node</span>  <span class="hljs-title">npm</span
 </code></pre><p>bin 下都是命令语句，为了可以在任何目录都可以使用命令，我们将此文件夹加入环境变量</p>
 <ol>
 <li>查看环境变量 [root@izwz9e9bjg74ljcpzr7stvz ~]# echo $PATH</li>
-<li>永久添加环境变量（影响所有用户）<pre><code>[root@izwz9e9bjg74ljcpzr7stvz ~]<span class="hljs-comment"># vim /etc/profile</span>
-<span class="hljs-regexp">//</span> 在文档最后，添加:
-<span class="hljs-comment"># node</span>
-export NODE_HOME=<span class="hljs-regexp">/root/</span>node-v8.<span class="hljs-number">9.1</span>-linux-x64
-export PATH=<span class="hljs-variable">$PATH</span>:<span class="hljs-variable">$NODE_HOME</span><span class="hljs-regexp">/bin</span>
-</code></pre>保存，退出，然后运行<pre><code>[root<span class="hljs-symbol">@izwz9e9bjg74ljcpzr7stvz</span> ~]<span class="hljs-meta"># source /etc/profile</span>
+<li>永久添加环境变量（影响所有用户）<pre><code> [root@izwz9e9bjg74ljcpzr7stvz ~]<span class="hljs-comment"># vim /etc/profile</span>
+ <span class="hljs-regexp">//</span> 在文档最后，添加:
+ <span class="hljs-comment"># node</span>
+ export NODE_HOME=<span class="hljs-regexp">/root/</span>node-v8.<span class="hljs-number">9.1</span>-linux-x64
+ export PATH=<span class="hljs-variable">$PATH</span>:<span class="hljs-variable">$NODE_HOME</span><span class="hljs-regexp">/bin</span>
+</code></pre> 保存，退出，然后运行<pre><code> [root<span class="hljs-symbol">@izwz9e9bjg74ljcpzr7stvz</span> ~]<span class="hljs-meta"># source /etc/profile</span>
 </code></pre></li>
 </ol>
 <p>pm2 启动项目</p>
@@ -386,7 +386,10 @@ export PATH=<span class="hljs-variable">$PATH</span>:<span class="hljs-variable"
 [<span class="hljs-meta">root@izwz9e9bjg74ljcpzr7stvz server</span>]<span class="hljs-meta"># pm2 stop index.js</span>
 <span class="hljs-comment">// 查看进程</span>
 [<span class="hljs-meta">root@izwz9e9bjg74ljcpzr7stvz server</span>]<span class="hljs-meta"># pm2 list</span>
-</code></pre><h1 id="linux-">Linux中文乱码 （修改默认编码）</h1>
+</code></pre><h4 id="-404">刷新页面404</h4>
+<p><a href="https://router.vuejs.org/zh-cn/essentials/history-mode.html">HTML5 History 模式</a>，
+最后有nginx的配置。</p>
+<h1 id="linux-">Linux中文乱码 （修改默认编码）</h1>
 <p>如文件或文件夹含有中文字符时，可能会读取乱码，读取不到文章，需要修改系统默认编码
 <a href="http://www.linuxidc.com/Linux/2017-07/145572.htm">修改默认编码</a></p>
 <h1 id="nginx-">Nginx 服务器</h1>
@@ -615,6 +618,12 @@ tcp        <span class="hljs-number">0</span>      <span class="hljs-number">0</
      server {
          listen 80;
          server_name cl8023.com www.cl8023.com;
+
+         # 解决刷新404的问题
+         location /blog {
+             try_files <span class="hljs-variable">$uri</span> <span class="hljs-variable">$uri</span>/ /index.html;
+         }
+
          location / {
              proxy_set_header   Host      <span class="hljs-variable">$http_host</span>;
              proxy_pass         http:<span class="hljs-comment">//127.0.0.1:3000;</span>

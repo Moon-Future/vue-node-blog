@@ -5,6 +5,8 @@ var formidable = require('formidable');
 var fs = require('fs');
 var uuid = require('node-uuid');
 var marked = require('marked');
+var path = require('path');
+var rootDir = path.join(__dirname, '../static');
 const LIMIT = 10;
 
 // 连接数据库
@@ -94,8 +96,8 @@ module.exports = {
     },
     getArticleById(req, res, next) {
         let params = req.query, id = params.id, title = params.title, editor = params.editor,
-            filePath = '../static/articles/' + title + '.md',
-            fileHtml = '../static/articles/' + title + '.html',
+            filePath = rootDir + '/articles/' + title + '.md',
+            fileHtml = rootDir + '/articles/' + title + '.html',
             content, data, stat;
         if (editor) {
             try {
@@ -160,7 +162,7 @@ module.exports = {
                 } else {
                     res.json(result ? mergeData(result, noDel) : result);
                 }
-                connection.release();
+                // connection.release();
             })
         })
     },
@@ -194,6 +196,19 @@ module.exports = {
             })
         })
     },
+    // 阅读量、点赞量 +1
+    addViewOrStart(req, res, next) {
+        pool.getConnection((err, connection) => {
+            let postData = req.body,
+                id = postData.id,
+                count = postData.count,
+                type = postData.type,
+                sql = 'UPDATE articles SET ' + type + ' = ' + count + ' WHERE id = ' + id;
+            connection.query(sql, (err, result) => {
+                res.send('ok');
+            })
+        })
+    },
     // 新增文章
     addArticle(req, res, next) {
         pool.getConnection((err, connection) => {
@@ -201,7 +216,7 @@ module.exports = {
                 curTime = new Date().getTime(),
                 content = postData.content,
                 title = postData.title,
-                fileDir = '../static/articles/',
+                fileDir = rootDir + '/articles/',
                 fileName = title + '.md',
                 filePath = fileDir + fileName,
                 markedHtml, htmlTags, summary = '', count = 0, limit = 2;
@@ -227,7 +242,7 @@ module.exports = {
                     if (req.session.userData.root !== 1) {
                         postData.state = 2;
                     }
-                    connection.query(sqlMap.article.insert, [postData.user_id,title,postData.state,postData.type,postData.loadURL,summary,curTime,null,0,0,''], (err, result) => {
+                    connection.query(sqlMap.article.insert, [postData.user_id,title,postData.state,postData.type,postData.loadURL,summary,curTime,null,0,0], (err, result) => {
                         fs.writeFileSync(filePath, content);
                         res.json({status: true, msg: '提交成功'});
                         connection.release();
@@ -323,7 +338,7 @@ module.exports = {
     // 上传图片
     uploadPic(req, res, next) {
         let form = new formidable.IncomingForm(), userID, userAvatar;
-        form.uploadDir = '../static/images/avatar/';
+        form.uploadDir = rootDir + '/images/avatar/';
         form.parse(req, (error, fields, files) => {
             userID = fields.userID;
             userAvatar = fields.userAvatar;
