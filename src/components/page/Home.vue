@@ -9,14 +9,8 @@
             <div class="blog-nav">
                 <ul>
                     <li><router-link to="/blog">blog</router-link></li>
-                    <!-- <li><router-link to="/about">about</router-link></li>
-                    <li><router-link to="/comment">comment</router-link></li>
-                    <li><router-link to="/contact">contact</router-link></li> -->
                 </ul>
             </div>
-            <!-- <div class="blog-sear">
-                <el-input placeholder="sear" icon="search"></el-input>
-            </div> -->
         </div>
         <div class="heart">
             <div class="heart-left"></div>
@@ -26,15 +20,6 @@
         <div class="area">
             <div class="area-left"></div>
             <div class="area-right"></div>
-
-            <!-- <div class="area-top"> -->
-                <!-- <img src="../../../static/images/LOVE_HAND.png" alt="LOVE"> -->
-            <!-- </div> -->
-            <!-- <div class="area-bottom"> -->
-                <!-- <p>L</p><p>O</p><p>V</p><p>E</p> -->
-                <!-- <div>LOVE</div> -->
-                <!-- LOVE -->
-            <!-- </div> -->
         </div>
     </div>
 </template>
@@ -49,23 +34,11 @@
             }
         },
         beforeCreate() {
-            this.$http.get('/api/getSession')
-                .then((res) => {
-                    res.data.avatar ? this.avatar = this.avatarRoot + res.data.avatar : false;
-                })
-                .catch((err) => {
-                    throw err;
-                })
+
         },
         methods: {
             gotoAdmin() {
-                this.$http.get('/api/getSession')
-                    .then((res) => {
-                        res.data === false ? this.$router.push('/login') : this.$router.push('/admin');
-                    })
-                    .catch((err) => {
-                        throw err;
-                    })
+
             }
         }
     }

@@ -1,19 +1,10 @@
 <template>
     <div>
-        <Leftnav :avatar="avatar"></Leftnav>
-        <Catalog></Catalog>
-        <div class="blog-content">
-            <vHeader :avatar="avatar"></vHeader>
-            <router-view></router-view>
-        </div>
+        111
     </div>
 </template>
 
 <script>
-    import Catalog from '../common/catalog'
-    import Leftnav from '../common/leftNav'
-    import vHeader from '../common/Header'
-    import {mapState, mapActions} from 'vuex'
     export default {
         name: 'blog',
         data() {
@@ -23,36 +14,16 @@
             }
         },
         components: {
-            Catalog,
-            Leftnav,
-            vHeader
+            
         },
         created() {
-            this.$http.get('/api/getSession')
-                .then((res) => {
-                    res.data.avatar ? this.avatar = res.data.avatar : false;
-                })
-                .catch((err) => {
-                    throw err;
-                })
+
         },
         methods: {
-            switchHandle() {
-                this.switchType = !this.switchType;
-                this.boxSwitchType();
-            },
-            backBlog() {
-                this.currentArticleHanle({'title': ''});
-                this.crumbFlagHanle([{'index':2, 'newValue':false}]);
-            },
-            ...mapActions({
-                crumbFlagHanle: 'crumbFlag',
-                currentArticleHanle: 'currentArticle',
-                boxSwitchType: 'boxSwitchType'
-            })
+            
         },
         computed: {
-            ...mapState(['crumbFlag', 'currentArticle', 'boxCol']),
+            
         }
     }
     
