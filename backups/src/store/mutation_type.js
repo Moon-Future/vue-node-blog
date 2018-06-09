@@ -1,0 +1,4 @@
+export const CATALOG_DISPLAY = 'CATALOG_DISPLAY'
+export const CRUMB_FLAG = 'CRUMB_FLAG'
+export const CURRENT_ARTICLE = 'CURRENT_ARTICLE'
+export const BOX_SWITCH = 'BOX_SWITCH'
