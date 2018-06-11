@@ -5,9 +5,8 @@
 </template>
 
 <script>
-	import Catalog from '../common/catalog'
-	import Leftnav from '../common/LeftNav'
-	import vHeader from '../common/Header'
+	import Catalog from '../common/Catalog'
+	import Leftnav from '../common/LeftNavItem.vue'
 	export default {
 		name: 'blog',
 		data() {
@@ -17,9 +16,7 @@
 			}
 		},
 		components: {
-			Catalog,
-			Leftnav,
-			vHeader
+			Leftnav
 		},
 		created() {
 

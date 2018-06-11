@@ -1,6 +1,6 @@
 <template>
     <div>
-        <article class="article-detail">
+        <div class="article-detail">
             <div class="article-title">
                 {{ changeData }}
                 <div v-if="loading"><i class="el-icon-loading"></i></div>
@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="markdown-body" v-html="content"></div>
-        </article>
+        </div>
         <Comment v-if="show"></Comment>
     </div>
 </template>
