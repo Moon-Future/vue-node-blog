@@ -135,7 +135,7 @@
 			font-size: 32px;
 			cursor: pointer;
 			color: #fff;
-			padding: 0 5px;
+			padding: 0 6px;
 		}
 		.icon-github:hover {
 			color: #f66;
