@@ -1,11 +1,12 @@
 <template>
 	<div>
 		<Leftnav :avatar="avatar"></Leftnav>
+		<Catalog></Catalog>
 	</div>
 </template>
 
 <script>
-	import Catalog from '../common/Catalog'
+	import Catalog from '../common/CatalogItem'
 	import Leftnav from '../common/LeftNavItem.vue'
 	export default {
 		name: 'blog',
@@ -16,13 +17,14 @@
 			}
 		},
 		components: {
+			Catalog,
 			Leftnav
 		},
 		created() {
 
 		},
 		methods: {
-			
+
 		},
 		computed: {
 			
@@ -72,3 +74,4 @@
 		cursor: pointer;
 	}
 </style>
+

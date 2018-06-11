@@ -61,7 +61,7 @@
 					.catch((err) => {
 						throw err;
 					})
-			}
+			},
 		}
 	}
 </script>

@@ -2,13 +2,13 @@
   <transition name="fade">
     <div class="article-catalog" v-if="catalogDisplay">
       <div class="catalog-search">
-        <el-input placeholder="article search" icon="search" @click="searchArticle" @keyup.enter.native="searchArticle"></el-input>
+        <el-input placeholder="article search" suffix-icon="el-icon-search" @change="searchArticle" @keyup.enter.native="searchArticle"></el-input>
       </div>
       <div class="btn-hide">
         <i class="iconfont icon-zhankai-copy" @click="hiddenPanel"></i>
       </div>
       <div class="catalog-tags">
-        <el-switch v-model="tagOn" on-color="#13ce66" off-color="#ff4949" @change="changeTagStatus"></el-switch>
+        <el-switch v-model="tagOn" active-color="#13ce66" inactive-color="#ff4949" @change="changeTagStatus"></el-switch>
         <div class="tag-list" v-show="tagOn">
           <template v-for="(tag, i) in tags">
             <el-tag @click.native="tagSelect(tag)" :style="{background: tag.bgColor}" :key="i">{{ tag.name }}</el-tag>
@@ -70,7 +70,7 @@
       return {
         LIMIT_STEP: 10,
         tagOn: false,
-        tags: [],
+        tags: [{name: 'js'}, {name: 'vue'}, {name: 'css'}],
         articles: {
           all: {
             total: 0,
@@ -212,7 +212,7 @@
   }
 </script>
 
-<style scoped>
+<style lang="scss">
   .article-catalog {
     position: fixed;
     width: 20%;
@@ -223,10 +223,20 @@
     padding: 10px;
     box-sizing: border-box;
     overflow: auto;
+    a {
+      text-decoration: none;
+    }
   }
-  
-  .article-catalog a {
-    text-decoration: none;
+
+  .catalog-search {
+    width: 100%;
+    input {
+      background-color: transparent;
+      color: #fff
+    }
+    i {
+      cursor: pointer;
+    }
   }
   
   @media only screen and (max-width: 992px) {
@@ -234,78 +244,60 @@
       display: none;
     }
   }
-  
-  /* .catalog-search input {
-    background-color: transparent;
-    color: #fff;
-  } */
-  
-  .catalog-search i {
-    cursor: pointer;
-  }
-  
+
   .catalog-breadcrumb {
     padding-top: 20px;
-  }
-  
-  .catalog-breadcrumb span {
-    color: #fff; 
+    span {
+      color: #fff; 
+    }
   }
   
   .catalog-tags {
     margin-top: 10px;
     text-align: left;
+    .tag-list {
+      margin-top: 10px;
+    }
   }
-  
-  .tag-list {
-    margin-top: 10px;
-  }
-  
+
   .tag-list span {
     margin: 0 10px 10px 0;
     cursor: pointer;
-  }
-  
-  .tag-list span:hover {
-    color: #FFFF00;
+    &:hover {
+      color: #FFFF00;
+    }
   }
 
   .catalog-list {
     text-align: center;
-  }
-  
-  .catalog-list ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    text-align: left;
-  }
-  
-  .catalog-list .title {
-    margin-bottom: 2px;
-    /*white-space: nowrap;*/
-    text-overflow: ellipsis;
-    overflow: hidden;
-    color: #fff;
-  }
-  
-  .catalog-list .mes {
-    color: #97a8be;
-    font-size: 13px;
-    margin: 0;
-  }
-  
-  .catalog-list .mes span {
-    margin-right: 10px;
-    cursor: pointer;
-  }
-  
-  .catalog-list .mes span:hover{
-    text-decoration: underline;
-  }
-  
-  .catalog-list .mes i {
-    margin-right: 5px;
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      text-align: left;
+    }
+    .title {
+      margin-bottom: 2px;
+      /*white-space: nowrap;*/
+      text-overflow: ellipsis;
+      overflow: hidden;
+      color: #fff;
+    }
+    .mes {
+      color: #97a8be;
+      font-size: 13px;
+      margin: 0;
+      span {
+        margin-right: 10px;
+        cursor: pointer;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+      i {
+        margin-right: 5px;
+      }
+    }
   }
   
   .currentArticle {
@@ -313,11 +305,11 @@
     text-align: left;
     font-size: 13px;
     color: #FFFF00;
+    span {
+      cursor: pointer;
+    }
   }
-  .currentArticle span {
-    cursor: pointer;
-  }
-  
+
   .btn-hide {
     float: right;
     margin-top: 15px;
@@ -353,27 +345,23 @@
 
   .article-chapter {
     margin-top: 10px;
-  }
-
-  .article-chapter ul {
-    list-style: none;
-    padding-left: 15px;
-    margin: 5px 0;
+    ul {
+      list-style: none;
+      padding-left: 15px;
+      margin: 5px 0;
+      li a {
+        display: block;
+        color: #fff;
+        font-size: 14px;
+        padding: 5px;
+        &:hover {
+          background: #00a8e6;
+        }
+      }
+    }
   }
 
   .article-chapter>ul {
     padding-left: 0;
-  }
-
-  .article-chapter ul li a {
-    display: block;
-    color: #fff;
-    font-size: 14px;
-    padding: 5px;
-  }
-
-  .article-chapter ul li a:hover {
-    background: #00a8e6;
-    /* background: #444; */
   }
 </style>
