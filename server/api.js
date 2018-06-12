@@ -25,18 +25,6 @@ marked.setOptions({
     }
 });
 
-// 向前台返回JSON方法的简单封装
-/*var jsonWrite = function (res, data) {
-    if(typeof data === 'undefined') {
-        res.json({
-            status: false,
-            msg: '操作失败'
-        });
-    } else {
-        res.json(data);
-    }
-};*/
-
 // 数据处理
 var mergeData = function(data, flag) {
     let obj = {}, arr = [], arrDel = [], tmp;

@@ -2,12 +2,18 @@
 	<div>
 		<Leftnav :avatar="avatar"></Leftnav>
 		<Catalog></Catalog>
+		<div class="blog-content">
+			<vHeader :avatar="avatar"></vHeader>
+			<router-view></router-view>
+		</div>
 	</div>
 </template>
 
 <script>
 	import Catalog from '../common/CatalogItem'
 	import Leftnav from '../common/LeftNavItem.vue'
+	import vHeader from '../common/HeaderItem'
+	import {mapState, mapActions} from 'vuex'
 	export default {
 		name: 'blog',
 		data() {
@@ -18,16 +24,35 @@
 		},
 		components: {
 			Catalog,
-			Leftnav
+			Leftnav,
+			vHeader
 		},
 		created() {
-
+			this.$http.get('/api/getSession')
+				.then((res) => {
+						res.data.avatar ? this.avatar = res.data.avatar : false;
+				})
+				.catch((err) => {
+						throw err;
+				})
 		},
 		methods: {
-
+			switchHandle() {
+				this.switchType = !this.switchType;
+				this.boxSwitchType();
+			},
+			backBlog() {
+				this.currentArticleHanle({'title': ''});
+				this.crumbFlagHanle([{'index':2, 'newValue':false}]);
+			},
+			...mapActions({
+				crumbFlagHanle: 'crumbFlag',
+				currentArticleHanle: 'currentArticle',
+				boxSwitchType: 'boxSwitchType'
+			})
 		},
 		computed: {
-			
+			...mapState(['crumbFlag', 'currentArticle', 'boxCol']),
 		}
 	}
 </script>

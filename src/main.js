@@ -26,22 +26,42 @@ Vue.prototype.timeFormat = function (timestamp) {
 
 Date.prototype.format = function(format) {
   let date = {
-      'M+': this.getMonth() + 1,
-      'd+': this.getDate(),
-      'h+': this.getHours(),
-      'm+': this.getMinutes(),
-      's+': this.getSeconds()
+    'M+': this.getMonth() + 1,
+    'd+': this.getDate(),
+    'h+': this.getHours(),
+    'm+': this.getMinutes(),
+    's+': this.getSeconds()
   };
   if(/(y+)/i.test(format)){
-      format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
+    format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
   }
   for(let k in date){
-      if(new RegExp('(' + k + ')').test(format)){
-          format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? date[k] : ('00' + date[k]).substr(('' + date[k]).length));
-      }
+    if(new RegExp('(' + k + ')').test(format)){
+      format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? date[k] : ('00' + date[k]).substr(('' + date[k]).length));
+    }
   }
   return format;
 }
+
+router.beforeEach ((to, from, next) => {
+  const toData = to.params;
+  const fromData = from.params;
+
+  if (to.name === from.name && to.query.id !== from.query.id) {
+    router.go(0);
+  }
+
+  if(fromData.id && !toData.id){
+    store.state.currentArticle.title = '';
+    store.state.crumbFlag.splice(2, 1, '');
+  }
+  if(toData.id && !fromData.id){
+    store.state.currentArticle.title = toData.title;
+    store.state.currentArticle.id = toData.id;
+    store.state.crumbFlag.splice(2, 1, toData.title);
+  }
+  next();
+})
 
 /* eslint-disable no-new */
 new Vue({

@@ -14,18 +14,18 @@
             <el-table-column prop="id" label="ID" width="100"></el-table-column>
             <el-table-column prop="title" label="标题" width="300"></el-table-column>
             <el-table-column prop="tags" label="标签" width="200" :filters="tags" :filter-method="filterTag" filter-placement="bottom-end">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-tag v-for="tag in scope.row.tags" :key="tag.id" type="primary">{{ tag.name }}</el-tag>
                 </template>
             </el-table-column>
             <el-table-column label="发表时间" width="200">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-icon name="time"></el-icon>
                     <span style="margin-left: 10px">{{ scope.row.post_time }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="更改时间" width="200">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-icon name="time"></el-icon>
                     <span style="margin-left: 10px">{{ scope.row.upd_time }}</span>
                 </template>
@@ -33,7 +33,7 @@
             <el-table-column prop="view" label="浏览" width="100"></el-table-column>
             <el-table-column prop="start" label="点赞" width="100"></el-table-column>
             <el-table-column prop="state" label="状态" width="80">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <!-- 0：删除  1：已发布  2：暂存稿 -->
                     <span v-if="scope.row.state === 1" style="color:#13ce66">已发布</span>
                     <span v-else-if="scope.row.state === 0" style="color:#ff4949">删除</span>
@@ -41,7 +41,7 @@
                 </template>
             </el-table-column>
             <el-table-column label="操作" min-width="200">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-button size="small" type="primary" v-show="!delFlag" :disabled="userData.root ? false : true" @click="editorHandle(scope.row)">编辑</el-button>
                     <el-button size="small" type="warning" v-show="!delFlag" :disabled="userData.root ? false : true" v-if="scope.row.state === 1" @click="operateHandle(scope.row, 2)">存稿</el-button>
                     <el-button size="small" type="success" v-show="!delFlag" :disabled="userData.root ? false : true" v-if="scope.row.state === 2" @click="operateHandle(scope.row, 1)">发布</el-button>

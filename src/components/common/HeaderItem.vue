@@ -20,7 +20,7 @@
                 </div>
             </div>
             <div class="m-detail" v-show="menuOpen">
-                <el-menu theme="dark">
+                <el-menu background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
                     <el-menu-item index="0"><i class="iconfont icon-wenzhang"></i>Article</el-menu-item>
                     <el-menu-item index="1"><i class="iconfont icon-about"></i>About</el-menu-item>
                     <el-menu-item index="2"><i class="iconfont icon-comments"></i>Comment</el-menu-item>
@@ -151,7 +151,7 @@
     .m-detail {
         position: relative;
         width: 100%;
-        opacity: 0.8;
+        /* opacity: 0.8; */
         color: #fff;
         z-index: 99;
         margin-top: 10px;

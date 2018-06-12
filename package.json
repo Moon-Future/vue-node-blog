@@ -22,7 +22,9 @@
     "mysql": "^2.15.0",
     "node-uuid": "^1.4.8",
     "vue": "^2.5.2",
+    "vue-image-crop-upload": "^2.3.1",
     "vue-router": "^3.0.1",
+    "vue-simplemde": "^0.4.8",
     "vuex": "^3.0.1"
   },
   "devDependencies": {

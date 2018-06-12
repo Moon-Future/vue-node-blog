@@ -70,7 +70,7 @@
       return {
         LIMIT_STEP: 10,
         tagOn: false,
-        tags: [{name: 'js'}, {name: 'vue'}, {name: 'css'}],
+        tags: [],
         articles: {
           all: {
             total: 0,
@@ -263,6 +263,7 @@
   .tag-list span {
     margin: 0 10px 10px 0;
     cursor: pointer;
+    color: #0df2ff;
     &:hover {
       color: #FFFF00;
     }

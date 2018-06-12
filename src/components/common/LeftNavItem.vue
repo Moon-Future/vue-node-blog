@@ -21,11 +21,11 @@
 		</div>
 		<div class="left-menu">
 			<el-menu class="tabs-menu" router default-active="blog">
-				<el-menu-item index="/"><i class="iconfont icon-wenzhang"></i>Home</el-menu-item>
-				<el-menu-item index="blog"><i class="iconfont icon-wenzhang"></i>Blog</el-menu-item>
-				<el-menu-item index="about"><i class="iconfont icon-about"></i>About</el-menu-item>
-				<el-menu-item index="comment"><i class="iconfont icon-comments"></i>Comment</el-menu-item>
-				<el-menu-item index="contact"><i class="iconfont icon-icon3"></i>Contact</el-menu-item>
+				<el-menu-item index="/"><i class="iconfont icon-wenzhang"></i><span>Home</span></el-menu-item>
+				<el-menu-item index="blog"><i class="iconfont icon-wenzhang"></i><span>Blog</span></el-menu-item>
+				<el-menu-item index="about"><i class="iconfont icon-about"></i><span>About</span></el-menu-item>
+				<el-menu-item index="comment"><i class="iconfont icon-comments"></i><span>Comment</span></el-menu-item>
+				<el-menu-item index="contact"><i class="iconfont icon-icon3"></i><span>Contact</span></el-menu-item>
 			</el-menu>
 		</div>
 		<div class="left-social">
@@ -113,10 +113,9 @@
 	.tabs-menu {
 		background: transparent;
 		border: none;
+		width: 100%;
 		li {
 			color: $whiteColor;
-			padding: 0 80px !important;
-			text-align: left;
 			&:hover {
 				background: #736161
 			}
@@ -124,9 +123,15 @@
 				padding: 0 10px;
 			}
 		}
+		span {
+			display: inline-block;
+			width: 50px;
+		}
 	}
 
 	.left-social {
+		position: absolute;
+		bottom: 0;
 		padding: 10px;
 		a {
 			text-decoration: none
