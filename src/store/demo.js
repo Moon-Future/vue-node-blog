@@ -18,7 +18,7 @@ const actions = {
     commit(types.CURRENT_ARTICLE, obj);
   },
   countIncrement({commit}, n) {
-    commit(types.CURRENT_ARTICLE, n);
+    commit(types.COUNT, n);
   }
 }
 
