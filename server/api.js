@@ -63,7 +63,7 @@ module.exports = {
     getArticleAll(req, res, next) {
         pool.getConnection((err, connection) => {
             let params = req.query, noDel = params.noDel, limit = params.limit, start = limit > LIMIT ? limit - LIMIT : 0,
-                sqlGetLen = '; SELECT COUNT(1) AS total FROM articles',
+                sqlGetLen = '; SELECT COUNT(1) AS total FROM articles WHERE state = 1',
                 sql = sqlMap.article.queryAll + (limit ? ' LIMIT ' + start + ',' + limit : '' );
             sql += (limit && limit <= LIMIT) ? sqlGetLen : '';
             connection.query(sql, (err, result) => {

@@ -34,7 +34,7 @@
   import {mapState, mapActions} from 'vuex'
   import axios from 'axios'
   export default {
-    name: 'article',
+    name: 'boxCatalog',
     data() {
       return {
         imageDefault: '../../../static/images/pic9.jpg',
