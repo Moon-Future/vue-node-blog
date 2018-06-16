@@ -155,6 +155,7 @@
 
   .article-tags span {
     margin-right: 5px;
+    height: 25px;
   }
 
   .article-start {

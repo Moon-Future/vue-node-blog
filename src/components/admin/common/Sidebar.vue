@@ -1,16 +1,16 @@
 <template>
   <div class="sidebar">
-    <el-menu :default-active="onRoutes" class="el-menu-vertical-demo" theme="dark" unique-opened router>
+    <el-menu :default-active="onRoutes" background-color="#324157" text-color="#fff" class="el-menu-vertical-demo" unique-opened router>
       <template v-for="item in items">
         <template v-if="item.subs">
-          <el-submenu :key="item.index">
+          <el-submenu :key="item.index" :index="item.index">
             <template slot="title"><i :class="item.icon"></i>{{ item.title }}</template>
             <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index">{{ subItem.title }}
             </el-menu-item>
           </el-submenu>
         </template>
         <template v-else>
-          <el-menu-item :key="item.index">
+          <el-menu-item :key="item.index" :index="item.index">
             <i :class="item.icon"></i>{{ item.title }}
           </el-menu-item>
         </template>
@@ -27,7 +27,7 @@
         items: [
           {
             icon: 'el-icon-setting',
-            index: 'admin',
+            index: 'selfinfo',
             title: '自述'
           },
           {
@@ -80,16 +80,16 @@
             title: '用户'
           },
           {
-            icon: 'el-icon-delete2',
+            icon: 'el-icon-delete',
             index: 'recycleBin',
             title: '回收站'
           }
         ]
       }
     },
-    computed:{
-      onRoutes(){
-        return this.$route.path.replace('/','');
+    computed: {
+      onRoutes() {
+        return this.$route.path.replace('/admin/', '');
       }
     }
   }

@@ -40,7 +40,7 @@
           <span v-else style="color:#8391a5">暂存稿</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" min-width="200">
+      <el-table-column label="操作" min-width="220">
         <template slot-scope="scope">
           <el-button size="small" type="primary" v-show="!delFlag" :disabled="userData.root ? false : true" @click="editorHandle(scope.row)">编辑</el-button>
           <el-button size="small" type="warning" v-show="!delFlag" :disabled="userData.root ? false : true" v-if="scope.row.state === 1" @click="operateHandle(scope.row, 2)">存稿</el-button>

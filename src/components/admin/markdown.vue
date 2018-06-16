@@ -10,7 +10,7 @@
       <div class="title">
         标题：<input type="text" v-model="title" :title="title">
       </div>
-      <markdown-editor v-model="content" :configs="configs" ref="markdownEditor"></markdown-editor>
+      <markdown-editor v-model="content" ref="markdownEditor"></markdown-editor>
       <div class="tag">
         标签：
         <div class="tag-all">
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-  import { markdownEditor } from 'vue-simplemde'
+  import markdownEditor from 'vue-simplemde/src/markdown-editor'
   export default {
     name: 'Markdown',
     props: ['userData'],
@@ -51,8 +51,11 @@
       return {
         title: '',
         content: '',
+        view: 0,
+        start: 0,
         tags: [],
         tagSel: [],
+        tagIdMax: 1,
         inputVisible: false,
         inputValue: '',
         configs: {
@@ -69,6 +72,9 @@
       this.$http.get('/api/tag/getTagAll')
         .then((res) => {
           this.tags = res.data;
+          res.data.forEach(element => {
+            this.tagIdMax = this.tagIdMax < element.id ? element.id : this.tagIdMax;
+          });
         })
         .catch((err) => {
           console.log('err', err);
@@ -82,6 +88,8 @@
             if (data.length !== 0) {
               this.tagSel = data[0].tags;
               this.content = data[0].content;
+              this.view = data[0].view;
+              this.start = data[0].start;
             }
           }).catch((err) => {
             console.log('err', err);
@@ -122,22 +130,23 @@
           this.$message.error('提交失败,请完善内容');
           return;
         }
-        let summary = '', len = 250;
-        this.$http.post('/api/article/addArticle', {
+        let summary = '', len = 250, query = this.$route.query, url = query.id ? 'updArticle' : 'addArticle';
+        this.$http.post('/api/article/' + url, {
           user_id: this.userData.id,
           title: this.title,
           content: this.content,
           state: state,   // 1:发布 2:存稿
           type: 1,        // 1:原创 2:转载
-          loadURL: '#',   // 转载地址
-          view: 0,
-          start: 0,
-          cover: '',
-          tags: this.tagSel
+          loadURL: '*',   // 转载地址
+          view: this.view,
+          start: this.start,
+          tags: this.tagSel,
+          id: query.id,
+          tagIdMax: this.tagIdMax
         }).then((res) => {
-          console.log('res', res);
           if (res.data.status) {
             this.$message.success(res.data.msg);
+            this.$router.push('/admin/articles');
           } else {
             this.$message.error(res.data.msg);
           }

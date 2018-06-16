@@ -46,6 +46,9 @@
         },
       }
     },
+    created() {
+      this.$router.push('/admin/selfinfo');
+    },
     methods: {
       uploadHandle(data) {
         this.uploadShow = data;

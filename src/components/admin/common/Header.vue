@@ -12,20 +12,20 @@
       </el-col>
 
       <el-col :md="4" :offset="2" class="search">
-        <el-input icon="search"></el-input>
+        <el-input suffix-icon="el-icon-search"></el-input>
       </el-col>
 
       <el-col :md="8" :sm="8" :xs="12" class="right">
         <el-dropdown trigger="click" class="notice">
           <el-badge is-dot>{{ userName }}</el-badge>
-          <el-dropdown-menu>
+          <el-dropdown-menu slot="dropdown">
             <el-dropdown-item><el-badge :value="12">评论</el-badge></el-dropdown-item>
             <el-dropdown-item><el-badge :value="9">阅读</el-badge></el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
         <el-dropdown trigger="click" class="user-infor">
           <img :src="userAvatar" alt="">
-          <el-dropdown-menu>
+          <el-dropdown-menu slot="dropdown">
             <el-dropdown-item @click.native="uploadDisplay">更改头像</el-dropdown-item>
             <el-dropdown-item @click.native="logoutAdmin">退出</el-dropdown-item>
           </el-dropdown-menu>

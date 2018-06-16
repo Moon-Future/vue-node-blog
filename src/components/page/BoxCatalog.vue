@@ -131,6 +131,7 @@
 
   .article-tags span {
     cursor: pointer;
+    height: 25px;
   }
 
   .article-summary div {
