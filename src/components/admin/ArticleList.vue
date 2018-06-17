@@ -113,7 +113,7 @@
       },
       operateHandle(...arg) {
         let article = arg[0], state = arg[1], index = arg[2], type = arg[1],
-          postData = {id: article.id, state: state};
+          postData = {id: article.id, title: article.title, state: state};
         index !== undefined ? postData.type = type : false;
         this.$http.post('/api/article/updArticle', postData)
           .then((res) => {

@@ -170,62 +170,76 @@ module.exports = {
             sql += 'DELETE FROM tag_links WHERE aid = ' + id + '; ';
           } else {
             let markedHtml, htmlTags, content = postData.content, summary = '', count = 0, limit = 2;
-            markedHtml = marked(content);
-            htmlTags = markedHtml.match(/<(.|\n)*?<\/.*>/g);
-            for(let i = 0, len = htmlTags.length; i < len; i++) {
-              let tag = htmlTags[i].match(/^<(.)/)[1];
-              if (tag === 'h') {
-                count += 1;
+            if (postData.content) {
+              markedHtml = marked(content);
+              htmlTags = markedHtml.match(/<(.|\n)*?<\/.*>/g);
+              for(let i = 0, len = htmlTags.length; i < len; i++) {
+                let tag = htmlTags[i].match(/^<(.)/)[1];
+                if (tag === 'h') {
+                  count += 1;
+                }
+                if (count > limit && tag === 'h') {
+                  break;
+                }
+                summary += htmlTags[i];
               }
-              if (count > limit && tag === 'h') {
-                break;
-              }
-              summary += htmlTags[i];
+              summary += '<p>......</p>';
             }
-            summary += '<p>......</p>';
-
             for(let key in postData) {
               if (key === 'id' || key === 'tags' || key === 'tagIdMax') {
                 continue
               }
               if (key === 'content') {
-                str += '`summary` = "' + summary + '",';
+                str += "`summary` = '" + summary + "',";
               } else {
-                str += '`' + key + '` = "' + postData[key] + '",';
+                str += "`" + key + "` = '" + postData[key] + "',";
               }
             }
-            str += '`upd_time` = "' + new Date().getTime() + '",';
-            sql += str.substr(0, str.length - 1) + ' WHERE id = ' + id + '; ';
-
-            sql += 'DELETE FROM tag_links WHERE aid = ' + id + '; ';
-            for (let i = 0, l = tags.length; i < l; i++) {
-              let tagId = tags[i].id, tagName = tags[i].name;
-              if (tagId === -1) {
-                tagIdMax += 1;
-                sql += (sql.indexOf('INSERT INTO tags') === -1 ?  'INSERT INTO tags(id, `name`) VALUES ' : '');
-                sql += '(' + tagIdMax + ', "' + tagName + '"), ';
-                tags[i].id = tagIdMax;
+            if (postData.content) {
+              str += "`upd_time` = '" + new Date().getTime() + "',";
+            }
+            sql += str.substr(0, str.length - 1) + " WHERE id = " + id + "; ";
+            
+            if (postData.content) {
+              sql += "DELETE FROM tag_links WHERE aid = " + id + "; ";
+              for (let i = 0, l = tags.length; i < l; i++) {
+                let tagId = tags[i].id, tagName = tags[i].name;
+                if (tagId === -1) {
+                  tagIdMax += 1;
+                  sql += (sql.indexOf('INSERT INTO tags') === -1 ?  'INSERT INTO tags(id, `name`) VALUES ' : '');
+                  sql += "(" + tagIdMax + ", '" + tagName + "'), ";
+                  tags[i].id = tagIdMax;
+                }
               }
+              sql = sql[sql.length - 2] === ',' ? sql.substr(0, sql.length - 2) + '; ' : sql;
+              for (let i = 0, l = tags.length; i < l; i++) {
+                let tagId = tags[i].id;
+                sql += (sql.indexOf('INSERT INTO tag_links') === -1 ? 'INSERT INTO tag_links(tid, aid) VALUES ' : '');
+                sql += "(" + tagId + ", " + id + "), ";
+              }
+              sql = sql[sql.length - 2] === ',' ? sql.substr(0, sql.length - 2) : sql;
             }
-            sql = sql[sql.length - 2] === ',' ? sql.substr(0, sql.length - 2) + '; ' : sql + '; ';
-            for (let i = 0, l = tags.length; i < l; i++) {
-              let tagId = tags[i].id;
-              sql += (sql.indexOf('INSERT INTO tag_links') === -1 ? 'INSERT INTO tag_links(tid, aid) VALUES ' : '');
-              sql += '(' + tagId + ', ' + id + '), ';
-            }
-            sql = sql[sql.length - 2] === ',' ? sql.substr(0, sql.length - 2) : sql;
           }
           connection.query(sql, (err, result) => {
-            console.log(sql);
             if (err) {
               res.json({status: false, msg: '操作失败'});
             } else {
               res.json({status: true, msg: '操作成功'});
+              let filePath = rootDir + '/articles/' + title + '.md';
+              let fileHtml = rootDir + '/articles/' + title + '.html';
               if (postData.type === 3) {
-                let filePath = rootDir + '/articles/' + title + '.md';
-                let fileHtml = rootDir + '/articles/' + title + '.html';
-                fs.unlink(filePath);
-                fs.unlink(fileHtml);
+                try {
+                  fs.unlink(filePath, () => {});
+                } catch(e) {
+                  console.log(e);
+                }
+              } else if(postData.content) {
+                try {
+                  fs.unlink(fileHtml, () => {});
+                } catch(e) {
+                  console.log(e);
+                }
+                fs.writeFileSync(filePath, postData.content);
               }
             }
             connection.release();
@@ -257,10 +271,11 @@ module.exports = {
         curTime = new Date().getTime(),
         content = postData.content,
         title = postData.title,
+        tags = postData.tags,
         fileDir = rootDir + '/articles/',
         fileName = title + '.md',
         filePath = fileDir + fileName,
-        markedHtml, htmlTags, summary = '', count = 0, limit = 2;
+        markedHtml, htmlTags, summary = '', count = 0, limit = 2, tagIdMax = postData.tagIdMax;
       if (!title || !content) {
         res.json({status: true, msg: '提交失败,请完善内容'});
         return;
@@ -278,15 +293,39 @@ module.exports = {
         summary += htmlTags[i];
       }
       summary += '<p>......</p>';
+
       connection.query(sqlMap.article.queryByTitle, [title], (err, result) => {
         if (result.length === 0) {
           if (req.session.userData.root !== 1) {
             postData.state = 2;
           }
-          connection.query(sqlMap.article.insert, [postData.user_id,title,postData.state,postData.type,postData.loadURL,summary,curTime,null,0,0], (err, result) => {
+          connection.query(sqlMap.article.insert + '; SELECT MAX(id) as id FROM articles', [postData.user_id,title,postData.state,postData.type,postData.loadURL,summary,curTime,null,0,0], (err, result) => {
+            let id = result[1][0].id, sql = '';
+            for (let i = 0, l = tags.length; i < l; i++) {
+              let tagId = tags[i].id, tagName = tags[i].name;
+              if (tagId === -1) {
+                tagIdMax += 1;
+                sql += (sql.indexOf('INSERT INTO tags') === -1 ?  'INSERT INTO tags(id, `name`) VALUES ' : '');
+                sql += "(" + tagIdMax + ", '" + tagName + "'), ";
+                tags[i].id = tagIdMax;
+              }
+            }
+            sql = sql[sql.length - 2] === ',' ? sql.substr(0, sql.length - 2) + '; ' : sql;
+            for (let i = 0, l = tags.length; i < l; i++) {
+              let tagId = tags[i].id;
+              sql += (sql.indexOf('INSERT INTO tag_links') === -1 ? 'INSERT INTO tag_links(tid, aid) VALUES ' : '');
+              sql += "(" + tagId + ", " + id + "), ";
+            }
+            sql = sql[sql.length - 2] === ',' ? sql.substr(0, sql.length - 2) : sql;
             fs.writeFileSync(filePath, content);
             res.json({status: true, msg: '提交成功'});
-            connection.release();
+            if (tags.length === 0) {
+              connection.release();
+            } else {
+              connection.query(sql, (err, result) => {
+                connection.release();
+              })
+            }
           })
         } else {
           res.json({status: false, msg: '提交失败,文章标题已存在'});
