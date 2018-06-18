@@ -79,7 +79,8 @@
   .logo i {
     font-size: 60px;
     float: left;
-    color: #fff
+    color: #fff;
+    margin-right: 10px;
   }
   .logo p {
     font-size: 20px;

@@ -10,8 +10,8 @@
 		<div class="left-header">
 			<el-row>
 				<el-col :span="24">
-					<div @click="gotoAdmin">
-						<img class="left-avatar" :src="getAvatar" />
+					<div>
+						<img class="left-avatar" :src="getAvatar" @click="gotoAdmin" />
 					</div>
 				</el-col>
 			</el-row>
@@ -20,7 +20,7 @@
 			</div>
 		</div>
 		<div class="left-menu">
-			<el-menu class="tabs-menu" router default-active="blog">
+			<el-menu class="tabs-menu" background-color="#324157" active-text-color="#ffd04b" router default-active="blog">
 				<el-menu-item index="/"><i class="iconfont icon-wenzhang"></i><span>Home</span></el-menu-item>
 				<el-menu-item index="blog"><i class="iconfont icon-wenzhang"></i><span>Blog</span></el-menu-item>
 				<el-menu-item index="about"><i class="iconfont icon-about"></i><span>About</span></el-menu-item>
@@ -110,14 +110,13 @@
 		}
 	}
 
-	.tabs-menu {
-		background: transparent;
+	.left-menu .tabs-menu {
 		border: none;
 		width: 100%;
 		li {
 			color: $whiteColor;
 			&:hover {
-				background: #736161
+				color: #409EFF;
 			}
 			i {
 				padding: 0 10px;

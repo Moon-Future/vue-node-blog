@@ -8,7 +8,7 @@
     </div>
     <el-tabs @tab-click="tabClick">
       <el-tab-pane><span slot="label"><i class="el-icon-document"></i> 文章列表</span></el-tab-pane>
-      <el-tab-pane><span slot="label"><i class="el-icon-delete2"></i> 回收站</span></el-tab-pane>
+      <el-tab-pane><span slot="label"><i class="el-icon-delete"></i> 回收站</span></el-tab-pane>
     </el-tabs>
     <el-table :data="delFlag ? articlesDel : articles" border style="width:100%">
       <el-table-column prop="id" label="ID" width="100"></el-table-column>
@@ -114,7 +114,7 @@
       operateHandle(...arg) {
         let article = arg[0], state = arg[1], index = arg[2], type = arg[1],
           postData = {id: article.id, title: article.title, state: state};
-        index !== undefined ? postData.type = type : false;
+        // index !== undefined ? postData.type = type : false;
         this.$http.post('/api/article/updArticle', postData)
           .then((res) => {
             let msg = '';

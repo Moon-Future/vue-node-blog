@@ -627,13 +627,14 @@ methods: {
 ```
 我个人觉得 vuex 中的 state、actions 比较难理解，所以笔记就记下这两块，其他官方文档应该可以看明白，和这两个用法也都比较类似。
 
-## 模块化 store
+## 模块化 store
     对于大型项目，一般把 vuex 相关代码分割到模块中
 在 src/store 下新建文件
 - index.js // 初始化 state，导出 Vuex.Store 实例
 - actions.js // acitons 对象
 - mutation_type.js // 常量化 mutation 类型
 - mutation.js // mutation 对象
+
 ```js
 // index.js
 import Vue from 'vue'
@@ -653,7 +654,9 @@ export default new Vuex.Store({
   actions,
   mutations,
 })
+```
 
+```js
 // actions.js
 import * as types from './mutation_type'
 
@@ -665,11 +668,15 @@ export default {
     commit(types.COUNT, n);
   }
 }
+```
 
+```js
 // mutation_type.js
 export const CURRENT_ARTICLE = 'CURRENT_ARTICLE'
 export const COUNT = 'COUNT'
+```
 
+```js
 // mutation.js
 import * as types from './mutation_type'
 

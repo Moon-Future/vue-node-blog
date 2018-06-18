@@ -3,10 +3,11 @@ var mysqlConf = require('./db');
 var sqlMap = require('./sqlMap');
 var formidable = require('formidable');
 var fs = require('fs');
-var uuid = require('node-uuid');
+var uuid = require('uuid');
 var marked = require('marked');
 var path = require('path');
 var rootDir = path.join(__dirname, '../static');
+var articlePath = path.join(__dirname, '../articles/');
 const LIMIT = 10;
 
 // 连接数据库
@@ -34,7 +35,7 @@ var mergeData = function(data, flag) {
     obj[tmp.id] = {};
     obj[tmp.id].id = tmp.id;
     obj[tmp.id].user_id = tmp.user_id;
-    obj[tmp.id].title = tmp.title;
+    obj[tmp.id].title = tmp.title.trim();
     obj[tmp.id].type = tmp.type;
     obj[tmp.id].loadURL = tmp.loadURL;
     obj[tmp.id].summary = tmp.summary;
@@ -83,9 +84,9 @@ module.exports = {
     })
   },
   getArticleById(req, res, next) {
-    let params = req.query, id = params.id, title = params.title, editor = params.editor,
-      filePath = rootDir + '/articles/' + title + '.md',
-      fileHtml = rootDir + '/articles/' + title + '.html',
+    let params = req.query, id = params.id, title = params.title.trim(), editor = params.editor,
+      filePath = articlePath + title + '.md',
+      fileHtml = articlePath + title + '.html',
       content, data, stat;
     if (editor) {
       try {
@@ -161,29 +162,35 @@ module.exports = {
         res.json({status: false, msg: '没有权限'});
         return;
       }
-      let postData = req.body, id = postData.id, title = postData.title, tags = postData.tags, tagIdMax = postData.tagIdMax,
+      let postData = req.body, id = postData.id, title = (postData.title || '').trim(), tags = postData.tags, tagIdMax = postData.tagIdMax,
         sql = 'UPDATE articles SET ', str = '';
       connection.query('SELECT * FROM articles WHERE title = ? AND id != ?', [title, id], (err, result) => {
         if (result.length === 0) {
-          if (postData.type === 3) { // 彻底删除
+          if (postData.state === 3) { // 彻底删除
             sql = 'DELETE FROM articles WHERE id = ' + id + '; ';
             sql += 'DELETE FROM tag_links WHERE aid = ' + id + '; ';
           } else {
             let markedHtml, htmlTags, content = postData.content, summary = '', count = 0, limit = 2;
             if (postData.content) {
               markedHtml = marked(content);
-              htmlTags = markedHtml.match(/<(.|\n)*?<\/.*>/g);
+              htmlTags = markedHtml.match(/.*|<(.|\n)*?<\/.*>.*/g);
               for(let i = 0, len = htmlTags.length; i < len; i++) {
-                let tag = htmlTags[i].match(/^<(.)/)[1];
-                if (tag === 'h') {
-                  count += 1;
+                if (htmlTags[i] === '') {
+                  summary += '\n';
                 }
-                if (count > limit && tag === 'h') {
-                  break;
+                if (htmlTags[i].match(/^<(.)/)) {
+                  let tag = htmlTags[i].match(/^<(.)/)[1];
+                  if (tag === 'h') {
+                    count += 1;
+                  }
+                  if (count > limit && tag === 'h') {
+                    break;
+                  }
                 }
                 summary += htmlTags[i];
               }
               summary += '<p>......</p>';
+              summary = summary.replace(/\'/g, '"');
             }
             for(let key in postData) {
               if (key === 'id' || key === 'tags' || key === 'tagIdMax') {
@@ -225,9 +232,9 @@ module.exports = {
               res.json({status: false, msg: '操作失败'});
             } else {
               res.json({status: true, msg: '操作成功'});
-              let filePath = rootDir + '/articles/' + title + '.md';
-              let fileHtml = rootDir + '/articles/' + title + '.html';
-              if (postData.type === 3) {
+              let filePath = articlePath + title + '.md';
+              let fileHtml = articlePath + title + '.html';
+              if (postData.state === 3) {
                 try {
                   fs.unlink(filePath, () => {});
                 } catch(e) {
@@ -270,9 +277,9 @@ module.exports = {
       let postData = req.body,
         curTime = new Date().getTime(),
         content = postData.content,
-        title = postData.title,
+        title = postData.title.trim(),
         tags = postData.tags,
-        fileDir = rootDir + '/articles/',
+        fileDir = articlePath,
         fileName = title + '.md',
         filePath = fileDir + fileName,
         markedHtml, htmlTags, summary = '', count = 0, limit = 2, tagIdMax = postData.tagIdMax;
@@ -281,14 +288,19 @@ module.exports = {
         return;
       }
       markedHtml = marked(content);
-      htmlTags = markedHtml.match(/<(.|\n)*?<\/.*>/g);
+      htmlTags = markedHtml.match(/.*|<(.|\n)*?<\/.*>.*/g);
       for(let i = 0, len = htmlTags.length; i < len; i++) {
-        let tag = htmlTags[i].match(/^<(.)/)[1];
-        if (tag === 'h') {
-          count += 1;
+        if (htmlTags[i] === '') {
+          summary += '\n';
         }
-        if (count > limit && tag === 'h') {
-          break;
+        if (htmlTags[i].match(/^<(.)/)) {
+          let tag = htmlTags[i].match(/^<(.)/)[1];
+          if (tag === 'h') {
+            count += 1;
+          }
+          if (count > limit && tag === 'h') {
+            break;
+          }
         }
         summary += htmlTags[i];
       }
