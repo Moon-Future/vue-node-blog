@@ -1,17 +1,22 @@
-var mysql = require('mysql');
-var mysqlConf = require('./db');
-var sqlMap = require('./sqlMap');
-var formidable = require('formidable');
-var fs = require('fs');
-var uuid = require('uuid');
-var marked = require('marked');
-var path = require('path');
-var rootDir = path.join(__dirname, '../static');
-var articlePath = path.join(__dirname, '../articles/');
+const mysql = require('mysql');
+const mysqlConf = require('./db');
+const sqlMap = require('./sqlMap');
+const formidable = require('formidable');
+const fs = require('fs');
+const uuid = require('uuid');
+const marked = require('marked');
+const path = require('path');
+const rootDir = path.join(__dirname, '../static');
+const articlePath = path.join(__dirname, '../articles/');
 const LIMIT = 10;
+try {
+  var {transporter, mailOptions, sendMsg} = require('./emailInfo'); // npm包: nodemailer
+} catch(e) {
+  console.log('缺少文件 emailInfo.js，不能发送邮件');
+}
 
 // 连接数据库
-var pool = mysql.createPool({
+const pool = mysql.createPool({
   host: mysqlConf.mysql.host,
   user: mysqlConf.mysql.user,
   password: mysqlConf.mysql.password,
@@ -331,6 +336,16 @@ module.exports = {
             sql = sql[sql.length - 2] === ',' ? sql.substr(0, sql.length - 2) : sql;
             fs.writeFileSync(filePath, content);
             res.json({status: true, msg: '提交成功'});
+            if (transporter && req.session.userData.root !== 1) {
+              mailOptions.html = '<h1>' + sendMsg.newArticle + '<h1>'
+                + '<p>' + sendMsg.title + ': ' + title + '</p>'
+                + '<p>' + sendMsg.content + ': ' + markedHtml + '</p>';
+              transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                  return console.log(error);
+                }
+              });
+            }
             if (tags.length === 0) {
               connection.release();
             } else {
@@ -561,10 +576,21 @@ module.exports = {
               status: status,
               msg: msg
             });
+            if (transporter) {
+              mailOptions.html = '<h1>' + sendMsg.newUser + '<h1>'
+                + '<p>' + sendMsg.email + ': ' + email + '</p>'
+                + '<p>' + sendMsg.name + ': ' + name + '</p>'
+                + '<p>' + sendMsg.website + ': ' + website + '</p>';
+              transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                  return console.log(error);
+                }
+              });
+            }
             connection.release();
           })
         }
       })
     })
-  },
+  }
 }
