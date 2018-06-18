@@ -186,10 +186,7 @@
     align-items: center;
     justify-content: center;
   }
-  .area-top {
-    /* background: yellow; */
-    /* background: url("../../../static/images/LOVE_2.png") center no-repeat; */
-  }
+
   .area-top img {
     position: absolute;
     width: 80%;
