@@ -104,7 +104,6 @@
         top: 70px;
         bottom:0;
         background: #2E363F;
-        /* z-index: 10; */
     }
     .sidebar > ul {
         height:100%;

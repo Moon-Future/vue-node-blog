@@ -177,7 +177,6 @@
   .area-right {
     background-color: #cde6c7; 
   }
-
   .area-top, .area-bottom {
     width: 100%;
     height: 50%;
