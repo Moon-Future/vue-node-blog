@@ -10,10 +10,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(session({
-    secret: '8023',
-    // cookie: {maxAge: 60000},
-    resave: false,
-    saveUninitialized: true
+  secret: '8023',
+  // cookie: {maxAge: 60000},
+  resave: false,
+  saveUninitialized: true
 }));
 
 // 部署上线时读取静态文件

@@ -60,17 +60,22 @@ export default new Router({
       component: resolve => require(['@/components/admin/Admin'], resolve),
       children: [
         {
-          path: '/markdown',
+          path: 'selfinfo',
+          name: 'SelfInfo',
+          component: resolve => require(['@/components/admin/SelfInfo'], resolve),
+        },
+        {
+          path: 'markdown',
           name: 'Markdown',
           component: resolve => require(['@/components/admin/Markdown'], resolve),
         },
         {
-          path: '/articles',
+          path: 'articles',
           name: 'Articles',
           component: resolve => require(['@/components/admin/ArticleList'], resolve),
         },
         {
-          path: '/user',
+          path: 'user',
           name: 'User',
           component: resolve => require(['@/components/admin/User'], resolve),
         }

@@ -19,7 +19,7 @@
             <!-- <img v-else :src="imageDefault" class="box-card-image"> -->
             <div class="article-summary">
               <!-- <p :title="article.summary">{{ article.summary }}</p> -->
-              <div :title="article.summary" class="markdown-body" v-html="article.summary" ></div>
+              <div class="markdown-body" v-html="article.summary" ></div>
               <!-- <el-button type="primary" @click="readAll(article.id, article.title)">阅读全文</el-button> -->
               <a type="primary" @click="readAll(article.id, article.title)">阅读全文 »</a>
             </div>
@@ -34,11 +34,56 @@
   import {mapState, mapActions} from 'vuex'
   import axios from 'axios'
   export default {
-    name: 'article',
+    name: 'boxCatalog',
     data() {
       return {
         imageDefault: '../../../static/images/pic9.jpg',
-        articles: []
+        articles: [],
+        text: `<h1 id="-">组件</h1>
+<h3 id="-">父组件向子组件通信</h3>
+<pre><code>父组件通过 props 向子组件通信，在父组件内可通过 <span class="hljs-keyword">this</span>.$children 来读取子组件中的值。props 是单向绑定，不可在子组件中赋值。</code></pre><h4 id="-">创建单文件组件</h4>
+<p>在 src/components 目录下创建文件夹 common 用于存放公共组件，并在 common 下创建单文件组件 LeftNavItem.vue（子组件）</p>
+<pre><code class="language-js"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+    </span><span class="hljs-template-variable">{{ childMes }}</span><span class="xml">
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+  <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">'LeftNav'</span>,
+    <span class="hljs-attr">props</span>: [<span class="hljs-string">'childMes'</span>],
+  }
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"scss"</span>&gt;</span><span class="undefined">
+
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span></span></code></pre>`
+
+
+
+// `
+// <h1 id="-">组件</h1>
+// <h3 id="-">父组件向子组件通信</h3>
+// <pre><code>父组件通过 props 向子组件通信，在父组件内可通过 <span class="hljs-keyword">this</span>.$children 来读取子组件中的值。props 是单向绑定，不可在子组件中赋值。</code></pre><h4 id="-">创建单文件组件</h4>
+// <p>在 src/components 目录下创建文件夹 common 用于存放公共组件，并在 common 下创建单文件组件 LeftNavItem.vue（子组件）</p>
+// <pre><code class="language-js"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span>
+//   <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+//     </span><span class="hljs-template-variable">{{ childMes }}</span><span class="xml">
+//   <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+// <span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
+
+// <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+//   <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span>
+//     <span class="hljs-attr">name</span>: <span class="hljs-string">'LeftNav'</span>
+//     <span class="hljs-attr">props</span>: [<span class="hljs-string">'childMes'</span>
+    
+//   </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+  
+//   <span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"scss"</span>&gt;</span><span class="undefined">
+  
+//   </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span></span></code></pre>
+// `
       }
     },
     created() {
@@ -134,16 +179,14 @@
 
   .article-tags span {
     cursor: pointer;
+    height: 25px;
   }
 
   .article-summary div {
     text-align: left;
-    /* text-indent: 2em; */
-    /* height: 4em; */
     text-overflow: ellipsis;
     overflow: hidden;
-    display: -webkit-box;
-    /* -webkit-line-clamp: 3; */
+    display: block;
     -webkit-box-orient: vertical;
   }
 

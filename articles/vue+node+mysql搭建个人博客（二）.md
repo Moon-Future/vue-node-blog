@@ -216,6 +216,7 @@ const state = {
   count: 1
 }
 
+// 使用常量替代 Mutation 事件类型
 const types = {
   CURRENT_ARTICLE: 'CURRENT_ARTICLE',
   COUNT: 'COUNT'
@@ -226,7 +227,7 @@ const actions = {
     commit(types.CURRENT_ARTICLE, obj);
   },
   countIncrement({commit}, n) {
-    commit(types.CURRENT_ARTICLE, n);
+    commit(types.COUNT, n);
   }
 }
 
@@ -364,7 +365,6 @@ export default new Vuex.Store({
 <script>
   import Leftnav from '../common/LeftNavItem'
   import store from '../../store/demo'
-  import { mapState } from 'vuex';
   export default {
     name: 'blog',
     data() {
@@ -491,6 +491,223 @@ computed: mapState({
   currentArticle: 'currentArticle',
   count: 'count'
 })
+
+// 3. 因为 computed 中也可能会有其他计算属性，不只有 mapState，要将它与其他计算属性混合使用，就要用到对象的扩展运算符（...），用于取出参数对象的所有可遍历属性，拷贝到当前对象之中，例如：
+let z = { a: 3, b: 4};
+let n = { ...z }; // 等同于 n = Object.assign({}, z)
+n // ( a: 3, b: 4 )
+
+// mapState 函数返回的是一个对象，所以混合其他计算属性：
+computed: {
+  otherComputed() {
+
+  },
+  ...mapState(['currentArticle', 'count']) // 也可传入对象
+}
 ```
 
 ## Action
+    Action 提交的是 mutation，而不是直接修改状态
+### 分发 Action
+Action 通过 store.dispatch 方法触发
+在 Blog.vue 中增加一个按钮和一个方法来增加 count 的值
+```js
+<template>
+  <div>
+    <div class="father-area">
+      id: <input type="text" v-model="currentArticle.id">
+      title: <input type="text" v-model="currentArticle.title">
+      tag: <input type="text" v-model="currentArticle.tag">
+      count: <input type="text" v-model="count">
+      <button @click="countAdd">+</button>
+    </div>
+    <div class="child-area">
+      <Leftnav></Leftnav>
+    </div>
+  </div>
+</template>
+
+<script>
+  import Leftnav from '../common/LeftNavItem'
+  import { mapState } from 'vuex';
+  export default {
+    name: 'blog',
+    data() {
+      return {
+        message: 'father message'
+      }
+    },
+    components: {
+      Leftnav
+    },
+    methods: {
+      countAdd() {
+        this.$store.dispatch('countIncrement');
+      }
+    },
+    computed: mapState(['currentArticle', 'count'])
+  }
+</script>
+
+<style scoped>
+  .father-area {
+    background-color: aqua;
+    padding: 10px;
+  }
+  .child-area {
+    background-color: bisque;
+    padding: 10px;
+  }
+</style>
+```
+点击 + 号后调用方法 countAdd 触发 countIncrement 的 Action，接着触发类型为 COUNT 的 mutation，完成状态的修改。根据 action 中 countIncrement 方法的定义，可以传入第二个参数，this.$store.dispatch('countIncrement', 3)。
+
+### 辅助函数 mapAction
+Action 也有辅助函数 mapAction 将组件的 methods 映射为 store.dispatch（需要现在根结点注入 store）
+```js
+<template>
+  <div>
+    <div class="father-area">
+      id: <input type="text" v-model="currentArticle.id">
+      title: <input type="text" v-model="currentArticle.title">
+      tag: <input type="text" v-model="currentArticle.tag">
+      count: <input type="text" v-model="count">
+      <button @click="countAdd">+</button>
+    </div>
+    <div class="child-area">
+      <Leftnav></Leftnav>
+    </div>
+  </div>
+</template>
+
+<script>
+  import Leftnav from '../common/LeftNavItem'
+  import { mapState, mapActions } from 'vuex';
+  export default {
+    name: 'blog',
+    data() {
+      return {
+        message: 'father message'
+      }
+    },
+    components: {
+      Leftnav
+    },
+    methods: {
+      countAdd() {
+        this.countIncrement(2);
+      },
+      ...mapActions(['countIncrement']) // 将 this.countIncrement 映射为 this.$store.dispatch('countIncrement)
+    },
+    computed: mapState(['currentArticle', 'count'])
+  }
+</script>
+
+<style scoped>
+  .father-area {
+    background-color: aqua;
+    padding: 10px;
+  }
+  .child-area {
+    background-color: bisque;
+    padding: 10px;
+  }
+</style>
+```
+和 mapStata 类似，mapActions 也可以传入对象，使用别名来代替 countIncrement
+```js
+methods: {
+  countAdd() {
+    this.add(2);
+  },
+  ...mapActions({
+    add: 'countIncrement'
+  })
+}
+```
+我个人觉得 vuex 中的 state、actions 比较难理解，所以笔记就记下这两块，其他官方文档应该可以看明白，和这两个用法也都比较类似。
+
+## 模块化 store
+    对于大型项目，一般把 vuex 相关代码分割到模块中
+在 src/store 下新建文件
+- index.js // 初始化 state，导出 Vuex.Store 实例
+- actions.js // acitons 对象
+- mutation_type.js // 常量化 mutation 类型
+- mutation.js // mutation 对象
+
+```js
+// index.js
+import Vue from 'vue'
+import Vuex from 'vuex'
+import actions from './action'
+import mutations from './mutation'
+
+Vue.use(Vuex);
+
+const state = {
+  currentArticle: {id: '1', title: '学习笔记', tag: 'vue'},
+  count: 1
+}
+
+export default new Vuex.Store({
+  state,
+  actions,
+  mutations,
+})
+```
+
+```js
+// actions.js
+import * as types from './mutation_type'
+
+export default {
+  currentArticle({commit}, obj) {
+    commit(types.CURRENT_ARTICLE, obj);
+  },
+  countIncrement({commit}, n) {
+    commit(types.COUNT, n);
+  }
+}
+```
+
+```js
+// mutation_type.js
+export const CURRENT_ARTICLE = 'CURRENT_ARTICLE'
+export const COUNT = 'COUNT'
+```
+
+```js
+// mutation.js
+import * as types from './mutation_type'
+
+export default {
+  [types.CURRENT_ARTICLE](state, obj) {
+    obj.id == undefined ? false : state.currentArticle.id = obj.id;
+    obj.title == undefined ? false : state.currentArticle.title = obj.title;
+    obj.tag == undefined ? false : state.currentArticle.tag = obj.tag;
+    obj.catalog == undefined ? false : state.currentArticle.catalog = obj.catalog;
+  },
+  [types.COUNT](state, n = 1) {
+    state.count += n;
+  }
+}
+```
+然后在 main.js 中注册 Store 实例即可
+```js
+// main.js
+import Vue from 'vue'
+import App from './App'
+import router from './router'
+import store from './store/index.js'
+
+Vue.config.productionTip = false
+
+/* eslint-disable no-new */
+new Vue({
+  el: '#app',
+  router,
+  store,
+  components: { App },
+  template: '<App/>'
+})
+```
