@@ -15,7 +15,7 @@ Vue.prototype.$http = axios
 
 Vue.prototype.timeFormat = function (timestamp) {
   var time = new Date(timestamp), secondShow = arguments[1];
-  var year = time.getFullYear(), month = time.getMonth(), day = time.getDay(), hour = time.getHours(), minute = time.getMinutes(), second = time.getSeconds();
+  var year = time.getFullYear(), month = time.getMonth() + 1, day = time.getDate(), hour = time.getHours(), minute = time.getMinutes(), second = time.getSeconds();
   month = month < 10 ? '0' + month : month;
   day = day < 10 ? '0' + day : day;
   hour = hour < 10 ? '0' + hour : hour;

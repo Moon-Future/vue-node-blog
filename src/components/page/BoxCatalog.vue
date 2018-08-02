@@ -46,6 +46,9 @@
           params: {noDel: true}
         }).then((res) => {
           this.articles = res.data;
+          this.articles.sort((a, b) => {
+            return b.post_time - a.post_time
+          })
           this.articles.map((article) => {
             article.post_time = this.timeFormat(article.post_time);
           })
