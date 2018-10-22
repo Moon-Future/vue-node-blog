@@ -1,21 +1,8 @@
-# my-blog
+# vue-node-blog
 
-> A Vue.js project
-
-## Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+2018.10.22 ToDoList
+1. 重新设计页面布局
+2. vue-cli 2 升级为 @vue/cli 3
+3. express 改为 Koa2
+4. Mysql 改为 Mongodb
+5. 之前项目版本备份在 version 文件夹下
