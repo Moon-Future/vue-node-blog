@@ -3,8 +3,6 @@
     <top-header></top-header>
     <div class="blog-list">
       <div v-for="(item, i) in data" :key="i">{{ item }}</div>
-      <div v-for="(item, i) in data" :key="i">{{ item }}</div>
-      <div v-for="(item, i) in data" :key="i">{{ item }}</div>
     </div>
   </div>
 </template>

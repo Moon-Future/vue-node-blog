@@ -9,6 +9,8 @@ const userSchema = new Schema({
   website: { type: String, default: '' },
   remind: { type: Number, default: 0 }, // 邮件提醒
   root: { type: Number, default: 0 },
+  createdTime: { type: Number, default: null },
+  upadteTime: { type: Number, default: null }
 }, {
   collections: 'user'
 })

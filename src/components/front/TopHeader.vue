@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div class="background">
-      <img src="https://source.unsplash.com/random/1366x520" alt="">
+      <img v-lazy="bgimg" alt="">
       <div class="txt">
         <p class="first-line">心有猛虎</p>
         <p class="second-line">细嗅蔷薇</p>
@@ -12,7 +12,7 @@
         <li>主页</li>
         <li>目录</li>
         <li class="avatar">
-          <img src="../../assets/avatar.jpg" alt="">
+          <img src="../../assets/avatar.jpg" alt="" @click="login">
         </li>
         <li>其他</li>
         <li>关于</li>
@@ -26,7 +26,12 @@
     name: 'topHeader',
     data() {
       return {
-
+        bgimg: 'https://source.unsplash.com/random/1366x520'
+      }
+    },
+    methods: {
+      login() {
+        this.$router.push('/login')
       }
     }
   }
