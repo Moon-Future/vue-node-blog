@@ -36,11 +36,11 @@
             title: '文章',
             subs: [
               {
-                index: 'articles',
+                index: '/admin/articles',
                 title: '列表'
               },
               {
-                index: 'markdown',
+                index: '/admin/markdown',
                 title: 'markdown'
               }
             ]
@@ -98,8 +98,9 @@
 <style scoped>
   .sidebar {
     display: block;
-    position: absolute;
+    position: fixed;
     width: 250px;
+    overflow: auto;
     left: 0;
     top: 70px;
     bottom:0;

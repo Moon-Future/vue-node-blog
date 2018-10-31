@@ -7,8 +7,8 @@
       <h1>后台管理</h1>
       <div class="form-wrapper">
         <el-form ref="loginForm" :rules="rules" :model="form">
-          <el-form-item prop="account">
-            <el-input class="form-input" clearable maxlength="20" placeholder="邮箱" v-model="form.account" @blur="blurAccount">
+          <el-form-item prop="email">
+            <el-input class="form-input" clearable maxlength="20" placeholder="邮箱" v-model="form.email">
               <template slot="prepend">
                 <icon-font icon="icon-user"></icon-font>
               </template>
@@ -71,13 +71,13 @@
     data() {
       return {
         form: {
-          account: '',
+          email: '',
           password: '',
           rePassword: '',
           name: ''
         },
         rules: {
-          account: [
+          email: [
             {required: true, type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur'}
           ],
           password: [
@@ -93,7 +93,6 @@
         registerFlag: false,
         subWait: false,
         checked: false,
-        remember: false,
         password: '',
         cookieInfo: {}
       }
@@ -111,7 +110,7 @@
         if (this.subWait) {
           return
         }
-        if (this.form.account === '' || this.form.password === '' || this.form.rePassword === '' || this.form.name === '') {
+        if (this.form.email === '' || this.form.password === '' || this.form.rePassword === '' || this.form.name === '') {
           this.$message.error('请补充完整数据')
           return
         }
@@ -122,7 +121,7 @@
         this.subWait = true
         this.$http.post(apiUrl.register, {
           data: {
-            account: this.form.account,
+            email: this.form.email,
             password: crypto.createHash('sha1').update(this.form.password.trim()).digest('hex'),
             name: this.form.name
           }
@@ -146,21 +145,21 @@
         if (this.subWait) {
           return
         }
-        if (this.form.account === '' || this.form.password === '') {
-          this.$message({type: 'error', message: '请输入邮箱和密码'})
+        if (this.form.email === '' || this.form.password === '') {
+          this.$message.error('请输入邮箱和密码')
           return
         }
         this.subWait = true
         this.$http.post(apiUrl.login, {
           data: {
-            account: this.form.account,
+            email: this.form.email,
             password: crypto.createHash('sha1').update(this.form.password.trim()).digest('hex')
           }
         }).then(res => {
           this.subWait = false
           if (res.data.code === 200) {
             this.$message.success(res.data.message)
-            this.$router.push({path: '/'})
+            // this.$router.push({path: '/'})
           } else {
             this.$message.error(res.data.message)
           }
@@ -178,16 +177,8 @@
       },
       clear() {
         this.$refs.loginForm.resetFields()
-        this.form.account = ''
+        this.form.email = ''
         this.form.password = ''
-        this.remember = false
-      },
-      blurAccount() {
-        if (this.cookieInfo.account !== this.form.account) {
-          this.remember = false
-        } else {
-          this.remember = true
-        }
       }
     },
     components: {

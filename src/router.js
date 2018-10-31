@@ -33,7 +33,21 @@ export default new Router({
       component: Admin,
       // component: () => import('@/views/admin/Admin.vue'),
       children: [
-
+        {
+          path: 'selfinfo',
+          name: 'SelfInfo',
+          component: () => import('@/views/admin/SelfInfo.vue')
+        },
+        {
+          path: 'articles',
+          name: 'Articles',
+          component: () => import('@/views/admin/ArticleList.vue')
+        },
+        {
+          path: 'markdown',
+          name: 'Markdown',
+          component: () => import('@/views/admin/Markdown.vue')
+        }
       ]
     },
   ]

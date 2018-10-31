@@ -1,5 +1,6 @@
 const Koa = require('koa')
 const app = new Koa()
+const session = require('koa-session')
 const connect = require('./database/init')
 const bodyParser = require('koa-bodyparser')
 const cors = require('koa2-cors')
@@ -8,6 +9,19 @@ const router = require('./router')
 ;(async () => {
   await connect()
 })()
+
+const CONFIG = {
+  key: 'koa:sess',
+  maxAge: 86400000,
+  autoCommit: true,
+  overwrite: true,
+  httpOnly: true,
+  signed: true,
+  rolling: false,
+  renew: false
+}
+app.keys = ['login secret']
+app.use(session(CONFIG, app));
 
 app.use(bodyParser())
 app.use(cors())
