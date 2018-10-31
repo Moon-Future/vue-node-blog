@@ -10,14 +10,14 @@
           <el-form-item prop="account">
             <el-input class="form-input" clearable maxlength="20" placeholder="邮箱" v-model="form.account" @blur="blurAccount">
               <template slot="prepend">
-                <icon-font icon="icon-yonghu"></icon-font>
+                <icon-font icon="icon-user"></icon-font>
               </template>
             </el-input>
           </el-form-item>
           <el-form-item prop="password">
             <el-input class="form-input" type="password" maxlength="20" clearable placeholder="密码" v-model="form.password" @keyup.enter.native="login">
               <template slot="prepend">
-                <icon-font icon="icon-mima"></icon-font>
+                <icon-font icon="icon-password"></icon-font>
               </template>
             </el-input>
           </el-form-item>
@@ -25,7 +25,7 @@
             <el-form-item prop="password">
               <el-input class="form-input" type="password" maxlength="20" clearable placeholder="确认密码" v-model="form.rePassword">
                 <template slot="prepend">
-                  <icon-font icon="icon-mima"></icon-font>
+                  <icon-font icon="icon-password"></icon-font>
                 </template>
               </el-input>
             </el-form-item>

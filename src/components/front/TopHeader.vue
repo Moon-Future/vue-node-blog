@@ -26,6 +26,7 @@
     name: 'topHeader',
     data() {
       return {
+        // bgimg: 'https://source.unsplash.com/random/1366x520/daily'
         bgimg: 'https://source.unsplash.com/random/1366x520'
       }
     },
