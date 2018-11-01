@@ -10,36 +10,13 @@
       <el-tab-pane><span slot="label"><i class="el-icon-document"></i> 文章列表</span></el-tab-pane>
       <el-tab-pane><span slot="label"><i class="el-icon-delete"></i> 回收站</span></el-tab-pane>
     </el-tabs>
-    <el-table :data="delFlag ? articlesDel : articles" border style="width:100%">
-      <el-table-column prop="title" label="标题" width="300"></el-table-column>
-      <el-table-column prop="tags" label="标签" width="200" :filters="tags" :filter-method="filterTag" filter-placement="bottom-end">
-        <template slot-scope="scope">
-          <el-tag v-for="tag in scope.row.tags" :key="tag.id" type="primary">{{ tag.name }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column label="发表时间" width="200">
-        <template slot-scope="scope">
-          <el-icon name="time"></el-icon>
-          <span style="margin-left: 10px">{{ scope.row.post_time }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="更改时间" width="200">
-        <template slot-scope="scope">
-          <el-icon name="time"></el-icon>
-          <span style="margin-left: 10px">{{ scope.row.upd_time }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="view" label="浏览" width="100"></el-table-column>
-      <el-table-column prop="start" label="点赞" width="100"></el-table-column>
-      <el-table-column prop="state" label="状态" width="80">
-        <template slot-scope="scope">
-          <!-- 0：删除  1：已发布  2：暂存稿 -->
-          <span v-if="scope.row.state === 1" style="color:#13ce66">已发布</span>
-          <span v-else-if="scope.row.state === 0" style="color:#ff4949">删除</span>
-          <span v-else style="color:#8391a5">暂存稿</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" min-width="220">
+    <el-table :data="articles" border style="width:100%">
+      <template v-for="(item, i) in field">
+        <el-table-column :prop="item.prop" :label="item.label" align="center" :key="i">
+          
+        </el-table-column>
+      </template>
+      <el-table-column label="操作" align="center" min-width="220">
         <template slot-scope="scope">
           <el-button size="small" type="primary" v-show="!delFlag" :disabled="userInfo.root ? false : true" @click="editorHandle(scope.row)">编辑</el-button>
           <el-button size="small" type="warning" v-show="!delFlag" :disabled="userInfo.root ? false : true" v-if="scope.row.state === 1" @click="operateHandle(scope.row, 2)">存稿</el-button>
@@ -71,7 +48,13 @@
         tags: [],
         delFlag: false,
         field: [
-          {prop}
+          {prop: 'title', label: '标题'},
+          {prop: 'tag', label: '标签'},
+          {prop: 'createTime', label: '发表时间'},
+          {prop: 'updateTime', label: '更新时间'},
+          {prop: 'view', label: '浏览数'},
+          {prop: 'like', label: '点赞数'},
+          {prop: 'state', label: '状态'}
         ]
       }
     },
@@ -79,7 +62,9 @@
       this.$http.post(apiUrl.getArticle, {
         data: {admin: true}
       }).then((res) => {
-        // this.articles = res.data.articles;
+        if (res.data.code === 200) {
+          this.articles = res.data.message;
+        }
         // this.articlesDel = res.data.articlesDel;
         // this.articles.map((article) => {
         //   article.post_time = new Date(article.post_time).format('yyyy/MM/dd hh:mm');
