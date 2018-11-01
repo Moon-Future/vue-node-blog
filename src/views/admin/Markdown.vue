@@ -24,16 +24,16 @@
             v-model="inputValue"
             ref="saveTagInput"
             size="mini"
-            @keyup.enter.native="handleInputConfirm"
-            @blur="handleInputConfirm"
+            @keyup.enter.native="tagInputConfirm"
+            @blur="tagInputConfirm"
           >
           </el-input>
           <el-button v-else class="button-new-tag" size="small" @click="addNewTag">+ New Tag</el-button>
         </div>
       </div>
       <div class="submit">
-        <el-button type="success" @click="submitHandle(1)" v-if="userInfo.root">发布</el-button>
-        <el-button type="info" @click="submitHandle(2)">存稿</el-button>
+        <el-button type="success" @click="submit(1)" v-if="userInfo.root">发布</el-button>
+        <el-button type="info" @click="submit(2)">存稿</el-button>
       </div>
     </div>
   </div>
@@ -72,6 +72,7 @@
       }
     },
     created() {
+      this.newTagId = 0
       let query = this.$route.query;
       // this.$http.get('/api/tag/getTagAll')
       //   .then((res) => {
@@ -105,7 +106,7 @@
       closeTag(index) {
         this.tagSel.splice(index, 1)
       },
-      handleInputConfirm() {
+      tagInputConfirm() {
         let inputValue = this.inputValue.trim(), flag = false, tagAll = this.tags.concat(this.tagSel)
         tagAll.map((tag) => {
           if(tag.name.toLocaleLowerCase() == inputValue.toLocaleLowerCase()){
@@ -113,26 +114,27 @@
           }
         })
         if (inputValue && !flag) {
-          this.tagSel.push({id:-1, name:inputValue})
+          this.tagSel.push({id: `${this.newTagId}_newTag`, name:inputValue})
+          this.newTagId += 1
         }
         this.inputVisible = false;
         this.inputValue = '';
       },
       addNewTag() {
         this.inputVisible = true;
-        this.$nextTick(_ => {
+        this.$nextTick(() => {
           this.$refs.saveTagInput.$refs.input.focus()
         });
       },
-      submitHandle(state) {
-        console.log(this.tagSel)
-        return
+      submit(state) {
+        // console.log(this.tagSel)
+        // return
         if (this.title === '' || this.content === '') {
           this.$message.error('提交失败,请完善内容')
           return;
         }
         this.$http.post(apiUrl.insertArticle, {
-          data: {user: this.userInfo.id, title: this.title, content: this.content}
+          data: {user: this.userInfo.id, title: this.title, content: this.content, tags: this.tagSel}
         }).then((res) => {
           if (res.data.code === 200) {
             this.$message.success(res.data.message);
