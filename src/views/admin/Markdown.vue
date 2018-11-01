@@ -14,10 +14,10 @@
       <div class="tag">
         标签：
         <div class="tag-all">
-          <el-tag v-for="tag in tags" :key="tag.id" @click.native="handleTagSel(tag)">{{ tag.name }}</el-tag>
+          <el-tag v-for="tag in tags" :key="tag.id" @click.native="selectTag(tag)">{{ tag.name }}</el-tag>
         </div>
         <div class="tag-sel">
-          <el-tag v-for="(tag, i) in tagSel" :key="tag.id" :closable="true" :close-transition="false" type="success" @close="handleClose(i)">{{ tag.name }}</el-tag>
+          <el-tag v-for="(tag, i) in tagSel" :key="tag.id" :closable="true" :close-transition="false" type="success" @close="closeTag(i)">{{ tag.name }}</el-tag>
           <el-input
             class="input-new-tag"
             v-if="inputVisible"
@@ -28,7 +28,7 @@
             @blur="handleInputConfirm"
           >
           </el-input>
-          <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+          <el-button v-else class="button-new-tag" size="small" @click="addNewTag">+ New Tag</el-button>
         </div>
       </div>
       <div class="submit">
@@ -41,6 +41,7 @@
 
 <script>
   import markdownEditor from 'vue-simplemde/src/markdown-editor'
+  import apiUrl from '@/serviceAPI.config.js'
   export default {
     name: 'Markdown',
     props: {
@@ -56,8 +57,6 @@
       return {
         title: '',
         content: '',
-        view: 0,
-        start: 0,
         tags: [],
         tagSel: [],
         tagIdMax: 1,
@@ -85,78 +84,60 @@
       //     console.log('err', err);
       //   });
       if (query.title) {
-        this.title = query.title;
+        this.title = query.title
         this.$http.get('/api/article/getArticleById', {
             params: {id: query.id, title: this.title, editor: true}
           }).then((res) => {
-            let data = res.data;
+            let data = res.data
             if (data.length !== 0) {
-              this.tagSel = data[0].tags;
-              this.content = data[0].content;
-              this.view = data[0].view;
-              this.start = data[0].start;
+              this.tagSel = data[0].tags
+              this.content = data[0].content
             }
-          }).catch((err) => {
-            console.log('err', err);
-          });
+          })
       }
-      
     },
     methods: {
-      handleTagSel(tag) {
-        if(this.tagSel.indexOf(tag) == -1){
-          this.tagSel.splice(this.tagSel.length, 1, tag);
+      selectTag(tag) {
+        if(this.tagSel.indexOf(tag) === -1){
+          this.tagSel.splice(this.tagSel.length, 1, tag)
         }
       },
-      handleClose(index) {
-        this.tagSel.splice(index, 1);
+      closeTag(index) {
+        this.tagSel.splice(index, 1)
       },
       handleInputConfirm() {
-        let inputValue = this.inputValue.trim(), flag = false, tagAll = this.tags.concat(this.tagSel);
+        let inputValue = this.inputValue.trim(), flag = false, tagAll = this.tags.concat(this.tagSel)
         tagAll.map((tag) => {
           if(tag.name.toLocaleLowerCase() == inputValue.toLocaleLowerCase()){
-            flag = true;
+            flag = true
           }
         })
         if (inputValue && !flag) {
-          this.tagSel.push({id:-1,name:inputValue});
+          this.tagSel.push({id:-1, name:inputValue})
         }
         this.inputVisible = false;
         this.inputValue = '';
       },
-      showInput() {
+      addNewTag() {
         this.inputVisible = true;
         this.$nextTick(_ => {
-          this.$refs.saveTagInput.$refs.input.focus();
+          this.$refs.saveTagInput.$refs.input.focus()
         });
       },
       submitHandle(state) {
-
-        console.log(this.title, this.content, this.userInfo)
+        console.log(this.tagSel)
         return
         if (this.title === '' || this.content === '') {
-          this.$message.error('提交失败,请完善内容');
+          this.$message.error('提交失败,请完善内容')
           return;
         }
-        let summary = '', len = 250, query = this.$route.query, url = query.id ? 'updArticle' : 'addArticle';
-        this.$http.post('/api/article/' + url, {
-          user_id: this.userInfo.id,
-          title: this.title,
-          content: this.content,
-          state: state,   // 1:发布 2:存稿
-          type: 1,        // 1:原创 2:转载
-          loadURL: '*',   // 转载地址
-          view: this.view,
-          start: this.start,
-          tags: this.tagSel,
-          id: query.id,
-          tagIdMax: this.tagIdMax
+        this.$http.post(apiUrl.insertArticle, {
+          data: {user: this.userInfo.id, title: this.title, content: this.content}
         }).then((res) => {
-          if (res.data.status) {
-            this.$message.success(res.data.msg);
-            this.$router.push('/admin/articles');
+          if (res.data.code === 200) {
+            this.$message.success(res.data.message);
           } else {
-            this.$message.error(res.data.msg);
+            this.$message.error(res.data.message);
           }
         });
       }

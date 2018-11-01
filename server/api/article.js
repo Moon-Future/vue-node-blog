@@ -1,19 +1,33 @@
 const Router = require('koa-router')
+const marked = require('marked')
 const router = new Router()
 const Article = require('../database/schema/article')
 const ObjectId = require('mongoose').Types.ObjectId
+const checkRoot = require('./root')
 
-const articleData = [
-  {
-    title: 'vue+node+mysql搭建个人博客（2）',
-    summary: '',
-    content: '',
-    comment: [],
-    user: ObjectId('5aeac9a955fa7427474594d5'),
-    tag: [ObjectId('5aeac9a955fa7427474594d5'), ObjectId('5aeac9a955fa7427474594d6')],
-    createdTime: new Date().getTime(),
+router.post('/insertArticle', async (ctx) => {
+  try {
+    const checkResult = checkRoot(ctx)
+    if (checkResult.code === 500) {
+      ctx.body = checkResult
+      return
+    }
+    const data = ctx.request.body.data
+    const currentTime = new Date().getTime()
+    const html = marked(data.content)
+    const article = new Article({
+      title: data.title,
+      content: data.content,
+      html,
+      user: Object(data.user),
+      createdTime: currentTime,
+    })
+    await article.save()
+    ctx.body = {code: 200, message: '发布成功'}
+  } catch(err) {
+    throw new Error(err)
   }
-]
+})
 
 router.get('/insertArticleByJson', async (ctx) => {
   ctx.body = '开始导入 Article 数据'
@@ -29,7 +43,7 @@ router.get('/insertArticleByJson', async (ctx) => {
   })
 })
 
-router.get('/getArticleList', async (ctx) => {
+router.post('/getArticleList', async (ctx) => {
 
 })
 
