@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="markdown-container">
     <div class="crumbs">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item><i class="el-icon-date"></i> 表单</el-breadcrumb-item>
@@ -131,6 +131,9 @@
         });
       },
       submitHandle(state) {
+
+        console.log(this.title, this.content, this.userInfo)
+        return
         if (this.title === '' || this.content === '') {
           this.$message.error('提交失败,请完善内容');
           return;
@@ -155,50 +158,48 @@
           } else {
             this.$message.error(res.data.msg);
           }
-        }).catch((err) => {
-          console.log('err', err);
         });
       }
     }
   }
 </script>
 
-<style scoped>
-  .markdown-editor {
-    height: 100%
-  }
-  .title {
-    padding: 10px;
-  }
-  .title input {
-    border: none;
-    outline: none;
-    border-bottom: 1px solid #000;
-    font-weight: bold;
-    font-size: 20px;
-    text-align: center;
-    min-width: 100px; 
-  }
-  .coverPic {
-    margin: 10px;
-  }
-  .tag {
-    margin-bottom: 20px;
-  }
-  .tag span.el-tag {
-    margin: 5px;
-    cursor: pointer;
-  }
-  .tag-all span:hover {
-    color: #000;
-    background-color: #F7BA2A;
-  }
-  .tag-sel {
-    border: 1px dotted yellowgreen;
-    min-height: 50px;
-    padding: 5px;
-  }
-  .input-new-tag {
-     max-width: 77px;
+<style lang="scss" scoped>
+  .markdown-container {
+    text-align: left;
+    .title {
+      padding: 10px;
+      input {
+        border: none;
+        outline: none;
+        border-bottom: 1px solid #000;
+        font-weight: bold;
+        font-size: 20px;
+        text-align: center;
+        min-width: 100px;
+      }
+    }
+    .markdown-editor {
+      height: 100%
+    }
+    .tag {
+      margin-bottom: 20px;
+      span.el-tag {
+        margin: 5px;
+        cursor: pointer;
+      }
+      .tag-all span:hover {
+        color: #000;
+        background-color: #F7BA2A;
+      }
+      .tag-sel {
+        border: 1px dotted yellowgreen;
+        min-height: 50px;
+        padding: 5px;
+        .input-new-tag {
+          max-width: 77px;
+        }
+      }
+    }
   }
 </style>

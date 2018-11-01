@@ -27,7 +27,7 @@
           <img :src="userAvatar" alt="">
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item @click.native="uploadDisplay">更改头像</el-dropdown-item>
-            <el-dropdown-item @click.native="logoutAdmin">退出</el-dropdown-item>
+            <el-dropdown-item @click.native="logout">退出</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-col>
@@ -37,6 +37,7 @@
 
 <script>
   import { dateFormat } from '@/common/js/tool.js'
+  import apiUrl from '@/serviceAPI.config.js'
   export default {
     name: 'Header',
     props: ['userAvatar', 'userName'],
@@ -44,14 +45,10 @@
       uploadDisplay() {
         this.$emit('uploadDisplay', true);
       },
-      logoutAdmin() {
-        this.$http.post('/api/user/logout')
-          .then((res) => {
-            this.$router.push('/login');
-          })
-          .catch((err) => {
-            throw err;
-          })
+      logout() {
+        this.$http.post(apiUrl.logout).then((res) => {
+          this.$router.push('/login');
+        })
       }
     },
     computed: {

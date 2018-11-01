@@ -37,6 +37,15 @@ router.post('/login', async (ctx) => {
   }
 })
 
+router.post('/logout', async (ctx) => {
+  try {
+    ctx.session = null
+    ctx.body = {code: 200, message: '已退出'}
+  } catch(err) {
+    throw new Error(err)
+  }
+})
+
 router.post('/getSession', async (ctx) => {
   try {
     const userInfo = ctx.session.userInfo

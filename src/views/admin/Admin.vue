@@ -19,7 +19,7 @@
         userInfo: {}
       }
     },
-    beforeCreate() {
+    created() {
       this.$http.post(apiUrl.getSession).then(res => {
         if (res.data.code === 200) {
           this.userInfo = res.data.message

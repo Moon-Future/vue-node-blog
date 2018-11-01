@@ -159,7 +159,7 @@
           this.subWait = false
           if (res.data.code === 200) {
             this.$message.success(res.data.message)
-            // this.$router.push({path: '/'})
+            this.$router.push('/admin')
           } else {
             this.$message.error(res.data.message)
           }
