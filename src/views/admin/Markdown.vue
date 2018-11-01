@@ -74,16 +74,14 @@
     created() {
       this.newTagId = 0
       let query = this.$route.query;
-      // this.$http.get('/api/tag/getTagAll')
-      //   .then((res) => {
-      //     this.tags = res.data;
-      //     res.data.forEach(element => {
-      //       this.tagIdMax = this.tagIdMax < element.id ? element.id : this.tagIdMax;
-      //     });
-      //   })
-      //   .catch((err) => {
-      //     console.log('err', err);
-      //   });
+      this.$http.post(apiUrl.getTag).then((res) => {
+        if (res.data.code === 200) {
+          this.tags = res.data.message;
+          this.tags.forEach(ele => {
+            ele.id = ele._id
+          })
+        }
+      })
       if (query.title) {
         this.title = query.title
         this.$http.get('/api/article/getArticleById', {
@@ -127,17 +125,22 @@
         });
       },
       submit(state) {
-        // console.log(this.tagSel)
-        // return
         if (this.title === '' || this.content === '') {
           this.$message.error('提交失败,请完善内容')
-          return;
+          return
         }
         this.$http.post(apiUrl.insertArticle, {
-          data: {user: this.userInfo.id, title: this.title, content: this.content, tags: this.tagSel}
+          data: {
+            user: this.userInfo.id,
+            title: this.title,
+            content: this.content,
+            tags: this.tagSel,
+            state
+          }
         }).then((res) => {
           if (res.data.code === 200) {
             this.$message.success(res.data.message);
+            this.$router.push('/admin/articles')
           } else {
             this.$message.error(res.data.message);
           }
@@ -148,6 +151,7 @@
 </script>
 
 <style lang="scss" scoped>
+  @import '@/common/css/variable.scss';
   .markdown-container {
     text-align: left;
     .title {
@@ -171,12 +175,17 @@
         margin: 5px;
         cursor: pointer;
       }
-      .tag-all span:hover {
-        color: #000;
-        background-color: #F7BA2A;
+      .tag-all span {
+        &:hover {
+          color: $color-white;
+          background-color: $color-origin;
+        }
+        &:first-child {
+          margin-left: 0;
+        }
       }
       .tag-sel {
-        border: 1px dotted yellowgreen;
+        border: 1px dotted $color-green;
         min-height: 50px;
         padding: 5px;
         .input-new-tag {

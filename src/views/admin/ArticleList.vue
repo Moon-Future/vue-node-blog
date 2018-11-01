@@ -11,7 +11,6 @@
       <el-tab-pane><span slot="label"><i class="el-icon-delete"></i> 回收站</span></el-tab-pane>
     </el-tabs>
     <el-table :data="delFlag ? articlesDel : articles" border style="width:100%">
-      <el-table-column prop="id" label="ID" width="100"></el-table-column>
       <el-table-column prop="title" label="标题" width="300"></el-table-column>
       <el-table-column prop="tags" label="标签" width="200" :filters="tags" :filter-method="filterTag" filter-placement="bottom-end">
         <template slot-scope="scope">
@@ -42,12 +41,12 @@
       </el-table-column>
       <el-table-column label="操作" min-width="220">
         <template slot-scope="scope">
-          <el-button size="small" type="primary" v-show="!delFlag" :disabled="userData.root ? false : true" @click="editorHandle(scope.row)">编辑</el-button>
-          <el-button size="small" type="warning" v-show="!delFlag" :disabled="userData.root ? false : true" v-if="scope.row.state === 1" @click="operateHandle(scope.row, 2)">存稿</el-button>
-          <el-button size="small" type="success" v-show="!delFlag" :disabled="userData.root ? false : true" v-if="scope.row.state === 2" @click="operateHandle(scope.row, 1)">发布</el-button>
-          <el-button size="small" type="danger" v-show="!delFlag" :disabled="userData.root ? false : true" @click="operateHandle(scope.row, 0, scope.$index)">删除</el-button>
-          <el-button size="small" type="success" v-show="delFlag" :disabled="userData.root ? false : true" @click="operateHandle(scope.row, 2, scope.$index)">还原</el-button>
-          <el-button size="small" type="danger" v-show="delFlag" :disabled="userData.root ? false : true" @click="operateHandle(scope.row, 3, scope.$index)">彻底删除</el-button>
+          <el-button size="small" type="primary" v-show="!delFlag" :disabled="userInfo.root ? false : true" @click="editorHandle(scope.row)">编辑</el-button>
+          <el-button size="small" type="warning" v-show="!delFlag" :disabled="userInfo.root ? false : true" v-if="scope.row.state === 1" @click="operateHandle(scope.row, 2)">存稿</el-button>
+          <el-button size="small" type="success" v-show="!delFlag" :disabled="userInfo.root ? false : true" v-if="scope.row.state === 2" @click="operateHandle(scope.row, 1)">发布</el-button>
+          <el-button size="small" type="danger" v-show="!delFlag" :disabled="userInfo.root ? false : true" @click="operateHandle(scope.row, 0, scope.$index)">删除</el-button>
+          <el-button size="small" type="success" v-show="delFlag" :disabled="userInfo.root ? false : true" @click="operateHandle(scope.row, 2, scope.$index)">还原</el-button>
+          <el-button size="small" type="danger" v-show="delFlag" :disabled="userInfo.root ? false : true" @click="operateHandle(scope.row, 3, scope.$index)">彻底删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -55,46 +54,49 @@
 </template>
 
 <script>
+  import apiUrl from '@/serviceAPI.config.js'
+  import { dateFormat } from '@/common/js/tool.js'
   export default {
     name: 'ArticleList',
-    props: ['userData'],
+    props: {
+      userInfo: {
+        type: Object,
+        default: {}
+      }
+    },
     data() {
       return {
         articles: [],
         articlesDel: [],
         tags: [],
-        delFlag: false
+        delFlag: false,
+        field: [
+          {prop}
+        ]
       }
     },
     created() {
-      return
-      this.$http.get('/api/article/getArticleAll')
-        .then((res) => {
-          this.articles = res.data.articles;
-          this.articlesDel = res.data.articlesDel;
-          this.articles.map((article) => {
-            article.post_time = new Date(article.post_time).format('yyyy/MM/dd hh:mm');
-            article.upd_time = article.upd_time == '' ? '暂无修改' : new Date(article.upd_time).format('yyyy/MM/dd hh:mm');
-          });
-          this.articlesDel.map((article) => {
-            article.post_time = new Date(article.post_time).format('yyyy/MM/dd hh:mm');
-            article.upd_time = article.upd_time == '' ? '暂无修改' : new Date(article.upd_time).format('yyyy/MM/dd hh:mm');
-          });
-        })
-        .catch((err) => {
-          console.log('err', err);
-        });
-      this.$http.get('/api/tag/getTagAll')
-        .then((res) => {
-          this.tags = res.data;
-          this.tags.map((tag) => {
-            tag.text = tag.name;
-            tag.value = tag.id;
-          })
-        })
-        .catch((err) => {
-          console.log('err', err);
-        }); 
+      this.$http.post(apiUrl.getArticle, {
+        data: {admin: true}
+      }).then((res) => {
+        // this.articles = res.data.articles;
+        // this.articlesDel = res.data.articlesDel;
+        // this.articles.map((article) => {
+        //   article.post_time = new Date(article.post_time).format('yyyy/MM/dd hh:mm');
+        //   article.upd_time = article.upd_time == '' ? '暂无修改' : new Date(article.upd_time).format('yyyy/MM/dd hh:mm');
+        // });
+        // this.articlesDel.map((article) => {
+        //   article.post_time = new Date(article.post_time).format('yyyy/MM/dd hh:mm');
+        //   article.upd_time = article.upd_time == '' ? '暂无修改' : new Date(article.upd_time).format('yyyy/MM/dd hh:mm');
+        // });
+      })
+      // this.$http.get('/api/tag/getTagAll').then((res) => {
+      //   this.tags = res.data;
+      //   this.tags.map((tag) => {
+      //     tag.text = tag.name;
+      //     tag.value = tag.id;
+      //   })
+      // })
     },
     methods: {
       filterTag(value, row) {

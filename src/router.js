@@ -31,7 +31,6 @@ export default new Router({
       path: '/admin',
       name: 'Admin',
       component: Admin,
-      // component: () => import('@/views/admin/Admin.vue'),
       children: [
         {
           path: 'selfinfo',
