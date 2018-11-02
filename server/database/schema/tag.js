@@ -3,8 +3,8 @@ const Schema = mongoose.Schema
 
 const tagSchema = new Schema({
   name: { type: String, default: '', unique: true },
-  createdTime: { type: Number, default: null },
-  upadteTime: { type: Number, default: null },
+  createTime: { type: Number, default: null },
+  updateTime: { type: Number, default: null },
 }, {
   collections: 'tag'
 })

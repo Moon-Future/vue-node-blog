@@ -9,8 +9,8 @@ const articleSchema = new Schema({
   comment: { type: Array, default: [] },
   user: {type: Schema.Types.ObjectId, ref: 'User'},
   tag: [{type: Schema.Types.ObjectId, ref: 'Tag'}],
-  createdTime: { type: Number, default: null },
-  upadteTime: { type: Number, default: null },
+  createTime: { type: Number, default: null },
+  updateTime: { type: Number, default: null },
   view: { type: Number, default: 0 },
   like: { type: Number, default: 0 },
   reprint: { type: String, default: '' }, // 类型 {'': 原创, 'url': 转载链接}

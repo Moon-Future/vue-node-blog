@@ -22,7 +22,7 @@ router.post('/insertArticle', async (ctx) => {
       let insertTags = [], tagResult = []
       tags.forEach(ele => {
         if (ele.id.indexOf('newTag') !== -1) {
-          insertTags.push({name: ele.name, createdTime: currentTime})
+          insertTags.push({name: ele.name, createTime: currentTime})
         } else {
           tagsId.push(ObjectId(ele.id))
         }
@@ -38,7 +38,7 @@ router.post('/insertArticle', async (ctx) => {
       html,
       user: ObjectId(data.user),
       tag: tagsId,
-      createdTime: currentTime,
+      createTime: currentTime,
     })
     await article.save()
     ctx.body = {code: 200, message: '发布成功'}
