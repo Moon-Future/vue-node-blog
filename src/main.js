@@ -5,6 +5,7 @@ import store from './store'
 import axios from 'axios'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import 'github-markdown-css/github-markdown.css'
 import VueLazyload from 'vue-lazyload'
 
 Vue.config.productionTip = false

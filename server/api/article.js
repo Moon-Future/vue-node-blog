@@ -15,7 +15,7 @@ router.post('/insertArticle', async (ctx) => {
     }
     const data = ctx.request.body.data
     const currentTime = new Date().getTime()
-    const tags = data.tags
+    const tags = data.tags || []
     const html = marked(data.content)
     let tagsId = []
     if (tags.length !== 0) {
@@ -32,8 +32,30 @@ router.post('/insertArticle', async (ctx) => {
         tagsId.push(ObjectId(ele._id))
       })
     }
+    let htmlTags = html.match(/.*|<(.|\n)*?<\/.*>.*/g)
+    let summary = ''
+    let count = 0
+    let limit = 2
+    for(let i = 0, len = htmlTags.length; i < len; i++) {
+      if (htmlTags[i] === '') {
+        summary += '\n'
+      }
+      if (htmlTags[i].match(/^<(.)/)) {
+        let tag = htmlTags[i].match(/^<(.)/)[1]
+        if (tag === 'h') {
+          count += 1
+        }
+        if (count > limit && tag === 'h') {
+          break
+        }
+      }
+      summary += htmlTags[i]
+    }
+    summary += '<p>......</p>'
+    summary = summary.replace(/\'/g, '"')
     const article = new Article({
       title: data.title,
+      summary,
       content: data.content,
       html,
       user: ObjectId(data.user),
@@ -55,10 +77,11 @@ router.post('/getArticle', async (ctx) => {
       return
     }
     const data = ctx.request.body.data
-    const admin = data.admin
     let result
-    if (admin) {
+    if (data.admin) {
       result = await Article.find({}, {summary: 0, content: 0, html: 0, comment: 0}).populate('tag')
+    } else if (data.summary) {
+      result = await Article.find({}, {content: 0, html: 0, comment: 0}).populate('tag')
     }
     ctx.body = {code: 200, message: result}
   } catch(err) {

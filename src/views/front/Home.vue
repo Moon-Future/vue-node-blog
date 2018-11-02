@@ -1,14 +1,17 @@
 <template>
   <div class="home">
     <top-header></top-header>
-    <div class="blog-list">
-      <div v-for="(item, i) in data" :key="i">{{ item }}</div>
+    <div class="content-container">
+      <article-list></article-list>
     </div>
+    <bottom-footer></bottom-footer>
   </div>
 </template>
 
 <script>
   import TopHeader from '@/components/front/TopHeader'
+  import BottomFooter from '@/components/front/BottomFooter'
+  import ArticleList from '@/components/front/ArticleList'
   export default {
     name: 'home',
     data() {
@@ -17,7 +20,9 @@
       }
     },
     components: {
-      TopHeader
+      TopHeader,
+      BottomFooter,
+      ArticleList
     }
   }
 </script>
@@ -27,9 +32,11 @@
   .home {
     color: $color-black;
   }
-  .blog-list {
+  .content-container {
     background: $color-white;
     margin-top: 520px;
+    height: 1000px;
+    padding: 20px 30px;
   }
 </style>
 
