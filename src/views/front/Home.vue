@@ -33,7 +33,7 @@
     color: $color-black;
   }
   .content-container {
-    background: $color-white;
+    background: url('../../assets/bg.jpg');
     margin-top: 520px;
     height: 1000px;
     padding: 20px 30px;
