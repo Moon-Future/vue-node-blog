@@ -2,7 +2,7 @@
   <div class="article-list">
     <div class="article-wrapper" v-for="(article, i) in articleList" :key="i">
       <div class="text">
-        <div class="title">{{ article.title }}</div>
+        <div class="title" @click="goDetail">{{ article.title }}</div>
         <div class="message">
           <div class="msg time">{{ article.createTime }}</div>
           <div class="msg view">
@@ -16,7 +16,13 @@
       <div class="picture">
         <img v-lazy="`https://source.unsplash.com/200x200/weekly?nature,${i}`" alt="pic">
       </div>
+      <!-- <div class="readall">阅读全文</div> -->
     </div>
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :total="1000">
+    </el-pagination>
   </div>
 </template>
 
@@ -48,6 +54,9 @@
             this.$message.error(res.data.message)
           }
         })
+      },
+      goDetail() {
+        this.$router.push('/article')
       }
     },
     components: {
@@ -78,6 +87,10 @@
           font-size: 22px;
           color: $color-blue;
           margin-bottom: 5px;
+          &:hover {
+            cursor: pointer;
+            text-decoration: underline;
+          }
         }
         .message {
           display: flex;
@@ -88,6 +101,12 @@
             margin-right: 10px;
           }
         }
+      }
+      .readall {
+        position: absolute;
+        bottom: 10px;
+        cursor: pointer;
+        color: $color-deepgray;
       }
     }
   }

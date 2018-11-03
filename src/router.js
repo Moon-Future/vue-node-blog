@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/front/Home.vue'
+import Container from './views/front/Container.vue'
 import Admin from './views/admin/Admin.vue'
 
 Vue.use(Router)
@@ -11,8 +11,20 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: Home
+      name: 'container',
+      component: Container,
+      children: [
+        {
+          path: '/',
+          name: 'Home',
+          component: () => import('@/views/front/Home.vue')
+        },
+        {
+          path: '/article',
+          name: 'Article',
+          component: () => import('@/views/front/Article.vue')
+        }
+      ]
     },
     {
       path: '/about',

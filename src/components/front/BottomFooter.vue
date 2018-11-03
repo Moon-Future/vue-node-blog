@@ -20,5 +20,8 @@
     height: 32px;
     line-height: 32px;
     font-size: 12px;
+    position: absolute;
+    left: 0;
+    right: 0;
   }
 </style>

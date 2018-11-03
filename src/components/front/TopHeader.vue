@@ -1,21 +1,14 @@
 <template>
   <div class="header">
-    <div class="background">
-      <img v-lazy="bgimg" alt="">
-      <div class="txt">
-        <p class="first-line">心有猛虎</p>
-        <p class="second-line">细嗅蔷薇</p>
-      </div>
-    </div>
     <div class="nav">
       <ul>
-        <li>主页</li>
-        <li>目录</li>
-        <li class="avatar">
+        <router-link tag="li" to="/">主页</router-link>
+        <router-link tag="li" to="/catalog">目录</router-link>
+        <router-link tag="li" to="/" class="avatar">
           <img src="../../assets/avatar.jpg" alt="" @click="login">
-        </li>
-        <li>其他</li>
-        <li>关于</li>
+        </router-link>
+        <router-link tag="li" to="/other">其他</router-link>
+        <router-link tag="li" to="/about">关于</router-link>
       </ul>
     </div>
   </div>
@@ -24,12 +17,6 @@
 <script>
   export default {
     name: 'topHeader',
-    data() {
-      return {
-        bgimg: 'https://source.unsplash.com/1366x520/daily'
-        // bgimg: 'https://source.unsplash.com/random/1366x520'
-      }
-    },
     methods: {
       login() {
         this.$router.push('/login')
@@ -40,29 +27,8 @@
 
 <style lang="scss" scoped>
   @import '@/common/css/variable.scss';
-  .background {
-    position: fixed;
-    top: 0;
-    z-index: -1;
-    width: 100%;
-    img {
-      width: 100%;
-      height: 520px;
-    }
-    .txt {
-      position: absolute;
-      top: 50%;
-      width: 100%;
-      color: $color-white;
-      font-size: 32px;
-      font-family: KaiTi, SimSun;
-      .first-line {
-        text-indent: -50px;
-      }
-      .second-line {
-        text-indent: 50px;
-      }
-    }
+  .header {
+    height: 50px;
   }
   .nav {
     position: fixed;

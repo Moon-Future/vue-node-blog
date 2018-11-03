@@ -18,8 +18,8 @@
         default: 'icon-yonghu'
       },
       fontSize: {
-        type: Number,
-        default: 16
+        type: String,
+        default: '16'
       },
       flag: {
         type: Boolean,

@@ -6,6 +6,12 @@ const Tag = require('../database/schema/tag')
 const ObjectId = require('mongoose').Types.ObjectId
 const checkRoot = require('./root')
 
+marked.setOptions({
+  highlight: function (code) {
+    return require('highlight.js').highlightAuto(code).value;
+  }
+})
+
 router.post('/insertArticle', async (ctx) => {
   try {
     const checkResult = checkRoot(ctx)
@@ -35,7 +41,7 @@ router.post('/insertArticle', async (ctx) => {
     let htmlTags = html.match(/.*|<(.|\n)*?<\/.*>.*/g)
     let summary = ''
     let count = 0
-    let limit = -1
+    let limit = 0
     for(let i = 0, len = htmlTags.length; i < len; i++) {
       if (htmlTags[i] === '') {
         summary += '\n'
@@ -45,13 +51,12 @@ router.post('/insertArticle', async (ctx) => {
         if (tag === 'h') {
           count += 1
         }
-        if (count > limit && tag === 'h') {
+        if (count > limit && tag === 'h' || summary.length >= 500) {
           break
         }
       }
       summary += htmlTags[i]
     }
-    summary += '<p>......</p>'
     summary = summary.replace(/\'/g, '"')
     const article = new Article({
       title: data.title,
@@ -82,6 +87,8 @@ router.post('/getArticle', async (ctx) => {
       result = await Article.find({}, {summary: 0, content: 0, html: 0, comment: 0}).populate('tag')
     } else if (data.summary) {
       result = await Article.find({}, {content: 0, html: 0, comment: 0}).populate('tag')
+    } else {
+      result = await Article.find({_id: data.id}, {content: 0, summary: 0, comment: 0}).populate('tag')
     }
     ctx.body = {code: 200, message: result}
   } catch(err) {
