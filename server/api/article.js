@@ -35,7 +35,7 @@ router.post('/insertArticle', async (ctx) => {
     let htmlTags = html.match(/.*|<(.|\n)*?<\/.*>.*/g)
     let summary = ''
     let count = 0
-    let limit = 2
+    let limit = -1
     for(let i = 0, len = htmlTags.length; i < len; i++) {
       if (htmlTags[i] === '') {
         summary += '\n'

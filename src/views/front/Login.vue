@@ -97,8 +97,12 @@
         cookieInfo: {}
       }
     },
-    created() {
-      
+    beforeCreate() {
+      this.$http.post(apiUrl.getSession).then(res => {
+        if (res.data.code === 200) {
+          this.$router.push('/admin')
+        }
+      })
     },
     methods: {
       register() {

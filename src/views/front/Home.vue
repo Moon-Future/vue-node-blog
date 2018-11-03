@@ -35,7 +35,6 @@
   .content-container {
     background: url('../../assets/bg.jpg');
     margin-top: 520px;
-    height: 1000px;
     padding: 20px 30px;
   }
 </style>

@@ -6,10 +6,9 @@
         <div class="message">
           <div class="msg time">{{ article.createTime }}</div>
           <div class="msg view">
-            <icon-font icon="icon-view"></icon-font>{{ article.view }}
-          </div>
-          <div class="msg like">
-            <icon-font icon="icon-like"></icon-font>{{ article.view }}
+            <icon-font icon="icon-view">
+              <span slot="content">{{ article.view }}</span>
+            </icon-font>
           </div>
         </div>
         <div class="markdown-body" v-html="article.summary"></div>
@@ -63,21 +62,28 @@
     width: 70%;
     .article-wrapper {
       display: flex;
-      box-shadow: 0px 0px 5px $color-gray;
+      box-shadow: 0px 0px 5px $color-white;
       padding: 10px;
       margin-bottom: 20px;
+      overflow: hidden;
+      &:hover {
+        box-shadow: 1px 1px 10px $color-blue;
+      }
       .text {
         text-align: left;
         margin-right: 10px;
+        width: 100%;
         .title {
           font-weight: bold;
           font-size: 22px;
+          color: $color-blue;
           margin-bottom: 5px;
         }
         .message {
           display: flex;
-          color: $color-gray;
+          color: $color-white;
           font-size: 14px;
+          line-height: 16px;
           .msg {
             margin-right: 10px;
           }

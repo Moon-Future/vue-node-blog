@@ -3,6 +3,9 @@
     <svg class="iconfont" aria-hidden="true">
       <use :xlink:href="`#${icon}`"></use>
     </svg>
+    <div class="icon-content">
+      <slot name="content"></slot>
+    </div>
   </div>
 </template>
 
@@ -31,6 +34,10 @@
     display: inline;
     .has-margin {
       margin: 0 10px;
+    }
+    .icon-content {
+      display: inline;
+      margin-left: 3px;
     }
   }
 </style>

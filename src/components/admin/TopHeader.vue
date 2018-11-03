@@ -2,7 +2,9 @@
   <div class="header">
     <el-row>
       <el-col class="logo" :md="5" :sm="8" :xs="12">
-        <router-link to="/"><i class="iconfont icon-diannaoyushouji"></i></router-link>
+        <router-link to="/">
+          <icon-font icon="icon-admin"></icon-font>
+        </router-link>
         <p>后台管理</p>
       </el-col>
 
@@ -37,6 +39,7 @@
 
 <script>
   import { dateFormat } from '@/common/js/tool.js'
+  import IconFont from '@/components/Iconfont'
   import apiUrl from '@/serviceAPI.config.js'
   export default {
     name: 'Header',
@@ -55,6 +58,9 @@
       currentTime() {
         return dateFormat(new Date(), 'yyyy-MM-dd hh:mm')
       },
+    },
+    components: {
+      IconFont
     }
   }
 </script>
