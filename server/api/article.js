@@ -51,7 +51,7 @@ router.post('/insertArticle', async (ctx) => {
         if (tag === 'h') {
           count += 1
         }
-        if (count > limit && tag === 'h' || summary.length >= 500) {
+        if (count > limit && tag === 'h') {
           break
         }
       }

@@ -20,7 +20,7 @@ export default new Router({
           component: () => import('@/views/front/Home.vue')
         },
         {
-          path: '/article',
+          path: 'article/:id',
           name: 'Article',
           component: () => import('@/views/front/Article.vue')
         }

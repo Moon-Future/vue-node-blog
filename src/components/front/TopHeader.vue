@@ -4,8 +4,8 @@
       <ul>
         <router-link tag="li" to="/">主页</router-link>
         <router-link tag="li" to="/catalog">目录</router-link>
-        <router-link tag="li" to="/" class="avatar">
-          <img src="../../assets/avatar.jpg" alt="" @click="login">
+        <router-link tag="li" to="/login" class="avatar">
+          <img src="../../assets/avatar.jpg" alt="">
         </router-link>
         <router-link tag="li" to="/other">其他</router-link>
         <router-link tag="li" to="/about">关于</router-link>
@@ -16,12 +16,7 @@
 
 <script>
   export default {
-    name: 'topHeader',
-    methods: {
-      login() {
-        this.$router.push('/login')
-      }
-    }
+    name: 'topHeader'
   }
 </script>
 

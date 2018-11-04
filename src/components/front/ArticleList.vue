@@ -2,7 +2,7 @@
   <div class="article-list">
     <div class="article-wrapper" v-for="(article, i) in articleList" :key="i">
       <div class="text">
-        <div class="title" @click="goDetail">{{ article.title }}</div>
+        <div class="title" @click="goDetail(article)">{{ article.title }}</div>
         <div class="message">
           <div class="msg time">{{ article.createTime }}</div>
           <div class="msg view">
@@ -55,8 +55,8 @@
           }
         })
       },
-      goDetail() {
-        this.$router.push('/article')
+      goDetail(article) {
+        this.$router.push(`/article/${article._id}`)
       }
     },
     components: {

@@ -21,7 +21,7 @@
     methods: {
       getArticle() {
         this.$http.post(apiUrl.getArticle, {
-          data: {id: '5bddc51d8322f90c41f5cbc8'}
+          data: {id: this.$route.params.id}
         }).then(res => {
           if (res.data.code === 200) {
             this.article = res.data.message[0]

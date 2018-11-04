@@ -1,6 +1,14 @@
 <template>
   <div class="right-search">
-    右边搜索、标签、目录
+    <div class="self-info">
+      
+    </div>
+    <div class="article-tags">
+
+    </div>
+    <div class="search">
+      <el-input></el-input>
+    </div>
   </div>
 </template>
 
