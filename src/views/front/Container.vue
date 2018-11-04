@@ -56,6 +56,7 @@
 <style lang="scss" scoped>
   @import '@/common/css/variable.scss';
   .container {
+    background: url('../../assets/bg.jpg');
     color: $color-black;
     height: 100%;
     .back-to-top {

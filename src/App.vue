@@ -22,6 +22,5 @@
     text-align: center;
     color: #2c3e50;
     height: auto;
-    background: url('./assets/bg.jpg');
   }
 </style>
