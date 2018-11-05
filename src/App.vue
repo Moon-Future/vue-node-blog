@@ -4,15 +4,6 @@
   </div>
 </template>
 
-<script>
-  export default {
-    mounted() {
-      document.getElementById('app').style.minHeight = document.documentElement.clientHeight + 'px'
-    }
-  }
-</script>
-
-
 <style lang="scss">
   @import '@/common/css/reset.scss';
   #app {

@@ -1,10 +1,15 @@
 <template>
-  <div class="container">
+  <div class="container" ref="container">
     <top-header></top-header>
     <router-view/>
     <bottom-footer></bottom-footer>
     <div class="back-to-top" v-show="topShow" @click="backToTop">
       <icon-font :icon="topIcon" fontSize="42"></icon-font>
+    </div>
+    <div class="bg-video" ref="bgVideo">
+      <video autoplay loop muted ref="video">
+        <source :src="video" type="video/mp4">
+      </video>
     </div>
   </div>
 </template>
@@ -18,16 +23,27 @@
     data() {
       return {
         topShow: false,
-        topIcon: 'icon-top-static'
+        topIcon: 'icon-top-static',
+        video: require('@/assets/bg-video.mp4')
       }
     },
     mounted(){
       window.addEventListener('scroll', this.bodyScroll)
+      this.$refs.container.style.minHeight = document.documentElement.clientHeight + 'px'
     },
     methods: {
       bodyScroll() {
         const scrollTop = document.body.scrollTop || document.documentElement.scrollTop
         this.topShow = scrollTop > 500 ? true : false
+        if (scrollTop >= 520) {
+          this.$refs.bgVideo.style.position = 'fixed'
+          this.$refs.bgVideo.style.top = '0'
+          this.$refs.video.style.width = 'initial'
+        } else {
+          this.$refs.bgVideo.style.position = 'absolute'
+          this.$refs.bgVideo.style.top = '520px'
+          this.$refs.video.style.width = '100%'
+        }
       },
       backToTop() {
         this.topIcon = 'icon-top-start'
@@ -56,7 +72,7 @@
 <style lang="scss" scoped>
   @import '@/common/css/variable.scss';
   .container {
-    background: url('../../assets/bg.jpg');
+    // background: url('../../assets/bg.jpg');
     color: $color-black;
     height: 100%;
     .back-to-top {
@@ -64,6 +80,16 @@
       bottom: 32px;
       right: 20px;
       cursor: pointer;
+    }
+    .bg-video {
+      position: absolute;
+      top: 520px;
+      height: 100%;
+      z-index: -1;
+      video {
+        height: 100%;
+        width: 100%;
+      }
     }
   }
 </style>

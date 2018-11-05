@@ -14,7 +14,7 @@
         <div class="markdown-body" v-html="article.summary"></div>
       </div>
       <div class="picture">
-        <img v-lazy="`https://source.unsplash.com/200x200/weekly?nature,${i}`" alt="pic">
+        <img v-lazy="`https://source.unsplash.com/200x200/weekly?it,${i}`" alt="pic">
       </div>
       <!-- <div class="readall">阅读全文</div> -->
     </div>
@@ -75,6 +75,8 @@
       padding: 10px;
       margin-bottom: 20px;
       overflow: hidden;
+      background: $color-gray;
+      opacity: 0.8;
       &:hover {
         box-shadow: 1px 1px 10px $color-blue;
       }

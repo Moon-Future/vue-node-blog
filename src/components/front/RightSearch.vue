@@ -2,7 +2,7 @@
   <div class="right-search">
     <div class="self-info">
       <div class="avatar-wrapper">
-        <img class="avatar" src="../../assets/avatar.jpg" alt="">
+        <img class="avatar" src="../../assets/selfInfo.jpg" alt="">
         <div class="message">
           <p>陈亮</p>
           <p>前段攻城狮</p>
@@ -25,7 +25,7 @@
       </div>
     </div>
     <div class="article-tags">
-
+      
     </div>
     <div class="search">
       <el-input placeholder="搜索文章"></el-input>
