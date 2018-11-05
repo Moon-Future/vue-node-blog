@@ -1,6 +1,6 @@
 <template>
   <div class="container" ref="container">
-    <top-header></top-header>
+    <top-header @playVideo="playVideo"></top-header>
     <router-view/>
     <bottom-footer></bottom-footer>
     <div class="back-to-top" v-show="topShow" @click="backToTop">
@@ -59,6 +59,13 @@
           }
           document.documentElement.scrollTop = document.body.scrollTop = scrollTop + ispeed;
         }, 30)
+      },
+      playVideo(flag) {
+        if (flag) {
+          this.$refs.video.play()
+        } else {
+          this.$refs.video.pause()
+        }
       }
     },
     watch: {
