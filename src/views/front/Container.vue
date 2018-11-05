@@ -35,14 +35,14 @@
       bodyScroll() {
         const scrollTop = document.body.scrollTop || document.documentElement.scrollTop
         this.topShow = scrollTop > 500 ? true : false
-        if (scrollTop >= 520) {
-          this.$refs.bgVideo.style.position = 'fixed'
-          this.$refs.bgVideo.style.top = '0'
-          this.$refs.video.style.width = 'initial'
-        } else {
-          this.$refs.bgVideo.style.position = 'absolute'
-          this.$refs.bgVideo.style.top = '520px'
-          this.$refs.video.style.width = '100%'
+        if (this.$route.path === '/') {
+          if (scrollTop >= 520) {
+            this.$refs.bgVideo.style.position = 'fixed'
+            this.$refs.bgVideo.style.top = '0'
+          } else {
+            this.$refs.bgVideo.style.position = 'absolute'
+            this.$refs.bgVideo.style.top = '520px'
+          }
         }
       },
       backToTop() {
@@ -59,6 +59,17 @@
           }
           document.documentElement.scrollTop = document.body.scrollTop = scrollTop + ispeed;
         }, 30)
+      }
+    },
+    watch: {
+      $route() {
+        if (this.$route.path === '/') {
+          this.$refs.bgVideo.style.position = 'absolute'
+          this.$refs.bgVideo.style.top = '520px'
+        } else {
+          this.$refs.bgVideo.style.position = 'fixed'
+          this.$refs.bgVideo.style.top = '0'
+        }
       }
     },
     components: {
@@ -87,6 +98,7 @@
       height: 100%;
       z-index: -1;
       video {
+        object-fit: fill;
         height: 100%;
         width: 100%;
       }

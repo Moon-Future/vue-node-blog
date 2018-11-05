@@ -12,5 +12,6 @@
     height: 32px;
     line-height: 32px;
     font-size: 12px;
+    color: $color-white;
   }
 </style>

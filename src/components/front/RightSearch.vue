@@ -24,18 +24,39 @@
         </el-popover>
       </div>
     </div>
-    <div class="article-tags">
-      
-    </div>
     <div class="search">
       <el-input placeholder="搜索文章"></el-input>
+    </div>
+    <div class="hot-warppre">
+      <h2>浏览排行</h2>
+    </div>
+    <div class="article-tags">
+
     </div>
   </div>
 </template>
 
 <script>
   import IconFont from '@/components/Iconfont'
+  import apiUrl from '@/serviceAPI.config.js'
   export default {
+    data() {
+      return {
+        hotArticle: []
+      }
+    },
+    created() {
+
+    },
+    methods: {
+      getHotArticle() {
+        this.$http.post(apiUrl.getHotArticle, {
+          data: {hot: true}
+        }).then(() => {
+
+        })
+      }
+    },
     components: {
       IconFont
     }
@@ -47,6 +68,7 @@
   .right-search {
     width: 30%;
     margin-left: 20px;
+    opacity: 0.8;
   }
   .self-info {
     text-align: left;

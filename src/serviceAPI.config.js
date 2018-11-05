@@ -7,6 +7,8 @@ const apiUrl = {
   insertArticle: '/api/article/insertArticle',
   getArticle: '/api/article/getArticle',
   getArticleInfo: '/api/article/getArticleInfo',
+  getCatalog: '/api/article/getCatalog',
+  getHotArticle: '/api/article/getArticle',
 
   getTag: '/api/tag/getTag'
 }
