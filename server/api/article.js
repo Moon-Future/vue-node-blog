@@ -84,10 +84,16 @@ router.post('/getArticle', async (ctx) => {
     const data = ctx.request.body.data
     let result
     if (data.admin) {
+      // 后台管理列表
       result = await Article.find({}, {summary: 0, content: 0, html: 0, comment: 0}).populate('tag')
     } else if (data.summary) {
+      // home首页列表
+      result = await Article.find({}, {content: 0, html: 0, comment: 0}).populate('tag')
+    } else if (data.hot) {
+      // 热门列表
       result = await Article.find({}, {content: 0, html: 0, comment: 0}).populate('tag')
     } else {
+      // 文章内容
       result = await Article.find({_id: data.id}, {content: 0, summary: 0, comment: 0}).populate('tag')
     }
     ctx.body = {code: 200, message: result}
