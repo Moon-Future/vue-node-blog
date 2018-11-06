@@ -78,7 +78,6 @@
       margin-bottom: 20px;
       overflow: hidden;
       background: $color-gray;
-      opacity: 0.8;
       &:hover {
         box-shadow: 1px 1px 10px $color-blue;
       }

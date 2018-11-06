@@ -1,7 +1,7 @@
 <template>
   <div class="container" ref="container">
     <top-header @playVideo="playVideo"></top-header>
-    <div class="view-wrapper">
+    <div class="view-wrapper" :class="{childPage: !homeFlag}" ref="viewWrapper">
       <router-view/>
     </div>
     <bottom-footer></bottom-footer>
@@ -26,12 +26,14 @@
       return {
         topShow: false,
         topIcon: 'icon-top-static',
-        video: require('@/assets/bg-video.mp4')
+        video: require('@/assets/bg-video.mp4'),
+        homeFlag: true
       }
     },
     mounted(){
       window.addEventListener('scroll', this.bodyScroll)
       this.$refs.container.style.minHeight = document.documentElement.clientHeight + 'px'
+      this.$refs.viewWrapper.style.minHeight = (document.documentElement.clientHeight - 32) + 'px'
     },
     methods: {
       bodyScroll() {
@@ -75,9 +77,11 @@
         if (this.$route.path === '/') {
           this.$refs.bgVideo.style.position = 'absolute'
           this.$refs.bgVideo.style.top = '520px'
+          this.homeFlag = true
         } else {
           this.$refs.bgVideo.style.position = 'fixed'
           this.$refs.bgVideo.style.top = '50px'
+          this.homeFlag = false
         }
       }
     },
@@ -97,9 +101,17 @@
     min-height: 100%;
     height: 100%;
     .view-wrapper {
+      opacity: 0.8;
+      margin: auto;
       min-height: 100%;
-      padding-bottom: 32px;
       box-sizing: border-box;
+      &.childPage {
+        background: $color-white;
+        width: 80%;
+        padding: 20px;
+        padding-top: 80px;
+        padding-bottom: 32px;
+      }
     }
     .back-to-top {
       position: fixed;

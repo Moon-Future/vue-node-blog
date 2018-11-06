@@ -24,9 +24,9 @@
         
       }
     },
-    mounted() {
-      this.$refs.contentContainer.style.minHeight = (document.documentElement.clientHeight - 50) + 'px'
-    },
+    // mounted() {
+    //   this.$refs.contentContainer.style.minHeight = (document.documentElement.clientHeight - 50) + 'px'
+    // },
     components: {
       ArticleList,
       RightSearch
@@ -39,6 +39,7 @@
   .home {
     color: $color-black;
     height: 100%;
+    width: 100%;
   }
   .background-wrapper {
     .background {

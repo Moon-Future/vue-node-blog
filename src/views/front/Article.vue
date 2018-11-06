@@ -38,12 +38,6 @@
 <style lang="scss" scoped>
   @import '@/common/css/variable.scss';
   .article-detail {
-    background: $color-white;
-    opacity: 0.8;
-    margin: auto;
-    padding: 20px;
-    padding-top: 80px;
-    width: 80%;
     h1 {
       font-size: 2em;
       font-weight: bold;

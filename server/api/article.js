@@ -92,6 +92,9 @@ router.post('/getArticle', async (ctx) => {
     } else if (data.hot) {
       // 热门列表
       result = await Article.find({}, {content: 0, html: 0, comment: 0}).populate('tag')
+    } else if (data.catalog) {
+      // 归档目录
+      result = await Article.find({}, {summary: 0, content: 0, html: 0, comment: 0}).sort({createTime:-1}).populate('tag')
     } else {
       // 文章内容
       result = await Article.find({_id: data.id}, {content: 0, summary: 0, comment: 0}).populate('tag')
