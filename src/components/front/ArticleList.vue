@@ -19,6 +19,7 @@
       <!-- <div class="readall">阅读全文</div> -->
     </div>
     <el-pagination
+      v-if="pageShow"
       background
       layout="prev, pager, next"
       :total="1000">
@@ -34,7 +35,8 @@
     name: 'articleList',
     data() {
       return {
-        articleList: []
+        articleList: [],
+        pageShow: false
       }
     },
     created() {
@@ -46,7 +48,6 @@
           data: {summary: true}
         }).then(res => {
           if (res.data.code === 200) {
-            return
             this.articleList = res.data.message
             this.articleList.forEach(ele => {
               ele.createTime = dateFormat(ele.createTime, 'yyyy-MM-dd')

@@ -13,6 +13,7 @@
   @import '@/common/css/variable.scss';
   .footer-containe {
     height: 32px;
+    margin-top: -32px;
     line-height: 32px;
     font-size: 12px;
     color: $color-white;

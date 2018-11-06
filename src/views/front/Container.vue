@@ -1,7 +1,9 @@
 <template>
   <div class="container" ref="container">
     <top-header @playVideo="playVideo"></top-header>
-    <router-view/>
+    <div class="view-wrapper">
+      <router-view/>
+    </div>
     <bottom-footer></bottom-footer>
     <div class="back-to-top" v-show="topShow" @click="backToTop">
       <icon-font :icon="topIcon" fontSize="42"></icon-font>
@@ -35,7 +37,6 @@
       bodyScroll() {
         const scrollTop = document.body.scrollTop || document.documentElement.scrollTop
         this.topShow = scrollTop > 500 ? true : false
-        console.log(scrollTop)
         if (this.$route.path === '/') {
           if (scrollTop >= 520) {
             this.$refs.bgVideo.style.position = 'fixed'
@@ -93,7 +94,13 @@
   .container {
     // background: url('../../assets/bg.jpg');
     color: $color-black;
+    min-height: 100%;
     height: 100%;
+    .view-wrapper {
+      min-height: 100%;
+      padding-bottom: 32px;
+      box-sizing: border-box;
+    }
     .back-to-top {
       position: fixed;
       bottom: 32px;

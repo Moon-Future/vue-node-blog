@@ -23,7 +23,12 @@ export default new Router({
           path: 'article/:id',
           name: 'Article',
           component: () => import('@/views/front/Article.vue')
-        }
+        },
+        {
+          path: '/catalog',
+          name: 'Catalog',
+          component: () => import('@/views/front/Catalog.vue')
+        },
       ]
     },
     {

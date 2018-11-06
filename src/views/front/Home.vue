@@ -7,7 +7,7 @@
         <p class="second-line">细嗅蔷薇</p>
       </div> -->
     </div>
-    <div class="content-container">
+    <div class="content-container" ref="contentContainer">
       <article-list></article-list>
       <right-search></right-search>
     </div>
@@ -23,6 +23,9 @@
       return {
         
       }
+    },
+    mounted() {
+      this.$refs.contentContainer.style.minHeight = (document.documentElement.clientHeight - 50) + 'px'
     },
     components: {
       ArticleList,

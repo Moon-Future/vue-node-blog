@@ -28,7 +28,7 @@
       <el-input placeholder="搜索文章"></el-input>
     </div>
     <div class="hot-warppre">
-      <h2>浏览排行</h2>
+      
     </div>
     <div class="article-tags">
 
