@@ -76,14 +76,14 @@ router.post('/insertArticle', async (ctx) => {
 
 router.post('/getArticle', async (ctx) => {
   try {
-    const checkResult = checkRoot(ctx)
-    if (checkResult.code === 500) {
-      ctx.body = checkResult
-      return
-    }
     const data = ctx.request.body.data
     let result
     if (data.admin) {
+      const checkResult = checkRoot(ctx)
+      if (checkResult.code === 500) {
+        ctx.body = checkResult
+        return
+      }
       // 后台管理列表
       result = await Article.find({}, {summary: 0, content: 0, html: 0, comment: 0}).populate('tag')
     } else if (data.summary) {

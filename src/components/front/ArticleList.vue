@@ -46,6 +46,7 @@
           data: {summary: true}
         }).then(res => {
           if (res.data.code === 200) {
+            return
             this.articleList = res.data.message
             this.articleList.forEach(ele => {
               ele.createTime = dateFormat(ele.createTime, 'yyyy-MM-dd')

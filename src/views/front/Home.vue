@@ -40,7 +40,7 @@
   .background-wrapper {
     .background {
       width: 100%;
-      background: url(https://source.unsplash.com/daily) no-repeat;
+      background: url(https://source.unsplash.com/1360x520/daily) no-repeat;
       background-size: cover;
       background-attachment: fixed;
       height: 520px;

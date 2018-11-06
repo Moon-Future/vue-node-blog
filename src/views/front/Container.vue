@@ -35,10 +35,11 @@
       bodyScroll() {
         const scrollTop = document.body.scrollTop || document.documentElement.scrollTop
         this.topShow = scrollTop > 500 ? true : false
+        console.log(scrollTop)
         if (this.$route.path === '/') {
           if (scrollTop >= 520) {
             this.$refs.bgVideo.style.position = 'fixed'
-            this.$refs.bgVideo.style.top = '0'
+            this.$refs.bgVideo.style.top = '50px'
           } else {
             this.$refs.bgVideo.style.position = 'absolute'
             this.$refs.bgVideo.style.top = '520px'
@@ -75,7 +76,7 @@
           this.$refs.bgVideo.style.top = '520px'
         } else {
           this.$refs.bgVideo.style.position = 'fixed'
-          this.$refs.bgVideo.style.top = '0'
+          this.$refs.bgVideo.style.top = '50px'
         }
       }
     },
