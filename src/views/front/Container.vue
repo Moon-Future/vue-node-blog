@@ -2,7 +2,9 @@
   <div class="container" ref="container">
     <top-header @playVideo="playVideo"></top-header>
     <div class="view-wrapper" :class="{childPage: !homeFlag}" ref="viewWrapper">
-      <router-view/>
+      <keep-alive>
+        <router-view/>
+      </keep-alive>
     </div>
     <bottom-footer></bottom-footer>
     <div class="back-to-top" v-show="topShow" @click="backToTop">
@@ -31,21 +33,23 @@
       }
     },
     mounted(){
+      this.height = document.documentElement.clientHeight
       window.addEventListener('scroll', this.bodyScroll)
-      this.$refs.container.style.minHeight = document.documentElement.clientHeight + 'px'
-      this.$refs.viewWrapper.style.minHeight = (document.documentElement.clientHeight - 32) + 'px'
+      this.$refs.container.style.minHeight = this.height + 'px'
+      this.$refs.viewWrapper.style.minHeight = (this.height - 32) + 'px'
+      this.$refs.bgVideo.style.top = this.height + 'px'
     },
     methods: {
       bodyScroll() {
         const scrollTop = document.body.scrollTop || document.documentElement.scrollTop
         this.topShow = scrollTop > 500 ? true : false
         if (this.$route.path === '/') {
-          if (scrollTop >= 520) {
+          if (scrollTop >= this.height) {
             this.$refs.bgVideo.style.position = 'fixed'
             this.$refs.bgVideo.style.top = '50px'
           } else {
             this.$refs.bgVideo.style.position = 'absolute'
-            this.$refs.bgVideo.style.top = '520px'
+            this.$refs.bgVideo.style.top = this.height + 'px'
           }
         }
       },
@@ -76,7 +80,7 @@
       $route() {
         if (this.$route.path === '/') {
           this.$refs.bgVideo.style.position = 'absolute'
-          this.$refs.bgVideo.style.top = '520px'
+          this.$refs.bgVideo.style.top = this.height + 'px'
           this.homeFlag = true
         } else {
           this.$refs.bgVideo.style.position = 'fixed'
@@ -99,7 +103,6 @@
     // background: url('../../assets/bg.jpg');
     color: $color-black;
     min-height: 100%;
-    height: 100%;
     .view-wrapper {
       opacity: 0.8;
       margin: auto;
@@ -121,7 +124,7 @@
     }
     .bg-video {
       position: absolute;
-      top: 520px;
+      // top: 520px;
       height: 100%;
       z-index: -1;
       video {
