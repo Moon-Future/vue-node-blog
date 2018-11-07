@@ -47,7 +47,6 @@
         this.$http.post(apiUrl.getArticle, {
           data: {summary: true}
         }).then(res => {
-          return
           if (res.data.code === 200) {
             this.articleList = res.data.message
             this.articleList.forEach(ele => {

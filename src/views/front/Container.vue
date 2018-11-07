@@ -37,6 +37,7 @@
       window.addEventListener('scroll', this.bodyScroll)
       this.$refs.container.style.minHeight = this.height + 'px'
       this.$refs.viewWrapper.style.minHeight = (this.height - 32) + 'px'
+      this.$refs.bgVideo.style.height = (this.height - 50) + 'px'
       this.$refs.bgVideo.style.top = this.height + 'px'
     },
     methods: {
@@ -45,22 +46,13 @@
         const scrollTop = document.body.scrollTop || document.documentElement.scrollTop
         this.topShow = scrollTop > 500 ? true : false
         if (this.$route.path === '/') {
-          console.log(viewWrapper.getBoundingClientRect())
-          if (viewWrapper.getBoundingClientRect().top <= 50 - this.height) {
-            this.$refs.bgVideo.style.position = 'fixed'
-            this.$refs.bgVideo.style.top = '50px'
-          } else if (viewWrapper.getBoundingClientRect().top > this.height) {
+          if (scrollTop <= this.height - 50) {
             this.$refs.bgVideo.style.position = 'absolute'
             this.$refs.bgVideo.style.top = this.height + 'px'
+          } else {
+            this.$refs.bgVideo.style.position = 'fixed'
+            this.$refs.bgVideo.style.top = '50px'
           }
-
-          // if (scrollTop <= this.height - 50) {
-          //   this.$refs.bgVideo.style.position = 'absolute'
-          //   this.$refs.bgVideo.style.top = this.height + 'px'
-          // } else if (video.getBoundingClientRect().top <= 50) {
-          //   this.$refs.bgVideo.style.position = 'fixed'
-          //   this.$refs.bgVideo.style.top = '50px'
-          // }
         }
       },
       backToTop() {
