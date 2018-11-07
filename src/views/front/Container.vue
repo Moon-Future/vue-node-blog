@@ -3,9 +3,9 @@
     <top-header @playVideo="playVideo"></top-header>
     <bread-crumb></bread-crumb>
     <div class="view-wrapper" :class="{childPage: !homeFlag}" ref="viewWrapper">
-      <router-view v-if="!$route.meta.keepAlive"/>
+      <router-view v-if="!$route.meta.keepAlive" :resize="resize"/>
       <keep-alive>
-        <router-view v-if="$route.meta.keepAlive"/>
+        <router-view v-if="$route.meta.keepAlive" :resize="resize"/>
       </keep-alive>
     </div>
     <bottom-footer></bottom-footer>
@@ -32,19 +32,35 @@
         topShow: false,
         topIcon: 'icon-top-static',
         video: require('@/assets/bg-video.mp4'),
-        homeFlag: true
+        homeFlag: true,
+        resize: false
       }
     },
     mounted() {
-      this.height = document.documentElement.clientHeight
+      this.setHeight()
       window.addEventListener('scroll', this.bodyScroll)
-      this.$refs.container.style.minHeight = this.height + 'px'
-      this.$refs.viewWrapper.style.minHeight = (this.height - 32) + 'px'
-      this.$refs.bgVideo.style.height = (this.height - 50) + 'px'
-      this.$refs.bgVideo.style.top = this.height + 'px'
-      this.routeWatch()
+      window.onresize = () => {
+        clearTimeout(this.onresizeTime)
+        this.onresizeTime = setTimeout(() => {
+          this.setHeight()
+          this.resize = true
+          clearTimeout(this.resizeTimer)
+          this.resizeTimer = setTimeout(() => {
+            this.resize = false
+          }, 100)
+        }, 500)
+      }
     },
     methods: {
+      setHeight() {
+        this.height = document.documentElement.clientHeight
+        this.$refs.container.style.minHeight = this.height + 'px'
+        this.$refs.viewWrapper.style.minHeight = (this.height - 32) + 'px'
+        this.$refs.bgVideo.style.height = (this.height - 50) + 'px'
+        this.$refs.bgVideo.style.top = this.height + 'px'
+        this.routeWatch()
+        this.bodyScroll()
+      },
       routeWatch() {
         if (this.$route.path === '/') {
           this.$refs.bgVideo.style.position = 'absolute'

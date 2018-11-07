@@ -77,13 +77,13 @@
       &:nth-child(odd) {
         background: $color-shallowgreend;
       }
+      &:hover {
+        background: $color-shallowgray;
+      }
     }
   }
   .content {
     padding: 10px;
-    &:hover {
-      background: $color-gray;
-    }
     &.day {
       border-right: 1px solid $color-gray;
     }

@@ -20,17 +20,30 @@
   import RightSearch from '@/components/front/RightSearch'
   export default {
     name: 'home',
+    props: ['resize'],
     data() {
       return {
         
       }
     },
     mounted() {
-      const width = document.documentElement.clientWidth
-      const height = document.documentElement.clientHeight
-      this.$refs.background.style.backgroundImage = `url(https://source.unsplash.com/${width}x${height}/daily)`
-      this.$refs.background.style.height = height + 'px'
-      this.$refs.contentContainer.style.minHeight = (height - 115) + 'px'
+      this.setHeight()
+    },
+    methods: {
+      setHeight() {
+        const width = document.documentElement.clientWidth
+        const height = document.documentElement.clientHeight
+        this.$refs.background.style.backgroundImage = `url(https://source.unsplash.com/${width}x${height}/daily)`
+        this.$refs.background.style.height = height + 'px'
+        this.$refs.contentContainer.style.minHeight = (height - 115) + 'px'
+      }
+    },
+    watch: {
+      resize() {
+        if (this.resize) {
+          this.setHeight()
+        }
+      }
     },
     components: {
       ArticleList,

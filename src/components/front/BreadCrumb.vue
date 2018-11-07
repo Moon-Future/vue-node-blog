@@ -1,13 +1,19 @@
 <template>
-  <div class="animated bread-crumb" :class="[crumbsShow ? 'slideInDown' : 'slideOutDown']" v-show="crumbsShow">
-    <ul class="item-wrapper">
-      <li class="item" :class="[i != crumbs.length -1 ? 'active' : '']" v-for="(crumb, i) in crumbs" :key="i">
-        <span class="name">{{ crumb.name }}</span>
-        <icon-font v-if="i !== crumbs.length - 1" icon="icon-arrow-right" fontSize="14" class="icon-arrow"></icon-font>
-      </li>
-    </ul>
-    <div class="go-back" @click="goBack">返回</div>
-  </div>
+  <transition
+    name="custom-classes-transition"
+    enter-active-class="animated slideInDown"
+    leave-active-class="animated slideOutUp"
+  >
+    <div class="bread-crumb" v-show="crumbsShow" @mouseover="mouseover" @mouseout="mouseout">
+      <ul class="item-wrapper">
+        <li class="item" :class="[i != crumbs.length -1 ? 'active' : '']" v-for="(crumb, i) in crumbs" :key="i">
+          <span class="name">{{ crumb.name }}</span>
+          <icon-font v-if="i !== crumbs.length - 1" icon="icon-arrow-right" fontSize="14" class="icon-arrow"></icon-font>
+        </li>
+      </ul>
+      <div class="go-back" @click="goBack">返回</div>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -31,11 +37,26 @@
     },
     methods: {
       bodyScroll() {
-        this.scrolling = true
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-        const delta = scrollTop - this.currentTop
-        this.currentTop = scrollTop
-        this.crumbsShow = delta > 0 ? true : false;
+        if (this.$route.path === '/') {
+          return
+        }
+        this.show = false
+        clearTimeout(this.timer)
+        this.crumbsShow = true
+        this.timer = setTimeout(() => {
+          this.crumbsShow = false
+        }, 2000)
+      },
+      mouseover() {
+        clearTimeout(this.timer)
+      },
+      mouseout() {
+        if (this.show) {
+          return
+        }
+        this.timer = setTimeout(() => {
+          this.crumbsShow = false
+        }, 2000)
       },
       goBack() {
         this.$router.go(-1)
@@ -43,9 +64,26 @@
     },
     watch: {
       $route() {
-        const clientHeight = document.documentElement.clientHeight
-        const scrollHeight = document.documentElement.scrollHeight
-        this.crumbsShow = scrollHeight <= clientHeight ? true : false
+        if (this.$route.path === '/') {
+          this.crumbsShow = false
+          this.show = false
+        } else {
+          this.crumbsShow = true
+          this.show = true
+        }
+        // this.$nextTick(() => {
+        //   const clientHeight = document.documentElement.clientHeight
+        //   const scrollHeight = document.documentElement.scrollHeight
+        //   console.log(clientHeight, scrollHeight)
+        //   if (clientHeight >= scrollHeight) {
+        //     this.crumbsShow = true
+        //     this.show = true
+        //     clearTimeout(this.timer)
+        //   } else {
+        //     this.crumbsShow = false
+        //     this.show = false
+        //   }
+        // })
       }
     },
     components: {
