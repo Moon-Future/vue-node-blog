@@ -41,16 +41,26 @@
     },
     methods: {
       bodyScroll() {
+        const viewWrapper = this.$refs.viewWrapper
         const scrollTop = document.body.scrollTop || document.documentElement.scrollTop
         this.topShow = scrollTop > 500 ? true : false
         if (this.$route.path === '/') {
-          if (scrollTop >= this.height) {
+          console.log(viewWrapper.getBoundingClientRect())
+          if (viewWrapper.getBoundingClientRect().top <= 50 - this.height) {
             this.$refs.bgVideo.style.position = 'fixed'
             this.$refs.bgVideo.style.top = '50px'
-          } else {
+          } else if (viewWrapper.getBoundingClientRect().top > this.height) {
             this.$refs.bgVideo.style.position = 'absolute'
             this.$refs.bgVideo.style.top = this.height + 'px'
           }
+
+          // if (scrollTop <= this.height - 50) {
+          //   this.$refs.bgVideo.style.position = 'absolute'
+          //   this.$refs.bgVideo.style.top = this.height + 'px'
+          // } else if (video.getBoundingClientRect().top <= 50) {
+          //   this.$refs.bgVideo.style.position = 'fixed'
+          //   this.$refs.bgVideo.style.top = '50px'
+          // }
         }
       },
       backToTop() {
