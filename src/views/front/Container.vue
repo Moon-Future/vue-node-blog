@@ -1,6 +1,7 @@
 <template>
   <div class="container" ref="container">
     <top-header @playVideo="playVideo"></top-header>
+    <bread-crumb></bread-crumb>
     <div class="view-wrapper" :class="{childPage: !homeFlag}" ref="viewWrapper">
       <router-view v-if="!$route.meta.keepAlive"/>
       <keep-alive>
@@ -22,6 +23,7 @@
 <script>
   import IconFont from '@/components/Iconfont'
   import TopHeader from '@/components/front/TopHeader'
+  import BreadCrumb from '@/components/front/BreadCrumb'
   import BottomFooter from '@/components/front/BottomFooter'
   export default {
     name: 'container',
@@ -99,7 +101,8 @@
     components: {
       TopHeader,
       BottomFooter,
-      IconFont
+      IconFont,
+      BreadCrumb
     }
   }
 </script>
@@ -110,6 +113,7 @@
     // background: url('../../assets/bg.jpg');
     color: $color-black;
     min-height: 100%;
+    width: 100%;
     .view-wrapper {
       opacity: 0.8;
       margin: auto;
