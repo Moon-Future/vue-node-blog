@@ -15,8 +15,8 @@
       </div>
       <div class="picture">
         <img v-lazy="`https://source.unsplash.com/200x200/weekly?it,${i}`" alt="pic">
+        <div class="readall" @click="goDetail(article)">阅读全文</div>
       </div>
-      <!-- <div class="readall">阅读全文</div> -->
     </div>
     <el-pagination
       v-if="pageShow"
@@ -105,11 +105,20 @@
           }
         }
       }
-      .readall {
-        position: absolute;
-        bottom: 10px;
-        cursor: pointer;
-        color: $color-deepgray;
+      .picture {
+        position: relative;
+        .readall {
+          position: absolute;
+          right: 0;
+          top: 0;
+          padding: 10px;
+          cursor: pointer;
+          background: $color-blue;
+          color: $color-white;
+          &:hover {
+            background: $color-deepblue;
+          }
+        }
       }
     }
   }

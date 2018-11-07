@@ -98,6 +98,9 @@ router.post('/getArticle', async (ctx) => {
     } else {
       // 文章内容
       result = await Article.find({_id: data.id}, {content: 0, summary: 0, comment: 0}).populate('tag')
+      if (result.length !== 0) {
+        await Article.update({_id: data.id}, {view: result[0].view + 1})
+      }
     }
     ctx.body = {code: 200, message: result}
   } catch(err) {

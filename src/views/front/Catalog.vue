@@ -4,7 +4,10 @@
       <h1 class="month">{{ key }}</h1>
       <div class="month-data" v-for="(item, i) in list" :key="i">
         <span class="content day">{{ item.day }}</span>
-        <span class="content title">{{ item.title }}</span>
+        <div class="content link">
+          <span class="title" @click="goDetail(item)">{{ item.title }}</span>
+          <span class="view">{{ item.view }} 浏览</span>
+        </div>
       </div>
     </div>
   </div>
@@ -13,6 +16,7 @@
 <script>
   import apiUrl from '@/serviceAPI.config.js'
   import { dateFormat } from '@/common/js/tool.js'
+  import { computeStyleMixin } from '@/common/js/mixin.js'
   export default {
     name: 'catalog',
     data() {
@@ -43,6 +47,9 @@
             this.$message.error(res.data.message)
           }
         })
+      },
+      goDetail(article) {
+        this.$router.push(`/article/${article._id}`)
       }
     }
   }
@@ -64,9 +71,11 @@
       border-right: 1px solid $color-gray;
       border-bottom: 1px solid $color-gray;
       display: flex;
-      &:nth-child(1) {
-        background: $color-red;
-
+      &:nth-child(2) {
+        border-top: 1px solid $color-gray;
+      }
+      &:nth-child(odd) {
+        background: $color-shallowgreend;
       }
     }
   }
@@ -78,10 +87,22 @@
     &.day {
       border-right: 1px solid $color-gray;
     }
-    &.title {
+    &.link {
       cursor: pointer;
       width: 100%;
       display: inline-block;
+      position: relative;
+      .title {
+        &:hover {
+          text-decoration: underline;
+          color: $color-red;
+        }
+      }
+      .view {
+        font-size: 14px;
+        color: $color-deepgray;
+        margin-left: 20px;
+      }
     }
   }
 </style>

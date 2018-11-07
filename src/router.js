@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Container from './views/front/Container.vue'
+import Home from './views/front/Home.vue'
 import Admin from './views/admin/Admin.vue'
 
 Vue.use(Router)
@@ -17,17 +18,26 @@ export default new Router({
         {
           path: '/',
           name: 'Home',
-          component: () => import('@/views/front/Home.vue')
+          component: Home,
+          meta: {
+            keepAlive: true
+          }
         },
         {
           path: 'article/:id',
           name: 'Article',
-          component: () => import('@/views/front/Article.vue')
+          component: () => import('@/views/front/Article.vue'),
+          meta: {
+            keepAlive: false
+          }
         },
         {
           path: '/catalog',
           name: 'Catalog',
-          component: () => import('@/views/front/Catalog.vue')
+          component: () => import('@/views/front/Catalog.vue'),
+          meta: {
+            keepAlive: false
+          }
         },
       ]
     },

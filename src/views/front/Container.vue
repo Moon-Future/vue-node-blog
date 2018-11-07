@@ -2,8 +2,9 @@
   <div class="container" ref="container">
     <top-header @playVideo="playVideo"></top-header>
     <div class="view-wrapper" :class="{childPage: !homeFlag}" ref="viewWrapper">
+      <router-view v-if="!$route.meta.keepAlive"/>
       <keep-alive>
-        <router-view/>
+        <router-view v-if="$route.meta.keepAlive"/>
       </keep-alive>
     </div>
     <bottom-footer></bottom-footer>
@@ -32,15 +33,27 @@
         homeFlag: true
       }
     },
-    mounted(){
+    mounted() {
       this.height = document.documentElement.clientHeight
       window.addEventListener('scroll', this.bodyScroll)
       this.$refs.container.style.minHeight = this.height + 'px'
       this.$refs.viewWrapper.style.minHeight = (this.height - 32) + 'px'
       this.$refs.bgVideo.style.height = (this.height - 50) + 'px'
       this.$refs.bgVideo.style.top = this.height + 'px'
+      this.routeWatch()
     },
     methods: {
+      routeWatch() {
+        if (this.$route.path === '/') {
+          this.$refs.bgVideo.style.position = 'absolute'
+          this.$refs.bgVideo.style.top = this.height + 'px'
+          this.homeFlag = true
+        } else {
+          this.$refs.bgVideo.style.position = 'fixed'
+          this.$refs.bgVideo.style.top = '50px'
+          this.homeFlag = false
+        }
+      },
       bodyScroll() {
         const viewWrapper = this.$refs.viewWrapper
         const scrollTop = document.body.scrollTop || document.documentElement.scrollTop
@@ -80,15 +93,7 @@
     },
     watch: {
       $route() {
-        if (this.$route.path === '/') {
-          this.$refs.bgVideo.style.position = 'absolute'
-          this.$refs.bgVideo.style.top = this.height + 'px'
-          this.homeFlag = true
-        } else {
-          this.$refs.bgVideo.style.position = 'fixed'
-          this.$refs.bgVideo.style.top = '50px'
-          this.homeFlag = false
-        }
+        this.routeWatch()
       }
     },
     components: {
