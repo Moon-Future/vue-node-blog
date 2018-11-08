@@ -1,4 +1,4 @@
-const apiUrl = {
+export const apiUrl = {
   register: '/api/user/register',
   login: '/api/user/login',
   logout: '/api/user/logout',
@@ -12,5 +12,3 @@ const apiUrl = {
 
   getTag: '/api/tag/getTag'
 }
-
-module.exports = apiUrl

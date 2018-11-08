@@ -65,7 +65,7 @@
 
 <script>
   import IconFont from '@/components/Iconfont'
-  import apiUrl from '@/serviceAPI.config.js'
+  import { apiUrl } from '@/serviceAPI.config.js'
   const crypto = require('crypto')
   export default {
     data() {

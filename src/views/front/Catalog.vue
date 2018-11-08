@@ -14,7 +14,7 @@
 </template>
 
 <script>
-  import apiUrl from '@/serviceAPI.config.js'
+  import { apiUrl } from '@/serviceAPI.config.js'
   import { dateFormat } from '@/common/js/tool.js'
   import { computeStyleMixin } from '@/common/js/mixin.js'
   export default {

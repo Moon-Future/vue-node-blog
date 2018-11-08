@@ -29,7 +29,7 @@
 
 <script>
   import IconFont from '@/components/Iconfont'
-  import apiUrl from '@/serviceAPI.config.js'
+  import { apiUrl } from '@/serviceAPI.config.js'
   import { dateFormat } from '@/common/js/tool.js'
   export default {
     name: 'articleList',

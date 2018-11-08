@@ -6,7 +6,7 @@
 </template>
 
 <script>
-  import apiUrl from '@/serviceAPI.config.js'
+  import { apiUrl } from '@/serviceAPI.config.js'
   import { dateFormat } from '@/common/js/tool.js'
   export default {
     name: 'ArticleDetail',

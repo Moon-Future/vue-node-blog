@@ -41,7 +41,7 @@
 
 <script>
   import markdownEditor from 'vue-simplemde/src/markdown-editor'
-  import apiUrl from '@/serviceAPI.config.js'
+  import { apiUrl } from '@/serviceAPI.config.js'
   export default {
     name: 'Markdown',
     props: {

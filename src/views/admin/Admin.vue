@@ -11,7 +11,7 @@
 <script>
   import TopHeader from '@/components/admin/TopHeader.vue'
   import Aside from '@/components/admin/Aside.vue'
-  import apiUrl from '@/serviceAPI.config.js'
+  import { apiUrl } from '@/serviceAPI.config.js'
   export default {
     name: 'Admin',
     data() {

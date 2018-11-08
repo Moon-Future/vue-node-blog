@@ -40,7 +40,7 @@
 <script>
   import { dateFormat } from '@/common/js/tool.js'
   import IconFont from '@/components/Iconfont'
-  import apiUrl from '@/serviceAPI.config.js'
+  import { apiUrl } from '@/serviceAPI.config.js'
   export default {
     name: 'Header',
     props: ['userAvatar', 'userName'],
