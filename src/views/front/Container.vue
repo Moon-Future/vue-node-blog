@@ -13,9 +13,10 @@
       <icon-font :icon="topIcon" fontSize="42"></icon-font>
     </div>
     <div class="bg-video" ref="bgVideo">
-      <video autoplay loop muted ref="video">
+      <video v-if="videoFlag" autoplay loop muted ref="video">
         <source :src="video" type="video/mp4">
       </video>
+      <img v-else class="bg-picture" src="../../assets/bg-3.jpg" alt="">
     </div>
   </div>
 </template>
@@ -32,6 +33,7 @@
         topShow: false,
         topIcon: 'icon-top-static',
         video: require('@/assets/bg-video.mp4'),
+        videoFlag: false,
         homeFlag: true,
         resize: false
       }
@@ -159,6 +161,9 @@
         height: 100%;
         width: 100%;
       }
+    }
+    .bg-picture {
+      width: 100%;
     }
   }
 </style>

@@ -15,7 +15,7 @@
     height: 32px;
     line-height: 32px;
     font-size: 12px;
-    color: $color-white;
+    color: $color-blue;
     display: flex;
     justify-content: center;
     .rights {
