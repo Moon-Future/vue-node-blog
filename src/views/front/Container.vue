@@ -1,6 +1,7 @@
 <template>
   <div class="container" ref="container">
     <top-header @playVideo="playVideo"></top-header>
+    <left-entry></left-entry>
     <bread-crumb></bread-crumb>
     <div class="view-wrapper" :class="{childPage: !homeFlag}" ref="viewWrapper">
       <router-view v-if="!$route.meta.keepAlive" :resize="resize"/>
@@ -23,6 +24,7 @@
 
 <script>
   import IconFont from '@/components/Iconfont'
+  import LeftEntry from '@/components/front/LeftEntry'
   import TopHeader from '@/components/front/TopHeader'
   import BreadCrumb from '@/components/front/BreadCrumb'
   import BottomFooter from '@/components/front/BottomFooter'
@@ -120,6 +122,7 @@
       TopHeader,
       BottomFooter,
       IconFont,
+      LeftEntry,
       BreadCrumb
     }
   }
