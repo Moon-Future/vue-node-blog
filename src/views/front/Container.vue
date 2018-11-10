@@ -1,23 +1,25 @@
 <template>
-  <div class="container" ref="container">
-    <top-header @playVideo="playVideo"></top-header>
-    <left-entry></left-entry>
-    <bread-crumb></bread-crumb>
-    <div class="view-wrapper" :class="{childPage: !homeFlag}" ref="viewWrapper">
-      <router-view v-if="!$route.meta.keepAlive" :resize="resize"/>
-      <keep-alive>
-        <router-view v-if="$route.meta.keepAlive" :resize="resize"/>
-      </keep-alive>
-    </div>
-    <bottom-footer></bottom-footer>
-    <div class="back-to-top" v-show="topShow" @click="backToTop">
-      <icon-font :icon="topIcon" fontSize="42"></icon-font>
-    </div>
-    <div class="bg-video" ref="bgVideo">
-      <video v-if="videoFlag" autoplay loop muted ref="video">
-        <source :src="video" type="video/mp4">
-      </video>
-      <img v-else class="bg-picture" src="../../assets/bg-1.jpg" alt="">
+  <div>
+    <left-entry :chapterData="chapterData" @leftEntry="leftEntry"></left-entry>
+    <div class="container" ref="container">
+      <top-header @playVideo="playVideo"></top-header>
+      <bread-crumb></bread-crumb>
+      <div class="view-wrapper" :class="{childPage: !homeFlag}" ref="viewWrapper">
+        <router-view v-if="!$route.meta.keepAlive" :resize="resize" @chapterFormat="chapterFormat"/>
+        <keep-alive>
+          <router-view v-if="$route.meta.keepAlive" :resize="resize" @chapterFormat="chapterFormat"/>
+        </keep-alive>
+      </div>
+      <bottom-footer></bottom-footer>
+      <div class="back-to-top" v-show="topShow" @click="backToTop">
+        <icon-font :icon="topIcon" fontSize="42"></icon-font>
+      </div>
+      <div class="bg-video" ref="bgVideo">
+        <video v-if="videoFlag" autoplay loop muted ref="video">
+          <source :src="video" type="video/mp4">
+        </video>
+        <img v-else class="bg-picture" src="../../assets/bg-1.jpg" alt="">
+      </div>
     </div>
   </div>
 </template>
@@ -37,7 +39,8 @@
         video: require('@/assets/bg-video.mp4'),
         videoFlag: false,
         homeFlag: true,
-        resize: false
+        resize: false,
+        chapterData: []
       }
     },
     mounted() {
@@ -111,6 +114,16 @@
         } else {
           this.$refs.video.pause()
         }
+      },
+      chapterFormat(data) {
+        this.chapterData = data
+      },
+      leftEntry({flag, width}) {
+        if (flag) {
+          this.$refs.container.style.width = (document.documentElement.clientWidth - width) + 'px'
+        } else {
+          this.$refs.container.style.width = '100%'
+        }
       }
     },
     watch: {
@@ -134,6 +147,8 @@
     color: $color-black;
     min-height: 100%;
     width: 100%;
+    position: absolute;
+    right: 0;
     .view-wrapper {
       opacity: 0.8;
       margin: auto;

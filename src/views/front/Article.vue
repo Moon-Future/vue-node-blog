@@ -12,7 +12,8 @@
     name: 'ArticleDetail',
     data() {
       return {
-        article: {}
+        article: {},
+        chapterData: []
       }
     },
     created() {
@@ -26,10 +27,42 @@
           if (res.data.code === 200) {
             this.article = res.data.message[0]
             this.article.createTime = dateFormat(this.article.createTime, 'yyyy-MM-dd')
+            this.chapterFormat()
+            this.$emit('chapterFormat', this.chapterData)
           } else {
             this.$message.error(res.data.message)
           }
         })
+      },
+      chapterFormat(content) {
+        // 文章目录处理
+        this.chapterData = [];
+        let hs = this.article.html.match(/<h\d{1}.*<\/h\d{1}>*/g);
+        if (!hs) {
+          return;
+        }
+        for (let i = 0, len = hs.length; i < len; i++) {
+          let h = hs[i]
+          let text = h.match(/>(.*)</)[1]
+          let num = h.match(/^<h(\d{1})/)[1]
+          let id = "item" + i
+          let obj = {label: text, num: num, id: id, children: []}
+          let str = h.replace(/id=".*"/, 'id="' + id + '"')
+          this.article.html = this.article.html.replace(h, str)
+          this.chapterDataHandle(obj, this.chapterData)
+        }
+      },
+      chapterDataHandle(obj, arr) {
+        let len = arr.length, index = len - 1
+        if (arr.length === 0) {
+          arr.push(obj)
+        } else {
+          if (arr[index].num < obj.num) {
+            this.chapterDataHandle(obj, arr[index].children)
+          } else {
+            arr.push(obj)
+          }
+        }
       }
     }
   }
