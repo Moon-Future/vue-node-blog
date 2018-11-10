@@ -44,6 +44,9 @@
         clearTimeout(this.timer)
         this.crumbsShow = true
         this.timer = setTimeout(() => {
+          if (document.documentElement.clientHeight === document.documentElement.scrollHeight) {
+            return
+          }
           this.crumbsShow = false
         }, 2000)
       },

@@ -16,7 +16,7 @@
       <video v-if="videoFlag" autoplay loop muted ref="video">
         <source :src="video" type="video/mp4">
       </video>
-      <img v-else class="bg-picture" src="../../assets/bg-3.jpg" alt="">
+      <img v-else class="bg-picture" src="../../assets/bg-1.jpg" alt="">
     </div>
   </div>
 </template>
@@ -128,7 +128,6 @@
 <style lang="scss" scoped>
   @import '@/common/css/variable.scss';
   .container {
-    // background: url('../../assets/bg.jpg');
     color: $color-black;
     min-height: 100%;
     width: 100%;
@@ -141,7 +140,7 @@
         background: $color-white;
         width: 80%;
         padding: 20px;
-        padding-top: 80px;
+        padding-top: 100px;
         padding-bottom: 32px;
       }
     }
@@ -155,6 +154,7 @@
       position: absolute;
       // top: 520px;
       height: 100%;
+      width: 100%;
       z-index: -1;
       video {
         object-fit: fill;
