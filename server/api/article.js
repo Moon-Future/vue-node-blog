@@ -1,3 +1,5 @@
+const fs = require('fs')
+const path = require('path')
 const Router = require('koa-router')
 const marked = require('marked')
 const router = new Router()
@@ -5,6 +7,7 @@ const Article = require('../database/schema/article')
 const Tag = require('../database/schema/tag')
 const ObjectId = require('mongoose').Types.ObjectId
 const checkRoot = require('./root')
+const filePath = path.join(__dirname, '../articles')
 
 marked.setOptions({
   highlight: function (code) {
@@ -61,13 +64,16 @@ router.post('/insertArticle', async (ctx) => {
     const article = new Article({
       title: data.title,
       summary,
-      content: data.content,
-      html,
+      content: '',
+      html: '',
       user: ObjectId(data.user),
       tag: tagsId,
       createTime: currentTime,
     })
-    await article.save()
+    const result = await article.save()
+    const fileName = result._id + '_' + data.title
+    fs.writeFileSync(path.join(filePath, fileName + '.md'), data.content, 'utf-8')
+    fs.writeFileSync(path.join(filePath, fileName + '.html'), html, 'utf-8')
     ctx.body = {code: 200, message: '发布成功'}
   } catch(err) {
     throw new Error(err)
@@ -100,6 +106,11 @@ router.post('/getArticle', async (ctx) => {
       result = await Article.find({_id: data.id}, {content: 0, summary: 0, comment: 0}).populate('tag')
       if (result.length !== 0 && data.chapter === undefined) {
         await Article.update({_id: data.id}, {view: result[0].view + 1})
+      }
+      if (result.length !== 0) {
+        const title = result[0].title
+        const html = fs.readFileSync(path.join(filePath, `${data.id}_${title}.html`), 'utf-8')
+        result[0].html = html
       }
     }
     ctx.body = {code: 200, message: result}
