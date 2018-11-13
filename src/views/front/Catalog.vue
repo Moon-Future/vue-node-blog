@@ -78,7 +78,7 @@
         background: $color-shallowgreend;
       }
       &:hover {
-        background: $color-shallowgray;
+        background: $color-blue;
       }
     }
   }

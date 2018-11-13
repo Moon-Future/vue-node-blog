@@ -4,7 +4,7 @@
     enter-active-class="animated slideInDown"
     leave-active-class="animated slideOutUp"
   >
-    <div class="bread-crumb" v-show="crumbsShow" @mouseover="mouseover" @mouseout="mouseout">
+    <div class="bread-crumb" v-show="crumbsShow">
       <ul class="item-wrapper">
         <li class="item" :class="[i != crumbs.length -1 ? 'active' : '']" v-for="(crumb, i) in crumbs" :key="i">
           <span class="name">{{ crumb.name }}</span>
@@ -33,6 +33,7 @@
       }
     },
     mounted() {
+      this.currentTop = 0
       window.addEventListener('scroll', this.bodyScroll)
     },
     methods: {
@@ -40,26 +41,13 @@
         if (this.$route.path === '/') {
           return
         }
-        this.show = false
-        clearTimeout(this.timer)
-        this.crumbsShow = true
-        this.timer = setTimeout(() => {
-          if (document.documentElement.clientHeight === document.documentElement.scrollHeight) {
-            return
-          }
+        const scrollTop = document.documentElement.scrollTop
+        if (scrollTop > this.currentTop) {
           this.crumbsShow = false
-        }, 2000)
-      },
-      mouseover() {
-        clearTimeout(this.timer)
-      },
-      mouseout() {
-        if (this.show) {
-          return
+        } else {
+          this.crumbsShow = true
         }
-        this.timer = setTimeout(() => {
-          this.crumbsShow = false
-        }, 2000)
+        this.currentTop = scrollTop
       },
       goBack() {
         this.$router.go(-1)
@@ -69,24 +57,9 @@
       $route() {
         if (this.$route.path === '/') {
           this.crumbsShow = false
-          this.show = false
         } else {
           this.crumbsShow = true
-          this.show = true
         }
-        // this.$nextTick(() => {
-        //   const clientHeight = document.documentElement.clientHeight
-        //   const scrollHeight = document.documentElement.scrollHeight
-        //   console.log(clientHeight, scrollHeight)
-        //   if (clientHeight >= scrollHeight) {
-        //     this.crumbsShow = true
-        //     this.show = true
-        //     clearTimeout(this.timer)
-        //   } else {
-        //     this.crumbsShow = false
-        //     this.show = false
-        //   }
-        // })
       }
     },
     components: {
