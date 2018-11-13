@@ -1,5 +1,5 @@
 <template>
-  <div class="header-nav">
+  <div class="header-nav" ref=headerNav>
     <ul>
       <router-link tag="li" to="/">主页</router-link>
       <router-link tag="li" to="/catalog">目录</router-link>
@@ -15,13 +15,16 @@
     name: 'topHeader',
     data() {
       return {
-        playing: true
+        playing: false
       }
     },
     methods: {
       palyVideo() {
         this.playing = !this.playing
         this.$emit('playVideo', this.playing)
+      },
+      setWidth(width) {
+        this.$refs.headerNav.style.width = width
       }
     }
   }

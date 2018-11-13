@@ -84,7 +84,6 @@
   .left-entry {
     position: fixed;
     z-index: 200;
-    // color: $color-white;
     color: $color-blue;
     height: 100%;
     .icon-btn {
@@ -106,7 +105,7 @@
         left: 10px;
       }
       &.close {
-        left: 220px;
+        left: 210px;
       }
       &:hover {
         color: $color-blue;
@@ -120,17 +119,18 @@
     position: absolute;
     top: 0;
     background: $color-white;
-    padding-left: 10px;
   }
   .header-wrapper {
     height: 50px;
     line-height: 50px;
     background: $color-shallowgray;
     text-align: left;
+    padding-left: 10px;
   }
   .catalog-wrapper {
     text-align: left;
     color: $color-blue;
+    padding-left: 10px;
     ul {
       margin: 5px 0;
       text-indent: 15px;

@@ -4,7 +4,7 @@
     enter-active-class="animated slideInDown"
     leave-active-class="animated slideOutUp"
   >
-    <div class="bread-crumb" v-show="crumbsShow">
+    <div class="bread-crumb" v-show="crumbsShow" ref="breadCrumb">
       <ul class="item-wrapper">
         <li class="item" :class="[i != crumbs.length -1 ? 'active' : '']" v-for="(crumb, i) in crumbs" :key="i">
           <span class="name">{{ crumb.name }}</span>
@@ -51,6 +51,10 @@
       },
       goBack() {
         this.$router.go(-1)
+      },
+      setWidth({width, left}) {
+        this.$refs.breadCrumb.style.width = width.indexOf('px') === -1 ? '80%' : width.replace('px', '') * 0.8 + 'px'
+        this.$refs.breadCrumb.style.left = left
       }
     },
     watch: {

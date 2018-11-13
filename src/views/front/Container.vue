@@ -2,8 +2,8 @@
   <div>
     <left-entry :chapterData="chapterData" @leftEntry="leftEntry"></left-entry>
     <div class="container" ref="container">
-      <top-header @playVideo="playVideo"></top-header>
-      <bread-crumb></bread-crumb>
+      <top-header @playVideo="playVideo" ref="topHeader"></top-header>
+      <bread-crumb ref="breadCrumb"></bread-crumb>
       <div class="view-wrapper" :class="{childPage: !homeFlag}" ref="viewWrapper">
         <router-view v-if="!$route.meta.keepAlive" :resize="resize" @chapterFormat="chapterFormat"/>
         <keep-alive>
@@ -78,6 +78,9 @@
           this.$refs.bgVideo.style.top = '50px'
           this.homeFlag = false
         }
+        if (this.$route.name !== 'Article') {
+          this.leftEntry({flag: false})
+        }
       },
       bodyScroll() {
         const viewWrapper = this.$refs.viewWrapper
@@ -119,11 +122,15 @@
         this.chapterData = data
       },
       leftEntry({flag, width}) {
+        let options = {}
         if (flag) {
-          this.$refs.container.style.width = (document.documentElement.clientWidth - width) + 'px'
+          options = {width: (document.documentElement.clientWidth - width) + 'px', left: width + 'px'}
         } else {
-          this.$refs.container.style.width = '100%'
+          options = {width: '100%', left: '0'}
         }
+        this.$refs.container.style.width = options.width
+        this.$refs.topHeader.setWidth(options.width)
+        this.$refs.breadCrumb.setWidth({width: options.width, left: options.left})
       }
     },
     watch: {
