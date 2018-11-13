@@ -65,6 +65,7 @@
           this.showFlag = true
         } else {
           this.showFlag = false
+          this.openFlag = false
         }
       }
     },
@@ -131,12 +132,17 @@
     text-align: left;
     color: $color-blue;
     padding-left: 10px;
+    position: absolute;
+    top: 50px;
+    bottom: 0;
+    overflow: auto;
     ul {
       margin: 5px 0;
       text-indent: 15px;
       li a {
         display: block;
         font-size: 12px;
+        line-height: 16px;
         padding: 5px;
         color: $color-blue;
         &:hover {
