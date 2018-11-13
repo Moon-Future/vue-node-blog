@@ -3,6 +3,10 @@
     <div class="background">
       <img src="https://source.unsplash.com/random/1080x720" alt="">
     </div>
+    <div class="avatar-wrapper">
+      <img src="../../assets/avatar.jpg" alt="">
+      <p v-show="registerFlag" class="click-msg">点击上传图片</p>
+    </div>
     <div class="login-wrapper">
       <h1>后台管理</h1>
       <div class="form-wrapper">
@@ -36,6 +40,13 @@
                 </template>
               </el-input>
             </el-form-item>
+            <el-form-item prop="website">
+              <el-input class="form-input" maxlength="50" clearable placeholder="网站" v-model="form.website">
+                <template slot="prepend">
+                  网站
+                </template>
+              </el-input>
+            </el-form-item>
           </div>
         </el-form>
         <div class="login-button" v-show="!registerFlag">
@@ -65,6 +76,7 @@
 
 <script>
   import IconFont from '@/components/Iconfont'
+  import myUpload from 'vue-image-crop-upload'
   import { apiUrl } from '@/serviceAPI.config.js'
   const crypto = require('crypto')
   export default {
@@ -74,7 +86,8 @@
           email: '',
           password: '',
           rePassword: '',
-          name: ''
+          name: '',
+          website: ''
         },
         rules: {
           email: [
@@ -114,35 +127,39 @@
         if (this.subWait) {
           return
         }
-        if (this.form.email === '' || this.form.password === '' || this.form.rePassword === '' || this.form.name === '') {
-          this.$message.error('请补充完整数据')
-          return
-        }
-        if (this.form.password !== this.form.rePassword) {
-          this.$message.error('两次输入密码不同')
-          return
-        }
-        this.subWait = true
-        this.$http.post(apiUrl.register, {
-          data: {
-            email: this.form.email,
-            password: crypto.createHash('sha1').update(this.form.password.trim()).digest('hex'),
-            name: this.form.name
+        this.$refs.loginForm.validate((valid) => {
+          if (!valid) {
+            this.$message.error('请补充完整数据')
+            return
           }
-        }).then(res => {
-          this.subWait = false
-          if (res.data.code === 200) {
-            this.$message.success(res.data.message)
-            this.registerFlag = false
-            this.form.password = ''
-            this.form.rePassword = ''
-            this.form.name = ''
-          } else {
-            this.$message.error(res.data.message)
+          if (this.form.password !== this.form.rePassword) {
+            this.$message.error('两次输入密码不同')
+            return
           }
-        }).catch(err => {
-          this.subWait = false
-          this.$message.error('服务器君傲娇啦😭')
+          this.subWait = true
+          this.$http.post(apiUrl.register, {
+            data: {
+              email: this.form.email,
+              password: crypto.createHash('sha1').update(this.form.password.trim()).digest('hex'),
+              name: this.form.name,
+              website: this.form.website
+            }
+          }).then(res => {
+            this.subWait = false
+            if (res.data.code === 200) {
+              this.$message.success(res.data.message)
+              this.registerFlag = false
+              this.form.password = ''
+              this.form.rePassword = ''
+              this.form.name = ''
+              this.form.website = ''
+            } else {
+              this.$message.error(res.data.message)
+            }
+          }).catch(err => {
+            this.subWait = false
+            this.$message.error('服务器君傲娇啦😭')
+          })
         })
       },
       login() {
@@ -186,7 +203,8 @@
       }
     },
     components: {
-      IconFont
+      IconFont,
+      myUpload
     }
   }
 </script>
@@ -207,6 +225,25 @@
       right: 0;
       z-index: -1;
       img {
+        width: 100%;
+      }
+    }
+    .avatar-wrapper {
+      width: 100px;
+      height: 100px;
+      margin-right: 50px;
+      cursor: pointer;
+      position: relative;
+      img {
+        width: 100%;
+        border-radius: 50%;
+      }
+      .click-msg {
+        position: absolute;
+        top: 50px;
+        color: $color-white;
+        font-size: 12px;
+        text-align: center;
         width: 100%;
       }
     }

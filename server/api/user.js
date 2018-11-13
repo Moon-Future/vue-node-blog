@@ -9,6 +9,7 @@ router.post('/register', async (ctx) => {
       name: data.name,
       email: data.email,
       password: data.password,
+      website: data.website,
       createTime: new Date().getTime()
     })
     user.save()

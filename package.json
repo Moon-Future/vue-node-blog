@@ -20,6 +20,7 @@
     "marked": "^0.5.1",
     "mongoose": "^5.3.5",
     "vue": "^2.5.17",
+    "vue-image-crop-upload": "^2.5.0",
     "vue-lazyload": "^1.2.6",
     "vue-router": "^3.0.1",
     "vue-simplemde": "^0.4.9",

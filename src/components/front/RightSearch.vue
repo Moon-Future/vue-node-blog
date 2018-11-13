@@ -15,7 +15,6 @@
         <a href="https://github.com/Moon-Future/vue-node-blog" target="_blank">
           <icon-font class="social-icon" icon="icon-github" fontSize="42"></icon-font>
         </a>
-        <icon-font class="social-icon" icon="icon-weibo" fontSize="42"></icon-font>
         <el-popover
           placement="bottom"
           trigger="hover">
