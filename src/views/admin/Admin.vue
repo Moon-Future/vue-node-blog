@@ -1,6 +1,6 @@
 <template>
   <div>
-    <topHeader></topHeader>
+    <topHeader :userInfo="userInfo"></topHeader>
     <Aside></Aside>
     <div class="content">
       <transition name="move" mode="out-in"><router-view :userInfo="userInfo"></router-view></transition>

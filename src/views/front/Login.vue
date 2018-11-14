@@ -3,9 +3,8 @@
     <div class="background">
       <img src="https://source.unsplash.com/random/1080x720" alt="">
     </div>
-    <div class="avatar-wrapper" @click="showUpload">
+    <div class="avatar-wrapper">
       <img src="../../assets/avatar.jpg" alt="">
-      <p v-show="registerFlag" class="click-msg">点击上传图片</p>
     </div>
     <div class="login-wrapper">
       <h1>后台管理</h1>

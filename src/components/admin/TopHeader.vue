@@ -3,7 +3,7 @@
     <el-row>
       <el-col class="logo" :md="5" :sm="8" :xs="12">
         <router-link to="/">
-          <icon-font icon="icon-admin"></icon-font>
+          <icon-font icon="icon-admin" fontSize="62"></icon-font>
         </router-link>
         <p>后台管理</p>
       </el-col>
@@ -26,7 +26,7 @@
           </el-dropdown-menu>
         </el-dropdown>
         <el-dropdown trigger="click" class="user-infor">
-          <img :src="userAvatar" alt="">
+          <img :src="userInfo.avatar" alt="">
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item @click.native="uploadDisplay">更改头像</el-dropdown-item>
             <el-dropdown-item @click.native="logout">退出</el-dropdown-item>
@@ -43,7 +43,7 @@
   import { apiUrl } from '@/serviceAPI.config.js'
   export default {
     name: 'Header',
-    props: ['userAvatar', 'userName'],
+    props: ['userAvatar', 'userName', 'userInfo'],
     methods:{
       uploadDisplay() {
         this.$emit('uploadDisplay', true);
@@ -80,14 +80,8 @@
   .header p {
     margin: 0;
   }
-  .logo i {
-    font-size: 60px;
-    float: left;
-    color: #fff;
-    margin-right: 10px;
-  }
-  .logo p {
-    font-size: 20px;
+  .logo {
+    display: flex;
   }
   .hello {
     line-height: 35px;
