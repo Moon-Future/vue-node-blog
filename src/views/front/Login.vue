@@ -3,7 +3,7 @@
     <div class="background">
       <img src="https://source.unsplash.com/random/1080x720" alt="">
     </div>
-    <div class="avatar-wrapper">
+    <div class="avatar-wrapper" @click="showUpload">
       <img src="../../assets/avatar.jpg" alt="">
       <p v-show="registerFlag" class="click-msg">点击上传图片</p>
     </div>
@@ -71,6 +71,13 @@
         </div>
       </div>
     </div>
+    <my-upload field="avatar" id="avatar-upload"
+      :width="200"
+      :height="200"
+      v-model="uploadShow"
+      url="api/picture/avatar"
+      @crop-upload-success="cropUploadSuccess"
+      img-format="jpg"></my-upload>
   </div>
 </template>
 
@@ -82,12 +89,14 @@
   export default {
     data() {
       return {
+        avatar: '',
+        uploadShow: false,
         form: {
           email: '',
           password: '',
           rePassword: '',
           name: '',
-          website: ''
+          website: '',
         },
         rules: {
           email: [
@@ -200,6 +209,14 @@
         this.$refs.loginForm.resetFields()
         this.form.email = ''
         this.form.password = ''
+      },
+      showUpload() {
+        if (this.registerFlag) {
+          this.uploadShow = true
+        }
+      },
+      cropUploadSuccess() {
+
       }
     },
     components: {
