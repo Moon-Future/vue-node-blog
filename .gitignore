@@ -21,3 +21,4 @@ yarn-error.log*
 *.sw*
 
 /server/secret.js
+package-lock.json
