@@ -3,6 +3,7 @@ export const apiUrl = {
   login: '/api/user/login',
   logout: '/api/user/logout',
   getSession: '/api/user/getSession',
+  upload: '/api/user/upload',
 
   insertArticle: '/api/article/insertArticle',
   getArticle: '/api/article/getArticle',

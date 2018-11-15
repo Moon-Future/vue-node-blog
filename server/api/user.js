@@ -1,6 +1,7 @@
 const Router = require('koa-router')
 const fs = require('fs')
 const path = require('path')
+const formidable = require('formidable');
 const router = new Router()
 const User = require('../database/schema/user')
 const avatarPath = path.join(__dirname, '../file/avatar')
@@ -67,12 +68,14 @@ router.post('/getSession', async (ctx) => {
 
 router.post('/upload', async (ctx) => {
   try {
-    const userInfo = ctx.session.userInfo
-    if (userInfo) {
-      ctx.body = {code: 200, message: userInfo}
-    } else {
-      ctx.body = {code: 500, message: '请先登陆'}
-    }
+    let form = new formidable.IncomingForm()
+
+    form.parse(ctx.req, (error, fields, files) => {
+      console.log(fields, files)
+    })
+
+    const body = ctx.request.body
+    ctx.body = {code: 200, message: ''}
   } catch(err) {
     throw new Error(err)
   }

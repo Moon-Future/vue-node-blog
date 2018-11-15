@@ -65,31 +65,18 @@
         <div class="back-button" v-show="registerFlag">
           <el-button type="primary" @click="back">返回</el-button>
         </div>
-        <div class="login-footer">
-
-        </div>
       </div>
     </div>
-    <my-upload field="avatar" id="avatar-upload"
-      :width="200"
-      :height="200"
-      v-model="uploadShow"
-      url="api/picture/avatar"
-      @crop-upload-success="cropUploadSuccess"
-      img-format="jpg"></my-upload>
   </div>
 </template>
 
 <script>
   import IconFont from '@/components/Iconfont'
-  import myUpload from 'vue-image-crop-upload'
   import { apiUrl } from '@/serviceAPI.config.js'
   const crypto = require('crypto')
   export default {
     data() {
       return {
-        avatar: '',
-        uploadShow: false,
         form: {
           email: '',
           password: '',
@@ -208,19 +195,10 @@
         this.$refs.loginForm.resetFields()
         this.form.email = ''
         this.form.password = ''
-      },
-      showUpload() {
-        if (this.registerFlag) {
-          this.uploadShow = true
-        }
-      },
-      cropUploadSuccess() {
-
       }
     },
     components: {
-      IconFont,
-      myUpload
+      IconFont
     }
   }
 </script>

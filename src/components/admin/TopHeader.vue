@@ -1,5 +1,5 @@
 <template>
-  <div class="header">
+  <div class="header" :class="{upload: uploadShow}">
     <el-row>
       <el-col class="logo" :md="5" :sm="8" :xs="12">
         <router-link to="/">
@@ -19,7 +19,7 @@
 
       <el-col :md="8" :sm="8" :xs="12" class="right">
         <el-dropdown trigger="click" class="notice">
-          <el-badge is-dot>{{ userName }}</el-badge>
+          <el-badge is-dot>{{ userInfo.name }}</el-badge>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item><el-badge :value="12">评论</el-badge></el-dropdown-item>
             <el-dropdown-item><el-badge :value="9">阅读</el-badge></el-dropdown-item>
@@ -28,30 +28,48 @@
         <el-dropdown trigger="click" class="user-infor">
           <img :src="userInfo.avatar" alt="">
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item @click.native="uploadDisplay">更改头像</el-dropdown-item>
+            <el-dropdown-item @click.native="changeAvatar">更改头像</el-dropdown-item>
             <el-dropdown-item @click.native="logout">退出</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-col>
     </el-row>
+    <my-upload field="avatar"
+      :width="200"
+      :height="200"
+      v-model="uploadShow"
+      :url="uploadUrl"
+      @crop-upload-success="cropUploadSuccess"
+      img-format="jpg"></my-upload>
   </div>
 </template>
 
 <script>
-  import { dateFormat } from '@/common/js/tool.js'
   import IconFont from '@/components/Iconfont'
+  import myUpload from 'vue-image-crop-upload'
+  import { dateFormat } from '@/common/js/tool.js'
   import { apiUrl } from '@/serviceAPI.config.js'
   export default {
     name: 'Header',
-    props: ['userAvatar', 'userName', 'userInfo'],
+    props: ['userInfo'],
+    data() {
+      return {
+        avatar: '',
+        uploadUrl: apiUrl.upload,
+        uploadShow: false
+      }
+    },
     methods:{
-      uploadDisplay() {
-        this.$emit('uploadDisplay', true);
+      changeAvatar() {
+        this.uploadShow = true
       },
       logout() {
         this.$http.post(apiUrl.logout).then((res) => {
           this.$router.push('/login');
         })
+      },
+      cropUploadSuccess() {
+
       }
     },
     computed: {
@@ -60,7 +78,8 @@
       },
     },
     components: {
-      IconFont
+      IconFont,
+      myUpload
     }
   }
 </script>
@@ -76,6 +95,9 @@
     padding: 0 40px;
     line-height: 70px;
     height: 70px;
+    &.upload {
+      position: relative;
+    }
   }
   .header p {
     margin: 0;
