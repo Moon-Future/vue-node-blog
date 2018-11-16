@@ -3,7 +3,7 @@
     <ul>
       <router-link tag="li" to="/">主页</router-link>
       <router-link tag="li" to="/catalog">目录</router-link>
-      <li class="avatar"><img class="play" :class="{pause: !playing}" src="../../assets/avatar.jpg" alt="" @click="palyVideo"></li>
+      <li class="avatar"><img class="play" :class="{pause: !playing}" src="../../assets/avatar.jpg" alt=""></li>
       <router-link tag="li" to="/other">其他</router-link>
       <router-link tag="li" to="/about">关于</router-link>
     </ul>

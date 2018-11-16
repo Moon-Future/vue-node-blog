@@ -11,14 +11,16 @@ const cos = new COS({
 
 const cosUpload = function(fileName, filePath) {
   // 分片上传
-  cos.sliceUploadFile({
+  return new Promise((resolve, reject) => {
+    cos.sliceUploadFile({
       Bucket: tencentCloud.Bucket,
       Region: 'ap-guangzhou',
       Key: fileName,
       FilePath: filePath
-  }, function (err, data) {
-      console.log(err, data);
-  });
+    }, function (err, data) {
+        resolve(data);
+    });
+  })
 }
 
 module.exports = cosUpload

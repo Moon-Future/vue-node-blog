@@ -4,7 +4,7 @@ const path = require('path')
 const formidable = require('formidable');
 const router = new Router()
 const User = require('../database/schema/user')
-const avatarPath = path.join(__dirname, '../file/avatar')
+const cosUpload = require('./tencentCloud.js')
 const avatarDafault = 'default.jpg'
 
 router.post('/register', async (ctx) => {
@@ -68,17 +68,31 @@ router.post('/getSession', async (ctx) => {
 
 router.post('/upload', async (ctx) => {
   try {
-    let form = new formidable.IncomingForm()
-
-    form.parse(ctx.req, (error, fields, files) => {
-      console.log(fields, files)
-    })
-
-    const body = ctx.request.body
-    ctx.body = {code: 200, message: ''}
+    const userInfo = ctx.session.userInfo
+    const {fields, files} = await formParse(ctx.req)
+    const avatarData = files.avatar
+    const filePath = avatarData.path
+    const fileName = '/avatar/' + userInfo.id + '.jpg'
+    const result = await cosUpload(fileName, filePath)
+    ctx.session.userInfo.avatar = result.Location
+    await User.update({_id: userInfo.id}, {avatar: result.Location})
+    ctx.body = {code: 200, message: {avatar: result.Location}}
   } catch(err) {
     throw new Error(err)
   }
 })
+
+function formParse(req) {
+  let form = new formidable.IncomingForm()
+  return new Promise((resolve, reject) => {
+    form.parse(req, (error, fields, files) => {
+      if (error) {
+        reject(error)
+      } else {
+        resolve({fields, files})
+      }
+    })
+  })
+}
 
 module.exports = router
