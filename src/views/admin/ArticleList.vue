@@ -34,7 +34,8 @@
       </template>
       <el-table-column label="操作" align="center" min-width="220">
         <template slot-scope="scope">
-          
+          <el-button size="mini">编辑</el-button>
+          <el-button size="mini" type="danger">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -102,7 +103,7 @@
   }
 </script>
 
-<style>
+<style lang="scss" scoped>
   span.el-tag {
     margin-right: 5px;
   }
