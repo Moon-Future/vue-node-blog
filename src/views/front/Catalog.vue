@@ -1,5 +1,5 @@
 <template>
-  <div class="catalog-wrapper">
+  <div class="catalog-wrapper" :class="{mobile: mobileFlag}">
     <div class="month-devide" v-for="(list, key) in catalog" :key="key">
       <h1 class="month">{{ key }}</h1>
       <div class="month-data" v-for="(item, i) in list" :key="i">
@@ -17,12 +17,18 @@
   import { apiUrl } from '@/serviceAPI.config.js'
   import { dateFormat } from '@/common/js/tool.js'
   import { computeStyleMixin } from '@/common/js/mixin.js'
+  import { mapGetters } from 'vuex'
   export default {
     name: 'catalog',
     data() {
       return {
         catalog: {}
       }
+    },
+    computed: {
+      ...mapGetters([
+        'mobileFlag'
+      ])
     },
     created() {
       this.getCatalog()
@@ -59,6 +65,9 @@
   @import '@/common/css/variable.scss';
   .catalog-wrapper {
     text-align: left;
+    &.mobile {
+      padding: 60px 10px 10px 10px;
+    }
   }
   .month-devide {
     .month {

@@ -1,0 +1,1 @@
+export const SET_MOBILE_FLAG = 'SET_MOBILE_FLAG'

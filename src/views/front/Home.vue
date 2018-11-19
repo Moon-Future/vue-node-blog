@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="background-wrapper">
+    <div class="background-wrapper" v-if="!mobileFlag">
       <div class="background" ref="background">
         <div class="txt">
           <p class="first-line">心有猛虎</p>
@@ -8,7 +8,7 @@
         </div>
       </div>
     </div>
-    <div class="content-container" ref="contentContainer">
+    <div class="content-container" :class="{mobile: mobileFlag}" ref="contentContainer">
       <article-list></article-list>
       <right-search></right-search>
     </div>
@@ -18,16 +18,19 @@
 <script>
   import ArticleList from '@/components/front/ArticleList'
   import RightSearch from '@/components/front/RightSearch'
+  import { mapGetters } from 'vuex'
   export default {
     name: 'home',
     props: ['resize'],
-    data() {
-      return {
-        
-      }
+    computed: {
+      ...mapGetters([
+        'mobileFlag'
+      ])
     },
     mounted() {
-      this.setHeight()
+      if (!this.mobileFlag) {
+        this.setHeight()
+      }
     },
     methods: {
       setHeight(flag = false) {
@@ -43,7 +46,9 @@
     watch: {
       resize() {
         if (this.resize) {
-          this.setHeight(true)
+          if (!this.mobileFlag) {
+            this.setHeight()
+          }
         }
       }
     },
@@ -87,6 +92,9 @@
     padding: 20px 30px;
     display: flex;
     position: relative;
+    &.mobile {
+      padding: initial;
+    }
   }
 </style>
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="article-list">
+  <div class="article-list" :class="{mobile: mobileFlag}">
     <div class="article-wrapper" v-for="(article, i) in articleList" :key="i">
       <div class="text">
         <div class="title" @click="goDetail(article)">{{ article.title }}</div>
@@ -11,9 +11,9 @@
             </icon-font>
           </div>
         </div>
-        <div class="markdown-body" v-html="article.summary"></div>
+        <div class="markdown-body markdownSummary" v-html="article.summary"></div>
       </div>
-      <div class="picture">
+      <div class="picture" v-if="!mobileFlag">
         <img v-lazy="`https://source.unsplash.com/200x200/weekly?it,${i}`" alt="pic">
         <div class="readall" @click="goDetail(article)">阅读全文</div>
       </div>
@@ -31,6 +31,7 @@
   import IconFont from '@/components/Iconfont'
   import { apiUrl } from '@/serviceAPI.config.js'
   import { dateFormat } from '@/common/js/tool.js'
+  import { mapGetters } from 'vuex'
   export default {
     name: 'articleList',
     data() {
@@ -41,6 +42,11 @@
     },
     created() {
       this.getArticle()
+    },
+    computed: {
+      ...mapGetters([
+        'mobileFlag'
+      ])
     },
     methods: {
       getArticle() {
@@ -118,6 +124,20 @@
           &:hover {
             background: $color-deepblue;
           }
+        }
+      }
+    }
+    &.mobile {
+      width: 100%;
+      padding-top: 50px;
+      .article-wrapper {
+        background: $color-white;
+        margin: 10px 0;
+      }
+      .markdownSummary {
+        p {
+          margin: 0 !important;
+          padding: 0 !important;
         }
       }
     }

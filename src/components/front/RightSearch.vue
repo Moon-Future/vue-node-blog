@@ -1,5 +1,5 @@
 <template>
-  <div class="right-search">
+  <div class="right-search" v-if="!mobileFlag">
     <div class="self-info">
       <div class="avatar-wrapper">
         <img class="avatar" src="../../assets/selfInfo.jpg" alt="">
@@ -40,14 +40,17 @@
 <script>
   import IconFont from '@/components/Iconfont'
   import { apiUrl } from '@/serviceAPI.config.js'
+  import { mapGetters } from 'vuex'
   export default {
     data() {
       return {
         hotArticle: []
       }
     },
-    created() {
-
+    computed: {
+      ...mapGetters([
+        'mobileFlag'
+      ])
     },
     methods: {
       getHotArticle() {

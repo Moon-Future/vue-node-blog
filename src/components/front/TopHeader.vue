@@ -1,9 +1,9 @@
 <template>
-  <div class="header-nav" ref=headerNav>
+  <div class="header-nav" ref=headerNav :class="{mobile: mobileFlag}">
     <ul>
       <router-link tag="li" to="/">主页</router-link>
       <router-link tag="li" to="/catalog">目录</router-link>
-      <li class="avatar"><img class="play" :class="{pause: !playing}" :src="`//${avatar}`" alt=""></li>
+      <li v-if="!mobileFlag" class="avatar"><img class="play" :class="{pause: !playing}" :src="`//${avatar}`" alt=""></li>
       <router-link tag="li" to="/other">其他</router-link>
       <router-link tag="li" to="/about">关于</router-link>
     </ul>
@@ -12,6 +12,7 @@
 
 <script>
   import { apiUrl } from '@/serviceAPI.config.js'
+  import { mapGetters } from 'vuex'
   export default {
     name: 'topHeader',
     data() {
@@ -19,6 +20,11 @@
         playing: false,
         avatar: 'cl8023-1255423800.cos.ap-guangzhou.myqcloud.com/avatar/default.jpg'
       }
+    },
+    computed: {
+      ...mapGetters([
+        'mobileFlag'
+      ])
     },
     created() {
       this.$http.post(apiUrl.getSession).then(res => {
@@ -70,6 +76,16 @@
           &.pause {
             animation-play-state: paused;
           }
+        }
+      }
+    }
+    // 适应移动端
+    &.mobile {
+      ul {
+        width: 100%;
+        justify-content: flex-end;
+        li {
+          margin: 0 10px;
         }
       }
     }

@@ -1,0 +1,1 @@
+export const mobileFlag = state => state.mobileFlag

@@ -1,5 +1,5 @@
 <template>
-  <div class="article-detail">
+  <div class="article-detail" :class="{mobile: mobileFlag}">
     <h1>{{ article.title }}</h1>
     <div class="markdown-body" v-html="article.html"></div>
   </div>
@@ -8,6 +8,7 @@
 <script>
   import { apiUrl } from '@/serviceAPI.config.js'
   import { dateFormat } from '@/common/js/tool.js'
+  import { mapGetters } from 'vuex'
   export default {
     name: 'ArticleDetail',
     data() {
@@ -15,6 +16,11 @@
         article: {},
         chapterData: []
       }
+    },
+    computed: {
+      ...mapGetters([
+        'mobileFlag'
+      ])
     },
     created() {
       this.getArticle()
@@ -76,6 +82,9 @@
       font-weight: bold;
       margin-bottom: 20px;
       color: $color-blue;
+    }
+    &.mobile {
+      padding: 60px 10px 10px 10px;
     }
   }
 </style>

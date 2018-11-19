@@ -73,9 +73,6 @@
         } else {
           this.crumbsShow = true
         }
-        if (name === 'Article') {
-          this.crumbs = [{name: '首页', router: '/'}, {name: '文章', router: ''}]
-        }
         switch(name) {
           case 'Article':
             this.crumbs = [{name: '首页', router: '/'}, {name: '文章', router: ''}]
