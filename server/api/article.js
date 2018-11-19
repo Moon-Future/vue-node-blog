@@ -22,6 +22,7 @@ router.post('/insertArticle', async (ctx) => {
       ctx.body = checkResult
       return
     }
+    const root = ctx.session.userInfo.root
     const data = ctx.request.body.data
     const currentTime = new Date().getTime()
     const tags = data.tags || []
@@ -71,7 +72,7 @@ router.post('/insertArticle', async (ctx) => {
         user: ObjectId(data.user),
         tag: tagsId,
         createTime: currentTime,
-        state: data.state
+        state: root === 0 ? 2 : data.state
       })
       result = await article.save()
       fileName = result._id + '_' + data.title
@@ -83,7 +84,7 @@ router.post('/insertArticle', async (ctx) => {
         summary,
         tag: tagsId,
         updateTime: currentTime,
-        state: data.state
+        state: root === 0 ? 2 : data.state
       })
       fileName = data.id + '_' + data.title
       message = '更新成功'
@@ -102,27 +103,31 @@ router.post('/insertArticle', async (ctx) => {
 
 router.post('/getArticle', async (ctx) => {
   try {
+    const checkResult = checkRoot(ctx)
     const data = ctx.request.body.data
     let result
     if (data.admin) {
-      const checkResult = checkRoot(ctx)
+      // 后台管理列表
       if (checkResult.code === 500) {
         ctx.body = checkResult
         return
       }
-      // 后台管理列表
       result = await Article.find({}, {summary: 0, content: 0, html: 0, comment: 0}).populate('tag')
     } else if (data.summary) {
       // home首页列表
-      result = await Article.find({}, {content: 0, html: 0, comment: 0}).populate('tag')
+      result = await Article.find({state: 1}, {content: 0, html: 0, comment: 0}).populate('tag')
     } else if (data.hot) {
       // 热门列表
-      result = await Article.find({}, {content: 0, html: 0, comment: 0}).populate('tag')
+      result = await Article.find({state: 1}, {content: 0, html: 0, comment: 0}).populate('tag')
     } else if (data.catalog) {
       // 归档目录
-      result = await Article.find({}, {summary: 0, content: 0, html: 0, comment: 0}).sort({createTime:-1}).populate('tag')
+      result = await Article.find({state: 1}, {summary: 0, content: 0, html: 0, comment: 0}).sort({createTime:-1}).populate('tag')
     } else if (data.markdown) {
       // markdown 修改内容
+      if (checkResult.code === 500) {
+        ctx.body = checkResult
+        return
+      }
       result = await Article.find({_id: data.id}, {comment: 0}).populate('tag')
       if (result.length !== 0) {
         const title = result[0].title
@@ -149,8 +154,19 @@ router.post('/getArticle', async (ctx) => {
 
 router.post('/deleteArticle', async (ctx) => {
   try {
+    const checkResult = checkRoot(ctx)
+    if (checkResult.code === 500) {
+      ctx.body = checkResult
+      return
+    }
     const data = ctx.request.body.data
+    const userInfo = ctx.session.userInfo
     const id = data.id, title = data.title
+    const article = await Article.find({_id: id}, {summary: 0, content: 0, html: 0, comment: 0})
+    if (article[0].user != userInfo.id && userInfo.root !== 1) {
+      ctx.body = {code: 200, message: '没有权限'}
+      return
+    }
     await Article.remove({_id: data.id})
     fs.unlinkSync(path.join(filePath, `${id}_${title}.md`))
     fs.unlinkSync(path.join(filePath, `${id}_${title}.html`))

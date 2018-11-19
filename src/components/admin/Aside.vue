@@ -27,7 +27,7 @@
         items: [
           {
             icon: 'el-icon-setting',
-            index: 'selfinfo',
+            index: '/admin/selfinfo',
             title: '自述'
           },
           {

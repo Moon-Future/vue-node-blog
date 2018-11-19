@@ -34,8 +34,8 @@
       </template>
       <el-table-column label="操作" align="center" min-width="100">
         <template slot-scope="scope">
-          <el-button size="mini" @click="edit(scope.row._id)">编辑</el-button>
-          <el-button size="mini" type="danger" v-if="userInfo.root === 1" @click="del(scope.row._id, scope.row.title, scope.$index)">删除</el-button>
+          <el-button size="mini" v-if="userInfo.root === 1 || scope.row.user === userInfo.id" @click="edit(scope.row._id)">编辑</el-button>
+          <el-button size="mini" type="danger" v-if="userInfo.root === 1 || scope.row.user === userInfo.id" @click="del(scope.row._id, scope.row.title, scope.$index)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -81,7 +81,7 @@
           this.articles.forEach(ele => {
             ele.createTime = dateFormat(ele.createTime, 'yyyy-MM-dd hh:mm')
             ele.updateTime = ele.updateTime === null ? '' : dateFormat(ele.updateTime, 'yyyy-MM-dd hh:mm')
-            ele.state = ele.state === 1 ? '已发布' : state === 2 ? '已存稿' : '已删除'
+            ele.state = ele.state === 1 ? '已发布' : ele.state === 2 ? '已存稿' : '已删除'
           })
         }
       })

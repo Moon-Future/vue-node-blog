@@ -48,21 +48,24 @@
             </el-form-item>
           </div>
         </el-form>
-        <div class="login-button" v-show="!registerFlag">
+        <div class="tool-button" v-show="!registerFlag">
           <el-button 
             type="primary" 
             :loading="subWait" 
             :class="subWait ? 'subWait' : ''" 
             @click="login">登陆</el-button>
         </div>
-        <div class="register-button">
+        <div class="tool-button">
           <el-button 
             type="success" 
             :loading="subWait && registerFlag" 
             :class="subWait && registerFlag ? 'subWait' : ''" 
             @click="register">注册</el-button>
         </div>
-        <div class="back-button" v-show="registerFlag">
+        <div class="tool-button" v-show="!registerFlag">
+          <el-button type="warning" @click="goHome">返回主页</el-button>
+        </div>
+        <div class="tool-button" v-show="registerFlag">
           <el-button type="primary" @click="back">返回</el-button>
         </div>
       </div>
@@ -108,7 +111,7 @@
     beforeCreate() {
       this.$http.post(apiUrl.getSession).then(res => {
         if (res.data.code === 200) {
-          this.$router.push('/admin')
+          this.$router.push('/admin/selfinfo')
         }
       })
     },
@@ -175,7 +178,7 @@
           this.subWait = false
           if (res.data.code === 200) {
             this.$message.success(res.data.message)
-            this.$router.push('/admin')
+            this.$router.push('/admin/selfinfo')
           } else {
             this.$message.error(res.data.message)
           }
@@ -190,6 +193,9 @@
         }
         this.registerFlag = false
         this.clear()
+      },
+      goHome() {
+        this.$router.push('/')
       },
       clear() {
         this.$refs.loginForm.resetFields()
@@ -252,7 +258,7 @@
         padding: 10px 0;
       }
       .form-wrapper {
-        .login-button, .register-button, .back-button {
+        .tool-button {
           display: flex;
           flex-flow: column;
           padding: 10px 0;

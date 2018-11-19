@@ -5,7 +5,7 @@ const formidable = require('formidable');
 const router = new Router()
 const User = require('../database/schema/user')
 const cosUpload = require('./tencentCloud.js')
-const avatarDafault = 'default.jpg'
+const avatarDafault = 'cl8023-1255423800.cos.ap-guangzhou.myqcloud.com/avatar/default.jpg'
 
 router.post('/register', async (ctx) => {
   try {

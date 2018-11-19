@@ -3,6 +3,7 @@
     <div class="rights">
       <p>Copyright © 2017 - {{ new Date().getFullYear() }} ChenLiang's Blog</p>
     </div>
+    <!-- 2017-12-01 上线至今 -->
     <div class="to-admin">
       <router-link tag="a" to="/login">后台登陆</router-link>
     </div>

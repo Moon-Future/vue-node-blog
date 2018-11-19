@@ -10,7 +10,7 @@
 
       <el-col class="hello" :md="5" :sm="8">
         <p class="time">{{ currentTime }}</p>
-        <p class="inform">夜深了，注意休息</p>
+        <p class="inform">{{ timeMessage }}</p>
       </el-col>
 
       <el-col :md="4" :offset="2" class="search">
@@ -54,10 +54,18 @@
     props: ['userInfo'],
     data() {
       return {
-        avatar: '',
+        avatar: 'cl8023-1255423800.cos.ap-guangzhou.myqcloud.com/avatar/default.jpg',
         uploadUrl: apiUrl.upload,
-        uploadShow: false
+        uploadShow: false,
+        currentTime: dateFormat(new Date(), 'yyyy-MM-dd hh:mm:ss'),
+        timeMessage: '欢迎光临'
       }
+    },
+    mounted() {
+      clearInterval(this.timer)
+      this.timer = setInterval(() => {
+        this.currentTime = dateFormat(new Date(), 'yyyy-MM-dd hh:mm:ss')
+      }, 1000)
     },
     methods:{
       changeAvatar() {
@@ -72,10 +80,22 @@
         this.avatar = res.message.avatar
       }
     },
-    computed: {
-      currentTime() {
-        return dateFormat(new Date(), 'yyyy-MM-dd hh:mm')
-      },
+    watch: {
+      currentTime(newTime) {
+        const time = new Date(newTime)
+        const hour = time.getHours()
+        if (hour >= 0 && hour < 5) {
+          this.timeMessage = '夜深了，注意休息😪'
+        } else if (hour >= 5 && hour < 9) {
+          this.timeMessage = '今天又是充满活力的一天🤓️'
+        } else if (hour >= 9 && hour < 12) {
+          this.timeMessage = '快乐学习，想想中午吃啥🤔️'
+        } else if (hour >= 12 && hour < 18) {
+          this.timeMessage = '学习，学习，下班，下班😁'
+        } else if (hour >= 18 && hour < 24) {
+          this.timeMessage = '刷剧，刷剧，游戏，游戏🤗️'
+        }
+      }
     },
     components: {
       IconFont,
@@ -97,6 +117,7 @@
     height: 70px;
     &.upload {
       position: relative;
+      line-height: initial;
     }
   }
   .header p {

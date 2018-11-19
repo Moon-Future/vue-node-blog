@@ -32,8 +32,8 @@
         </div>
       </div>
       <div class="submit">
-        <el-button type="success" @click="submit(1)" v-if="userInfo.root">发布</el-button>
-        <el-button type="info" @click="submit(2)">存稿</el-button>
+        <el-button type="success" @click="submit(1)" v-if="userInfo.root === 1">发布</el-button>
+        <el-button type="primary" @click="submit(2)">存稿</el-button>
       </div>
     </div>
   </div>
