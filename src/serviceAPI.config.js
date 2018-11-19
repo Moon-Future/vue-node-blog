@@ -6,6 +6,7 @@ export const apiUrl = {
   upload: '/api/user/upload',
 
   insertArticle: '/api/article/insertArticle',
+  deleteArticle: '/api/article/deleteArticle',
   getArticle: '/api/article/getArticle',
   getArticleInfo: '/api/article/getArticleInfo',
   getCatalog: '/api/article/getCatalog',

@@ -89,7 +89,7 @@
     },
     computed: {
       onRoutes() {
-        return this.$route.path.replace('/admin/', '');
+        return this.$route.path;
       }
     }
   }
@@ -105,6 +105,7 @@
     top: 70px;
     bottom:0;
     background: #2E363F;
+    text-align: left;
     /* z-index: 10; */
   }
   .sidebar > ul {

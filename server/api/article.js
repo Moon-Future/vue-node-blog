@@ -26,7 +26,7 @@ router.post('/insertArticle', async (ctx) => {
     const currentTime = new Date().getTime()
     const tags = data.tags || []
     const html = marked(data.content)
-    let tagsId = []
+    let tagsId = [], result = [], fileName = '', message = ''
     if (tags.length !== 0) {
       let insertTags = [], tagResult = []
       tags.forEach(ele => {
@@ -61,20 +61,40 @@ router.post('/insertArticle', async (ctx) => {
       summary += htmlTags[i]
     }
     summary = summary.replace(/\'/g, '"')
-    const article = new Article({
-      title: data.title,
-      summary,
-      content: '',
-      html: '',
-      user: ObjectId(data.user),
-      tag: tagsId,
-      createTime: currentTime,
-    })
-    const result = await article.save()
-    const fileName = result._id + '_' + data.title
+    if (data.id === '-1') {
+      // 新增
+      const article = new Article({
+        title: data.title,
+        summary,
+        content: '',
+        html: '',
+        user: ObjectId(data.user),
+        tag: tagsId,
+        createTime: currentTime,
+        state: data.state
+      })
+      result = await article.save()
+      fileName = result._id + '_' + data.title
+      message = '发布成功'
+    } else {
+      // 更新
+      await Article.update({_id: data.id}, {
+        title: data.title,
+        summary,
+        tag: tagsId,
+        updateTime: currentTime,
+        state: data.state
+      })
+      fileName = data.id + '_' + data.title
+      message = '更新成功'
+      if (data.title !== data.originTitle) {
+        fs.renameSync(path.join(filePath, data.id + '_' + data.originTitle + '.md'), path.join(filePath, fileName + '.md'));
+        fs.renameSync(path.join(filePath, data.id + '_' + data.originTitle + '.html'), path.join(filePath, fileName + '.html'));
+      }
+    }
     fs.writeFileSync(path.join(filePath, fileName + '.md'), data.content, 'utf-8')
     fs.writeFileSync(path.join(filePath, fileName + '.html'), html, 'utf-8')
-    ctx.body = {code: 200, message: '发布成功'}
+    ctx.body = {code: 200, message: message}
   } catch(err) {
     throw new Error(err)
   }
@@ -101,6 +121,14 @@ router.post('/getArticle', async (ctx) => {
     } else if (data.catalog) {
       // 归档目录
       result = await Article.find({}, {summary: 0, content: 0, html: 0, comment: 0}).sort({createTime:-1}).populate('tag')
+    } else if (data.markdown) {
+      // markdown 修改内容
+      result = await Article.find({_id: data.id}, {comment: 0}).populate('tag')
+      if (result.length !== 0) {
+        const title = result[0].title
+        const content = fs.readFileSync(path.join(filePath, `${data.id}_${title}.md`), 'utf-8')
+        result[0].content = content
+      }
     } else {
       // 文章内容
       result = await Article.find({_id: data.id}, {content: 0, summary: 0, comment: 0}).populate('tag')
@@ -119,8 +147,17 @@ router.post('/getArticle', async (ctx) => {
   }
 })
 
-router.post('/getArticleInfo', async (ctx) => {
-
+router.post('/deleteArticle', async (ctx) => {
+  try {
+    const data = ctx.request.body.data
+    const id = data.id, title = data.title
+    await Article.remove({_id: data.id})
+    fs.unlinkSync(path.join(filePath, `${id}_${title}.md`))
+    fs.unlinkSync(path.join(filePath, `${id}_${title}.html`))
+    ctx.body = {code: 200, message: '删除成功'}
+  } catch(err) {
+    throw new Error(err)
+  }
 })
 
 module.exports = router

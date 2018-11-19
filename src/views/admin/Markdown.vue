@@ -55,6 +55,8 @@
     },
     data() {
       return {
+        id: '-1',
+        originTitle: '',
         title: '',
         content: '',
         tags: [],
@@ -82,15 +84,22 @@
           })
         }
       })
-      if (query.title) {
-        this.title = query.title
-        this.$http.get('/api/article/getArticleById', {
-            params: {id: query.id, title: this.title, editor: true}
+      if (query.id) {
+        this.id = query.id
+        this.$http.post(apiUrl.getArticle, {
+            data: {id: query.id, markdown: true}
           }).then((res) => {
-            let data = res.data
-            if (data.length !== 0) {
-              this.tagSel = data[0].tags
-              this.content = data[0].content
+            const message = res.data.message
+            if (res.data.code === 200) {
+              this.title = message[0].title
+              this.tagSel = message[0].tag
+              this.content = message[0].content
+              this.tagSel.forEach(ele => {
+                ele.id = ele._id
+              })
+              this.originTitle = message[0].title
+            } else {
+              this.$message.error(message)
             }
           })
       }
@@ -131,6 +140,8 @@
         }
         this.$http.post(apiUrl.insertArticle, {
           data: {
+            id: this.id,
+            originTitle: this.originTitle,
             user: this.userInfo.id,
             title: this.title,
             content: this.content,

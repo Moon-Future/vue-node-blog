@@ -8,7 +8,7 @@
     </div>
     <el-tabs @tab-click="tabClick">
       <el-tab-pane><span slot="label"><i class="el-icon-document"></i> 文章列表</span></el-tab-pane>
-      <el-tab-pane><span slot="label"><i class="el-icon-delete"></i> 回收站</span></el-tab-pane>
+      <!-- <el-tab-pane><span slot="label"><i class="el-icon-delete"></i> 回收站</span></el-tab-pane> -->
     </el-tabs>
     <el-table v-loading="loading" size="mini" border :data="articles" style="width:100%">
       <template v-for="(item, i) in field">
@@ -32,10 +32,10 @@
             </template>
          </el-table-column>
       </template>
-      <el-table-column label="操作" align="center" min-width="220">
+      <el-table-column label="操作" align="center" min-width="100">
         <template slot-scope="scope">
-          <el-button size="mini">编辑</el-button>
-          <el-button size="mini" type="danger">删除</el-button>
+          <el-button size="mini" @click="edit(scope.row._id)">编辑</el-button>
+          <el-button size="mini" type="danger" v-if="userInfo.root === 1" @click="del(scope.row._id, scope.row.title, scope.$index)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -98,6 +98,32 @@
       },
       tabClick(tab) {
         this.delFlag = tab.index === '1' ? true : false;
+      },
+      edit(id) {
+        this.$router.push({path: 'markdown', query: {id}})
+      },
+      del(id, title, index) {
+        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$http.post(apiUrl.deleteArticle, {
+            data: {id, title}
+          }).then((res) => {
+            if (res.data.code === 200) {
+              this.$message.success(res.data.message);
+              this.articles.splice(index, 1)
+            } else {
+              this.$message.error(res.data.message);
+            }
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
       }
     }
   }
