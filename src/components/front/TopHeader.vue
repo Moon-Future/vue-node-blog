@@ -3,7 +3,7 @@
     <ul>
       <router-link tag="li" to="/">主页</router-link>
       <router-link tag="li" to="/catalog">目录</router-link>
-      <li class="avatar"><img class="play" :class="{pause: !playing}" src="../../assets/avatar.jpg" alt=""></li>
+      <li class="avatar"><img class="play" :class="{pause: !playing}" :src="`//${avatar}`" alt=""></li>
       <router-link tag="li" to="/other">其他</router-link>
       <router-link tag="li" to="/about">关于</router-link>
     </ul>
@@ -11,12 +11,22 @@
 </template>
 
 <script>
+  import { apiUrl } from '@/serviceAPI.config.js'
   export default {
     name: 'topHeader',
     data() {
       return {
-        playing: false
+        playing: false,
+        avatar: 'cl8023-1255423800.cos.ap-guangzhou.myqcloud.com/avatar/default.jpg'
       }
+    },
+    created() {
+      this.$http.post(apiUrl.getSession).then(res => {
+        if (res.data.code === 200) {
+          const userInfo = res.data.message
+          this.avatar = userInfo.avatar
+        }
+      })
     },
     methods: {
       palyVideo() {
