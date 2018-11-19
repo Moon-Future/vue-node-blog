@@ -45,45 +45,45 @@
               }
             ]
           },
-          {
-            icon: 'el-icon-date',
-            index: '3',
-            title: '表单',
-            subs: [
-              {
-                index: 'baseform',
-                title: '基本表单'
-              },
-              {
-                index: 'vueeditor',
-                title: '编辑器'
-              },
-              {
-                index: 'upload',
-                title: '文件上传'
-              }
-            ]
-          },
-          {
-            icon: 'el-icon-star-on',
-            index: 'basecharts',
-            title: '图表'
-          },
-          {
-            icon: 'el-icon-upload2',
-            index: 'drag',
-            title: '拖拽'
-          },
-          {
-            icon: 'el-icon-setting',
-            index: 'user',
-            title: '用户'
-          },
-          {
-            icon: 'el-icon-delete',
-            index: 'recycleBin',
-            title: '回收站'
-          }
+          // {
+          //   icon: 'el-icon-date',
+          //   index: '3',
+          //   title: '表单',
+          //   subs: [
+          //     {
+          //       index: 'baseform',
+          //       title: '基本表单'
+          //     },
+          //     {
+          //       index: 'vueeditor',
+          //       title: '编辑器'
+          //     },
+          //     {
+          //       index: 'upload',
+          //       title: '文件上传'
+          //     }
+          //   ]
+          // },
+          // {
+          //   icon: 'el-icon-star-on',
+          //   index: 'basecharts',
+          //   title: '图表'
+          // },
+          // {
+          //   icon: 'el-icon-upload2',
+          //   index: 'drag',
+          //   title: '拖拽'
+          // },
+          // {
+          //   icon: 'el-icon-setting',
+          //   index: 'user',
+          //   title: '用户'
+          // },
+          // {
+          //   icon: 'el-icon-delete',
+          //   index: 'recycleBin',
+          //   title: '回收站'
+          // }
         ]
       }
     },

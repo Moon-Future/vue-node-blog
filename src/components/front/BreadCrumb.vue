@@ -6,10 +6,16 @@
   >
     <div class="bread-crumb" v-show="crumbsShow" ref="breadCrumb">
       <ul class="item-wrapper">
-        <li class="item" :class="[i != crumbs.length -1 ? 'active' : '']" v-for="(crumb, i) in crumbs" :key="i">
+        <router-link
+          v-for="(crumb, i) in crumbs"
+          tag="li"
+          :to="crumb.router" 
+          class="item"
+          :class="[i != crumbs.length -1 ? 'active' : '']"
+          :key="i">
           <span class="name">{{ crumb.name }}</span>
-          <icon-font v-if="i !== crumbs.length - 1" icon="icon-arrow-right" fontSize="14" class="icon-arrow"></icon-font>
-        </li>
+          <icon-font v-if="i !== crumbs.length - 1" icon="icon-arrow_right" fontSize="14" class="icon-arrow"></icon-font>
+        </router-link>
       </ul>
       <div class="go-back" @click="goBack">返回</div>
     </div>
@@ -23,10 +29,7 @@
     data() {
       return {
         crumbs: [
-          {name: '首页', router: '/'},
-          {name: '目录', router: '/'},
-          {name: '文章', router: '/'},
-          {name: '关于', router: '/'},
+          {name: '首页', router: ''}
         ],
         currentTop: 0,
         crumbsShow: false
@@ -35,6 +38,11 @@
     mounted() {
       this.currentTop = 0
       window.addEventListener('scroll', this.bodyScroll)
+      if (this.$route.path === '/') {
+        this.crumbsShow = false
+      } else {
+        this.crumbsShow = true
+      }
     },
     methods: {
       bodyScroll() {
@@ -59,10 +67,25 @@
     },
     watch: {
       $route() {
+        const name = this.$route.name
         if (this.$route.path === '/') {
           this.crumbsShow = false
         } else {
           this.crumbsShow = true
+        }
+        if (name === 'Article') {
+          this.crumbs = [{name: '首页', router: '/'}, {name: '文章', router: ''}]
+        }
+        switch(name) {
+          case 'Article':
+            this.crumbs = [{name: '首页', router: '/'}, {name: '文章', router: ''}]
+            break;
+          case 'Catalog':
+            this.crumbs = [{name: '首页', router: '/'}, {name: '目录', router: ''}]
+            break;
+          default:
+            this.crumbs = [{name: '首页', router: '/'}]
+            break;
         }
       }
     },
