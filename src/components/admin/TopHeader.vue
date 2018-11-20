@@ -26,7 +26,7 @@
           </el-dropdown-menu>
         </el-dropdown>
         <el-dropdown trigger="click" class="user-infor">
-          <img :src="`//${avatar || userInfo.avatar}?r=${Math.random()}`" alt="">
+          <img :src="`//${avatar || userInfo.avatar}`" alt="">
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item @click.native="changeAvatar">更改头像</el-dropdown-item>
             <el-dropdown-item @click.native="logout">退出</el-dropdown-item>
@@ -77,7 +77,7 @@
         })
       },
       cropUploadSuccess(res) {
-        this.avatar = res.message.avatar
+        this.avatar = res.message.avatar + '?r=' + Math.random()
       }
     },
     watch: {

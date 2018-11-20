@@ -7,7 +7,7 @@ const Article = require('../database/schema/article')
 const Tag = require('../database/schema/tag')
 const ObjectId = require('mongoose').Types.ObjectId
 const checkRoot = require('./root')
-const filePath = path.join(__dirname, '../file/articles')
+const filePath = path.join(__dirname, '../../articles')
 
 marked.setOptions({
   highlight: function (code) {
