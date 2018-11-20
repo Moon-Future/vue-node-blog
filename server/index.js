@@ -29,6 +29,6 @@ app.use(static(path.join(__dirname, '../dist')));
 app.use(bodyParser())
 app.use(cors())
 app.use(router.routes()).use(router.allowedMethods())
-app.listen(3001, () => {
-  console.log('listen at port 3001...')
+app.listen(3002, () => {
+  console.log('listen at port 3002...')
 })

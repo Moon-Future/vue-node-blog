@@ -51,9 +51,7 @@
     },
     mounted() {
       this.setHeight()
-      if (!this.mobileFlag) {
-        window.addEventListener('scroll', this.bodyScroll)
-      }
+      window.addEventListener('scroll', this.bodyScroll)
       window.onresize = () => {
         clearTimeout(this.onresizeTime)
         this.onresizeTime = setTimeout(() => {
@@ -108,7 +106,7 @@
         const viewWrapper = this.$refs.viewWrapper
         const scrollTop = document.body.scrollTop || document.documentElement.scrollTop
         this.topShow = scrollTop > 500 ? true : false
-        if (this.$route.path === '/') {
+        if (this.$route.path === '/' && !this.mobileFlag) {
           if (scrollTop <= this.height - 50) {
             this.$refs.bgVideo.style.position = 'absolute'
             this.$refs.bgVideo.style.top = this.height + 'px'

@@ -76,25 +76,25 @@
       margin-bottom: 10px;
     }
     .month-data {
-      border-left: 1px solid $color-gray;
-      border-right: 1px solid $color-gray;
-      border-bottom: 1px solid $color-gray;
+      border-left: 1px solid $color-blue;
+      border-right: 1px solid $color-blue;
+      border-bottom: 1px solid $color-blue;
       display: flex;
       &:nth-child(2) {
-        border-top: 1px solid $color-gray;
+        border-top: 1px solid $color-blue;
       }
       &:nth-child(odd) {
         background: $color-shallowgreend;
       }
       &:hover {
-        background: $color-blue;
+        background: $color-origin;
       }
     }
   }
   .content {
     padding: 10px;
     &.day {
-      border-right: 1px solid $color-gray;
+      border-right: 1px solid $color-blue;
     }
     &.link {
       cursor: pointer;

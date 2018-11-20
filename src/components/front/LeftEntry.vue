@@ -3,43 +3,41 @@
     <div class="icon-btn" :class="[openFlag ? 'close' : 'open']" @click="toggleShow">
       <icon-font :icon="openFlag ? closeIcon : openIcon" :fontSize="fontSize"></icon-font>
     </div>
-    <!-- <transition
-      enter-active-class="animated slideInLeft"
-      leave-active-class="animated slideOutLeft"
-    > -->
-      <div class="content-wrapper" v-show="openFlag">
-        <div class="header-wrapper">
-          <h1>目录</h1>
-        </div>
-        <div class="catalog-wrapper">
-          <ul v-for="data in chapterData" :key="data.id">
-            <li><a :href="'#' + data.id" >{{ data.label }}</a></li>
-            <ul v-for="child1 in data.children" :key="child1.id">
-              <li><a :href="'#' + child1.id" >{{ child1.label }}</a></li>
-              <ul v-for="child2 in child1.children" :key="child2.id">
-                <li><a :href="'#' + child2.id" >{{ child2.label }}</a></li>
-                <ul v-for="child3 in child2.children" :key="child3.id">
-                  <li><a :href="'#' + child3.id" >{{ child3.label }}</a></li>
-                  <ul v-for="child4 in child3.children" :key="child4.id">
-                    <li><a :href="'#' + child4.id" >{{ child4.label }}</a></li>
-                    <ul v-for="child5 in child4.children" :key="child5.id">
-                      <li><a :href="'#' + child5.id" >{{ child5.label }}</a></li>
-                    </ul>
+    <div class="content-wrapper" v-show="openFlag">
+      <div class="header-wrapper">
+        <h1>目录</h1>
+      </div>
+      <div class="catalog-wrapper">
+        <ul v-for="data in chapterData" :key="data.id">
+          <li><a :href="'#' + data.id" >{{ data.label }}</a></li>
+          <ul v-for="child1 in data.children" :key="child1.id">
+            <li><a :href="'#' + child1.id" >{{ child1.label }}</a></li>
+            <ul v-for="child2 in child1.children" :key="child2.id">
+              <li><a :href="'#' + child2.id" >{{ child2.label }}</a></li>
+              <ul v-for="child3 in child2.children" :key="child3.id">
+                <li><a :href="'#' + child3.id" >{{ child3.label }}</a></li>
+                <ul v-for="child4 in child3.children" :key="child4.id">
+                  <li><a :href="'#' + child4.id" >{{ child4.label }}</a></li>
+                  <ul v-for="child5 in child4.children" :key="child5.id">
+                    <li><a :href="'#' + child5.id" >{{ child5.label }}</a></li>
                   </ul>
                 </ul>
               </ul>
             </ul>
           </ul>
-        </div>
+        </ul>
       </div>
-    <!-- </transition> -->
+    </div>
+    <!-- <mask-screen></mask-screen> -->
   </div>
 </template>
 
 <script>
   import IconFont from '@/components/Iconfont'
+  import MaskScreen from '@/components/front/MaskScreen'
   import { apiUrl } from '@/serviceAPI.config.js'
   import { dateFormat } from '@/common/js/tool.js'
+  import { mapGetters } from 'vuex'
   export default {
     name: 'LeftEntry',
     props: ['chapterData'],
@@ -52,8 +50,16 @@
         showFlag: false
       }
     },
+    computed: {
+      ...mapGetters([
+        'mobileFlag'
+      ])
+    },
     created() {
       this.routeWWatch()
+      if (this.mobileFlag) {
+        this.showFlag = true
+      }
     },
     methods: {
       toggleShow() {
@@ -67,6 +73,9 @@
           this.showFlag = false
           this.openFlag = false
         }
+        if (this.mobileFlag) {
+          this.showFlag = true
+        }
       }
     },
     watch: {
@@ -75,7 +84,8 @@
       }
     },
     components: {
-      IconFont
+      IconFont,
+      MaskScreen
     }
   }
 </script>
