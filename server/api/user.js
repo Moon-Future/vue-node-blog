@@ -6,6 +6,8 @@ const router = new Router()
 const User = require('../database/schema/user')
 const cosUpload = require('./tencentCloud.js')
 const avatarDafault = 'cl8023-1255423800.cos.ap-guangzhou.myqcloud.com/avatar/default.jpg'
+const {transporter, mailOptions, sendMsg} = require('./email')
+const {dateFormat} = require('./tool')
 
 router.post('/register', async (ctx) => {
   try {
@@ -19,6 +21,37 @@ router.post('/register', async (ctx) => {
       createTime: new Date().getTime()
     })
     user.save()
+    ctx.body = {code: 200, message: '注册成功'}
+    mailOptions.html = '<h1>' + sendMsg.newUser + '<h1>'
+      + '<p>' + sendMsg.email + ': ' + data.email + '</p>'
+      + '<p>' + sendMsg.name + ': ' + data.name + '</p>'
+      + '<p>' + sendMsg.website + ': ' + data.website + '</p>'
+      + '<p>' + sendMsg.time + ': ' + dateFormat(new Date, 'yyyy-MM-dd hh:mm:ss') + '</p>';
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return console.log(error);
+      }
+    });
+  } catch(err) {
+    throw new Error(err)
+  }
+})
+
+router.get('/registerByJson', async (ctx) => {
+  try {
+    const fileContent = fs.readFileSync(__dirname, '../jsonData/user.js', 'utf-8')
+    for (let i = 0, len = fileContent.length; i < len; i++) {
+      const data = fileContent[i]
+      const user = new User({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        avatar: avatarDafault,
+        website: data.website,
+        createTime: new Date().getTime()
+      })
+      user.save()
+    }
     ctx.body = {code: 200, message: '注册成功'}
   } catch(err) {
     throw new Error(err)

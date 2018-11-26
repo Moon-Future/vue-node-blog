@@ -15,10 +15,10 @@
         <icon-font :icon="topIcon" fontSize="42"></icon-font>
       </div>
       <div class="bg-video" ref="bgVideo" v-if="!mobileFlag">
-        <video v-if="videoFlag" autoplay loop muted ref="video">
+        <!-- <video v-if="videoFlag" autoplay loop muted ref="video">
           <source :src="video" type="video/mp4">
-        </video>
-        <img v-else class="bg-picture" :src="bgPicture" alt="">
+        </video> -->
+        <img class="bg-picture" :src="bgPicture" alt="">
       </div>
     </div>
   </div>
@@ -37,9 +37,9 @@
       return {
         topShow: false,
         topIcon: 'icon-top-static',
-        video: require('@/assets/bg-video.mp4'),
+        // video: require('@/assets/bg-video.mp4'),
         videoFlag: false,
-        bgPicture: require('@/assets/bg-1.jpg'),
+        bgPicture: require('@/assets/bg-2.jpg'),
         homeFlag: true,
         resize: false,
         chapterData: [],
