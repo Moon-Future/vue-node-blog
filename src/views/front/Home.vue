@@ -10,7 +10,7 @@
     </div>
     <div class="content-container" :class="{mobile: mobileFlag}" ref="contentContainer">
       <article-list></article-list>
-      <right-search></right-search>
+      <!-- <right-search></right-search> -->
     </div>
   </div>
 </template>
@@ -37,7 +37,8 @@
         const width = document.documentElement.clientWidth
         const height = document.documentElement.clientHeight
         if (!flag) {
-          this.$refs.background.style.backgroundImage = `url(https://source.unsplash.com/1360x768/daily)`
+          // this.$refs.background.style.backgroundImage = `url(https://source.unsplash.com/1360x768/daily)`
+          // this.$refs.background.style.backgroundImage = this.bgImg
         }
         this.$refs.background.style.height = height + 'px'
         this.$refs.contentContainer.style.minHeight = (height - 115) + 'px'
@@ -69,7 +70,7 @@
   .background-wrapper {
     .background {
       width: 100%;
-      // background: url(https://source.unsplash.com/1360x520/daily) no-repeat;
+      background: url('../../assets/bg-3.jpg') no-repeat;
       background-size: cover;
       background-attachment: fixed;
     }

@@ -76,14 +76,15 @@
 <style lang="scss" scoped>
   @import '@/common/css/variable.scss';
   .article-list {
-    width: 70%;
+    width: 80%;
+    margin: auto;
     .article-wrapper {
       display: flex;
       box-shadow: 0px 0px 5px $color-white;
       padding: 10px;
       margin-bottom: 20px;
       overflow: hidden;
-      background: $color-gray;
+      // background: $color-gray;
       &:hover {
         box-shadow: 1px 1px 10px $color-blue;
       }
@@ -94,7 +95,7 @@
         .title {
           font-weight: bold;
           font-size: 22px;
-          color: $color-blue;
+          color: $color-black;
           margin-bottom: 5px;
           &:hover {
             cursor: pointer;
@@ -103,7 +104,7 @@
         }
         .message {
           display: flex;
-          color: $color-white;
+          color: $color-gray;
           font-size: 14px;
           line-height: 16px;
           .msg {

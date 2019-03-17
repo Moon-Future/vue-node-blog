@@ -53,7 +53,8 @@
     top: 0;
     width: 100%;
     height: 50px;
-    background: $color-deepgray;
+    // background: $color-deepgray;
+    background: transparent;
     color: $color-white;
     display: flex;
     justify-content: center;

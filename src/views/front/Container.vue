@@ -14,12 +14,12 @@
       <div class="back-to-top" v-show="topShow" @click="backToTop">
         <icon-font :icon="topIcon" fontSize="42"></icon-font>
       </div>
-      <div class="bg-video" ref="bgVideo" v-if="!mobileFlag">
+      <!-- <div class="bg-video" ref="bgVideo" v-if="!mobileFlag"> -->
         <!-- <video v-if="videoFlag" autoplay loop muted ref="video">
           <source :src="video" type="video/mp4">
         </video> -->
-        <img class="bg-picture" :src="bgPicture" alt="">
-      </div>
+        <!-- <img class="bg-picture" :src="bgPicture" alt=""> -->
+      <!-- </div> -->
     </div>
   </div>
 </template>
