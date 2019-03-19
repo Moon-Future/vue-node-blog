@@ -3,8 +3,9 @@
     <div class="background-wrapper" v-if="!mobileFlag">
       <div class="background" ref="background">
         <div class="txt">
-          <p class="first-line">心有猛虎</p>
-          <p class="second-line">细嗅蔷薇</p>
+          <p>I'm ChenLiang</p>
+          <!-- <p class="first-line">心有猛虎</p>
+          <p class="second-line">细嗅蔷薇</p> -->
         </div>
       </div>
     </div>
@@ -73,11 +74,12 @@
       background: url('../../assets/bg-3.jpg') no-repeat;
       background-size: cover;
       background-attachment: fixed;
+      display: flex;
+      align-items: center;
     }
   }
   .txt {
     position: fixed;
-    top: 50%;
     width: 100%;
     color: $color-white;
     font-size: 32px;

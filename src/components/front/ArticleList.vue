@@ -12,10 +12,11 @@
           </div>
         </div>
         <div class="markdown-body markdownSummary" v-html="article.summary"></div>
+        <div class="readall" @click="goDetail(article)">阅读全文 »</div>
       </div>
       <div class="picture" v-if="!mobileFlag">
         <img v-lazy="`https://source.unsplash.com/200x200/weekly?it,${i}`" alt="pic">
-        <div class="readall" @click="goDetail(article)">阅读全文</div>
+        <!-- <div class="readall" @click="goDetail(article)">阅读全文</div> -->
       </div>
     </div>
     <el-pagination
@@ -81,17 +82,19 @@
     .article-wrapper {
       display: flex;
       box-shadow: 0px 0px 5px $color-white;
-      padding: 10px;
+      padding: 10px 10px 30px 10px;
       margin-bottom: 20px;
       overflow: hidden;
+      border-bottom: 1px solid #ddd;
       // background: $color-gray;
       &:hover {
-        box-shadow: 1px 1px 10px $color-blue;
+        // box-shadow: 1px 1px 10px $color-gray;
       }
       .text {
         text-align: left;
         margin-right: 10px;
         width: 100%;
+        position: relative;
         .title {
           font-weight: bold;
           font-size: 22px;
@@ -109,6 +112,23 @@
           line-height: 16px;
           .msg {
             margin-right: 10px;
+          }
+        }
+        .readall {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          font-size: 14px;
+          background: none;
+          border: none;
+          border-bottom: 2px solid #666;
+          line-height: 2;
+          padding: 0 3px;
+          cursor: pointer;
+          color: #555;
+          &:hover {
+            color: $color-black;
+            border-bottom: 2px solid $color-black;
           }
         }
       }

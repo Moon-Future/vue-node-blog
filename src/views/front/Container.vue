@@ -80,8 +80,8 @@
           this.height = document.documentElement.clientHeight
           this.$refs.container.style.minHeight = this.height + 'px'
           this.$refs.viewWrapper.style.minHeight = (this.height - 32) + 'px'
-          this.$refs.bgVideo.style.height = (this.height - 50) + 'px'
-          this.$refs.bgVideo.style.top = this.height + 'px'
+          // this.$refs.bgVideo.style.height = (this.height - 50) + 'px'
+          // this.$refs.bgVideo.style.top = this.height + 'px'
           this.routeWatch()
           this.bodyScroll()
         }
@@ -89,12 +89,12 @@
       routeWatch() {
         if (!this.mobileFlag) {
           if (this.$route.path === '/') {
-            this.$refs.bgVideo.style.position = 'absolute'
-            this.$refs.bgVideo.style.top = this.height + 'px'
+            // this.$refs.bgVideo.style.position = 'absolute'
+            // this.$refs.bgVideo.style.top = this.height + 'px'
             this.homeFlag = true
           } else {
-            this.$refs.bgVideo.style.position = 'fixed'
-            this.$refs.bgVideo.style.top = '50px'
+            // this.$refs.bgVideo.style.position = 'fixed'
+            // this.$refs.bgVideo.style.top = '50px'
             this.homeFlag = false
           }
         }
@@ -108,11 +108,11 @@
         this.topShow = scrollTop > 500 ? true : false
         if (this.$route.path === '/' && !this.mobileFlag) {
           if (scrollTop <= this.height - 50) {
-            this.$refs.bgVideo.style.position = 'absolute'
-            this.$refs.bgVideo.style.top = this.height + 'px'
+            // this.$refs.bgVideo.style.position = 'absolute'
+            // this.$refs.bgVideo.style.top = this.height + 'px'
           } else {
-            this.$refs.bgVideo.style.position = 'fixed'
-            this.$refs.bgVideo.style.top = '50px'
+            // this.$refs.bgVideo.style.position = 'fixed'
+            // this.$refs.bgVideo.style.top = '50px'
           }
         }
       },

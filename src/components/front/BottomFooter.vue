@@ -7,9 +7,9 @@
     <div class="to-admin">
       <router-link tag="a" to="/login">后台登陆</router-link>
     </div>
-    <div class="history-version">
+    <!-- <div class="history-version">
       <a href="//version.cl8023.com">历史版本</a>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -19,7 +19,7 @@
     height: 32px;
     line-height: 32px;
     font-size: 12px;
-    color: $color-white;
+    color: $color-black;
     display: flex;
     justify-content: center;
     .rights {
@@ -29,7 +29,7 @@
       margin-left: 10px;
     }
     a {
-      color: $color-white;
+      color: $color-black;
       &:hover {
         color: $color-blue;
       }
