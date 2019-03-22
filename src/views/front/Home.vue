@@ -6,6 +6,20 @@
           <p>I'm ChenLiang</p>
           <!-- <p class="first-line">心有猛虎</p>
           <p class="second-line">细嗅蔷薇</p> -->
+
+          <div class="social-wrapper">
+            <a href="https://github.com/Moon-Future/vue-node-blog" target="_blank">
+              <icon-font class="social-icon" icon="icon-github" fontSize="42"></icon-font>
+            </a>
+            <el-popover
+              placement="bottom"
+              trigger="hover">
+              <img class="wechat" src="../../assets/Wechat.jpg" alt="">
+              <template slot="reference">
+                <icon-font class="social-icon" icon="icon-weixin" fontSize="42"></icon-font>
+              </template>
+            </el-popover>
+          </div>
         </div>
       </div>
     </div>
@@ -19,6 +33,7 @@
 <script>
   import ArticleList from '@/components/front/ArticleList'
   import RightSearch from '@/components/front/RightSearch'
+  import IconFont from '@/components/Iconfont'
   import { mapGetters } from 'vuex'
   export default {
     name: 'home',
@@ -42,7 +57,7 @@
           // this.$refs.background.style.backgroundImage = this.bgImg
         }
         this.$refs.background.style.height = height + 'px'
-        this.$refs.contentContainer.style.minHeight = (height - 115) + 'px'
+        this.$refs.contentContainer.style.minHeight = height + 'px'
       }
     },
     watch: {
@@ -56,7 +71,8 @@
     },
     components: {
       ArticleList,
-      RightSearch
+      RightSearch,
+      IconFont
     }
   }
 </script>
@@ -95,6 +111,7 @@
     padding: 20px 30px;
     display: flex;
     position: relative;
+    box-sizing: border-box;
     &.mobile {
       padding: initial;
     }

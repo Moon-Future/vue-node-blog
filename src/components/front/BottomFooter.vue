@@ -7,9 +7,6 @@
     <div class="to-admin">
       <router-link tag="a" to="/login">后台登陆</router-link>
     </div>
-    <!-- <div class="history-version">
-      <a href="//version.cl8023.com">历史版本</a>
-    </div> -->
   </div>
 </template>
 
@@ -24,9 +21,6 @@
     justify-content: center;
     .rights {
       margin-right: 10px;
-    }
-    .history-version {
-      margin-left: 10px;
     }
     a {
       color: $color-black;

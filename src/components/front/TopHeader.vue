@@ -1,5 +1,5 @@
 <template>
-  <div class="header-nav" ref="headerNav" :class="{mobile: mobileFlag}">
+  <div class="header-nav" ref="headerNav" :class="{mobile: mobileFlag, 'content-nav': contentNav}">
     <ul>
       <li v-for="(item, i) in navList" :key="i">
         <router-link tag="a" :to="item.to">
@@ -7,25 +7,6 @@
           <div class="nav-border" :class="i === activeIndex ? 'active' : ''" ></div>
         </router-link>
       </li>
-      
-
-      <!-- <router-link tag="li" to="/">
-        <p>主页</p>
-        <div class="nav-border"></div>
-      </router-link>
-      <router-link tag="li" to="/catalog">
-        <p>目录</p>
-        <div class="nav-border"></div>
-      </router-link>
-      <li v-if="!mobileFlag" class="avatar"><img class="play" :class="{pause: !playing}" :src="`//${avatar}`" alt=""></li>
-      <router-link tag="li" to="/other">
-        <p>其他</p>
-        <div class="nav-border"></div>
-      </router-link>
-      <router-link tag="li" to="/about">
-        <p>关于</p>
-        <div class="nav-border"></div>
-      </router-link> -->
     </ul>
   </div>
 </template>
@@ -42,11 +23,19 @@
         navList: [
           {name: '主页', to: '/'},
           {name: '目录', to: '/catalog'},
-          {name: '主页', to: '/'},
-          {name: '其他', to: '/other'},
-          {name: '关于', to: '/about'}
+          {name: 'BLOG', to: '/'},
+          {name: '其他', to: '/'},
+          {name: '关于', to: '/'}
         ],
-        activeIndex: 0
+        activeIndex: -1,
+        activeMap: {
+          'Home': 0,
+          'Catalog': 1,
+          'Article': 2,
+          'Other': 3,
+          'About': 4
+        },
+        contentNav: false
       }
     },
     computed: {
@@ -64,6 +53,7 @@
     },
     mounted() {
       window.addEventListener('scroll', this.bodyScroll)
+      this.headerStyle()
     },
     methods: {
       palyVideo() {
@@ -74,13 +64,33 @@
         this.$refs.headerNav.style.width = width
       },
       bodyScroll() {
+        if (this.contentNav) {
+          return
+        }
         const scrollTop = document.body.scrollTop || document.documentElement.scrollTop
         const headerNav = this.$refs.headerNav
-        if (scrollTop >= 150) {
-          headerNav.style.top = '-55px';
-        } else {
-          headerNav.style.top = '0';
+        if (headerNav) {
+          if (scrollTop >= 150) {
+            headerNav.style.top = '-55px'
+          } else {
+            headerNav.style.top = '0'
+          }
         }
+      },
+      headerStyle() {
+        const name = this.$route.name
+        if (name === 'Home') {
+          this.contentNav = false
+        } else {
+          this.contentNav = true
+          this.$refs.headerNav.style.top = '0'
+        }
+        this.activeIndex = this.activeMap[name]
+      }
+    },
+    watch: {
+      $route() {
+        this.headerStyle()
       }
     }
   }
@@ -94,17 +104,14 @@
     transition: top 0.6s ease;
     width: 100%;
     height: 50px;
-    // background: $color-deepgray;
     background: transparent;
     color: $color-white;
-    // border-bottom: 5px solid #ddd;
     display: flex;
     justify-content: center;
     z-index: 100;
     ul {
       display: flex;
       justify-content: space-around;
-      // width: 50%;
       line-height: 50px;
       li {
         width: 125px;
@@ -142,6 +149,17 @@
             width: 100%;
           }
         }
+      }
+    }
+    &.content-nav {
+      background-color: #fff;
+      color: $color-black;
+      border-bottom: 3px solid #ddd;
+      a {
+        color: $color-black;
+      }
+      .nav-border {
+        background-color: $color-red;
       }
     }
     // 适应移动端

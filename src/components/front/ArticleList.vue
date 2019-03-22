@@ -15,8 +15,7 @@
         <div class="readall" @click="goDetail(article)">阅读全文 »</div>
       </div>
       <div class="picture" v-if="!mobileFlag">
-        <img v-lazy="`https://source.unsplash.com/200x200/weekly?it,${i}`" alt="pic">
-        <!-- <div class="readall" @click="goDetail(article)">阅读全文</div> -->
+        <img v-lazy="`https://source.unsplash.com/200x200/weekly?water,${i}`" alt="pic">
       </div>
     </div>
     <el-pagination
@@ -86,10 +85,6 @@
       margin-bottom: 20px;
       overflow: hidden;
       border-bottom: 1px solid #ddd;
-      // background: $color-gray;
-      &:hover {
-        // box-shadow: 1px 1px 10px $color-gray;
-      }
       .text {
         text-align: left;
         margin-right: 10px;
@@ -134,18 +129,8 @@
       }
       .picture {
         position: relative;
-        .readall {
-          position: absolute;
-          right: 0;
-          top: 0;
-          padding: 10px;
-          cursor: pointer;
-          background: $color-blue;
-          color: $color-white;
-          &:hover {
-            background: $color-deepblue;
-          }
-        }
+        width: 200px;
+        height: 200px;
       }
     }
     &.mobile {

@@ -3,7 +3,6 @@
     <left-entry :chapterData="chapterData" @leftEntry="leftEntry"></left-entry>
     <div class="container" ref="container" :class="{mobile: mobileFlag}">
       <top-header @playVideo="playVideo" ref="topHeader"></top-header>
-      <bread-crumb ref="breadCrumb" v-if="!mobileFlag"></bread-crumb>
       <div class="view-wrapper" :class="{childPage: !homeFlag}" ref="viewWrapper">
         <router-view v-if="!$route.meta.keepAlive" :resize="resize" @chapterFormat="chapterFormat"/>
         <keep-alive>
@@ -14,12 +13,6 @@
       <div class="back-to-top" v-show="topShow" @click="backToTop">
         <icon-font :icon="topIcon" fontSize="42"></icon-font>
       </div>
-      <!-- <div class="bg-video" ref="bgVideo" v-if="!mobileFlag"> -->
-        <!-- <video v-if="videoFlag" autoplay loop muted ref="video">
-          <source :src="video" type="video/mp4">
-        </video> -->
-        <!-- <img class="bg-picture" :src="bgPicture" alt=""> -->
-      <!-- </div> -->
     </div>
   </div>
 </template>
@@ -28,7 +21,6 @@
   import IconFont from '@/components/Iconfont'
   import LeftEntry from '@/components/front/LeftEntry'
   import TopHeader from '@/components/front/TopHeader'
-  import BreadCrumb from '@/components/front/BreadCrumb'
   import BottomFooter from '@/components/front/BottomFooter'
   import { mapGetters, mapMutations } from 'vuex'
   export default {
@@ -80,8 +72,6 @@
           this.height = document.documentElement.clientHeight
           this.$refs.container.style.minHeight = this.height + 'px'
           this.$refs.viewWrapper.style.minHeight = (this.height - 32) + 'px'
-          // this.$refs.bgVideo.style.height = (this.height - 50) + 'px'
-          // this.$refs.bgVideo.style.top = this.height + 'px'
           this.routeWatch()
           this.bodyScroll()
         }
@@ -89,12 +79,8 @@
       routeWatch() {
         if (!this.mobileFlag) {
           if (this.$route.path === '/') {
-            // this.$refs.bgVideo.style.position = 'absolute'
-            // this.$refs.bgVideo.style.top = this.height + 'px'
             this.homeFlag = true
           } else {
-            // this.$refs.bgVideo.style.position = 'fixed'
-            // this.$refs.bgVideo.style.top = '50px'
             this.homeFlag = false
           }
         }
@@ -106,15 +92,6 @@
         const viewWrapper = this.$refs.viewWrapper
         const scrollTop = document.body.scrollTop || document.documentElement.scrollTop
         this.topShow = scrollTop > 500 ? true : false
-        if (this.$route.path === '/' && !this.mobileFlag) {
-          if (scrollTop <= this.height - 50) {
-            // this.$refs.bgVideo.style.position = 'absolute'
-            // this.$refs.bgVideo.style.top = this.height + 'px'
-          } else {
-            // this.$refs.bgVideo.style.position = 'fixed'
-            // this.$refs.bgVideo.style.top = '50px'
-          }
-        }
       },
       backToTop() {
         this.topIcon = 'icon-top-start'
@@ -151,7 +128,7 @@
           }
           this.$refs.container.style.width = options.width
           this.$refs.topHeader.setWidth(options.width)
-          this.$refs.breadCrumb.setWidth({width: options.width, left: options.left})
+          // this.$refs.breadCrumb.setWidth({width: options.width, left: options.left})
         }
       },
       ...mapMutations({
@@ -167,8 +144,7 @@
       TopHeader,
       BottomFooter,
       IconFont,
-      LeftEntry,
-      BreadCrumb
+      LeftEntry
     }
   }
 </script>

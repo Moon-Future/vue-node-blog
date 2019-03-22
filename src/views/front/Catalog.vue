@@ -76,32 +76,32 @@
       margin-bottom: 10px;
     }
     .month-data {
-      border-left: 1px solid $color-blue;
-      border-right: 1px solid $color-blue;
-      border-bottom: 1px solid $color-blue;
+      border-left: 1px solid $color-gray;
+      border-right: 1px solid $color-gray;
+      border-bottom: 1px solid $color-gray;
       display: flex;
       &:nth-child(2) {
-        border-top: 1px solid $color-blue;
+        border-top: 1px solid $color-gray;
       }
       &:nth-child(odd) {
-        background: $color-shallowgreend;
+        background: #f9f9f9;
       }
       &:hover {
-        background: $color-origin;
+        background: #f9f9f9;
       }
     }
   }
   .content {
     padding: 10px;
     &.day {
-      border-right: 1px solid $color-blue;
+      border-right: 1px solid $color-gray;
     }
     &.link {
-      cursor: pointer;
       width: 100%;
       display: inline-block;
       position: relative;
       .title {
+        cursor: pointer;
         &:hover {
           text-decoration: underline;
           color: $color-red;

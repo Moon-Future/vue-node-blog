@@ -81,7 +81,7 @@
       font-size: 2em;
       font-weight: bold;
       margin-bottom: 20px;
-      color: $color-blue;
+      color: $color-black;
     }
     &.mobile {
       padding: 60px 10px 10px 10px;
