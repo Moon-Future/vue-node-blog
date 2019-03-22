@@ -95,7 +95,7 @@
     }
   }
   .txt {
-    position: fixed;
+    position: absolute;
     width: 100%;
     color: $color-white;
     font-size: 32px;
@@ -105,6 +105,20 @@
     }
     .second-line {
       text-indent: 50px;
+    }
+  }
+  .social-wrapper {
+    margin-top: 10px;
+    .social-icon {
+      cursor: pointer;
+      margin-right: 10px;
+      &:hover {
+        color: $color-blue;
+      }
+    }
+    .wechat {
+      width: 200px;
+      height: 200px;;
     }
   }
   .content-container {
