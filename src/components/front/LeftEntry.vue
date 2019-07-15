@@ -9,17 +9,17 @@
       </div>
       <div class="catalog-wrapper">
         <ul v-for="data in chapterData" :key="data.id">
-          <li><a :href="'#' + data.id" >{{ data.label }}</a></li>
+          <li><a :href="'#' + data.id" @click="goTitle" >{{ data.label }}</a></li>
           <ul v-for="child1 in data.children" :key="child1.id">
-            <li><a :href="'#' + child1.id" >{{ child1.label }}</a></li>
+            <li><a :href="'#' + child1.id" @click="goTitle" >{{ child1.label }}</a></li>
             <ul v-for="child2 in child1.children" :key="child2.id">
-              <li><a :href="'#' + child2.id" >{{ child2.label }}</a></li>
+              <li><a :href="'#' + child2.id" @click="goTitle" >{{ child2.label }}</a></li>
               <ul v-for="child3 in child2.children" :key="child3.id">
-                <li><a :href="'#' + child3.id" >{{ child3.label }}</a></li>
+                <li><a :href="'#' + child3.id" @click="goTitle" >{{ child3.label }}</a></li>
                 <ul v-for="child4 in child3.children" :key="child4.id">
-                  <li><a :href="'#' + child4.id" >{{ child4.label }}</a></li>
+                  <li><a :href="'#' + child4.id" @click="goTitle" >{{ child4.label }}</a></li>
                   <ul v-for="child5 in child4.children" :key="child5.id">
-                    <li><a :href="'#' + child5.id" >{{ child5.label }}</a></li>
+                    <li><a :href="'#' + child5.id" @click="goTitle" >{{ child5.label }}</a></li>
                   </ul>
                 </ul>
               </ul>
@@ -76,6 +76,12 @@
         if (this.mobileFlag) {
           this.showFlag = true
         }
+      },
+      goTitle() {
+        setTimeout(() => {
+          const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+          document.documentElement.scrollTop = document.body.scrollTop = scrollTop - 60
+        }, 30)
       }
     },
     watch: {
@@ -130,6 +136,7 @@
     position: absolute;
     top: 0;
     background: $color-white;
+    border-right: 1px solid #ddd;
   }
   .header-wrapper {
     height: 50px;
@@ -137,11 +144,12 @@
     background: $color-shallowgray;
     text-align: left;
     padding-left: 10px;
+    border-bottom: 3px solid #ddd;
   }
   .catalog-wrapper {
+    width: 100%;
     text-align: left;
     color: $color-blue;
-    padding-left: 10px;
     position: absolute;
     top: 50px;
     bottom: 0;
@@ -156,7 +164,7 @@
         padding: 5px;
         color: $color-blue;
         &:hover {
-          background: $color-gray;
+          background: #ddd;
         }
       }
     }

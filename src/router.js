@@ -1,52 +1,41 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Container from './views/front/Container.vue'
+// import Vue from 'vue'
+// import Router from 'vue-router'
 import Home from './views/front/Home.vue'
 import Admin from './views/admin/Admin.vue'
 
-Vue.use(Router)
+Vue.use(VueRouter)
 
-export default new Router({
+export default new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
       path: '/',
-      name: 'container',
-      component: Container,
-      children: [
-        {
-          path: '/',
-          name: 'Home',
-          component: Home,
-          meta: {
-            keepAlive: true
-          }
-        },
-        {
-          path: 'article/:id',
-          name: 'Article',
-          component: () => import('@/views/front/Article.vue'),
-          meta: {
-            keepAlive: false
-          }
-        },
-        {
-          path: '/catalog',
-          name: 'Catalog',
-          component: () => import('@/views/front/Catalog.vue'),
-          meta: {
-            keepAlive: false
-          }
-        },
-      ]
+      name: 'Home',
+      component: Home,
+      meta: {
+        keepAlive: false
+      }
+    },
+    {
+      path: '/article/:id',
+      name: 'Article',
+      component: () => import('@/views/front/Article.vue'),
+      meta: {
+        keepAlive: false
+      }
+    },
+    {
+      path: '/catalog',
+      name: 'Catalog',
+      component: () => import('@/views/front/Catalog.vue'),
+      meta: {
+        keepAlive: false
+      }
     },
     {
       path: '/about',
       name: 'About',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "about" */ './views/front/About.vue')
     },
     {

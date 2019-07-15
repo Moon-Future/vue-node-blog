@@ -1,12 +1,10 @@
 <template>
   <div class="home">
+    <top-header ref="topHeader"></top-header>
     <div class="background-wrapper" v-if="!mobileFlag">
       <div class="background" ref="background">
         <div class="txt">
           <p>I'm ChenLiang</p>
-          <!-- <p class="first-line">心有猛虎</p>
-          <p class="second-line">细嗅蔷薇</p> -->
-
           <div class="social-wrapper">
             <a href="https://github.com/Moon-Future/vue-node-blog" target="_blank">
               <icon-font class="social-icon" icon="icon-github" fontSize="42"></icon-font>
@@ -25,23 +23,27 @@
     </div>
     <div class="content-container" :class="{mobile: mobileFlag}" ref="contentContainer">
       <article-list></article-list>
-      <!-- <right-search></right-search> -->
     </div>
+    <bottom-footer v-if="!mobileFlag"></bottom-footer>
   </div>
 </template>
 
 <script>
+  import TopHeader from '@/components/front/TopHeader'
+  import BottomFooter from '@/components/front/BottomFooter'
   import ArticleList from '@/components/front/ArticleList'
-  import RightSearch from '@/components/front/RightSearch'
   import IconFont from '@/components/Iconfont'
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapMutations } from 'vuex'
   export default {
     name: 'home',
     props: ['resize'],
-    computed: {
-      ...mapGetters([
-        'mobileFlag'
-      ])
+    data() {
+      return {
+        mobileFlag: false
+      }
+    },
+    created() {
+      this.setMobile()
     },
     mounted() {
       if (!this.mobileFlag) {
@@ -49,16 +51,24 @@
       }
     },
     methods: {
+      setMobile() {
+        const width = document.documentElement.clientWidth
+        if (width <= 736) {
+          this.mobileFlag = true
+        } else {
+          this.mobileFlag = false
+        }
+        this.setMobileFlag(this.mobileFlag)
+      },
       setHeight(flag = false) {
         const width = document.documentElement.clientWidth
         const height = document.documentElement.clientHeight
-        if (!flag) {
-          // this.$refs.background.style.backgroundImage = `url(https://source.unsplash.com/1360x768/daily)`
-          // this.$refs.background.style.backgroundImage = this.bgImg
-        }
         this.$refs.background.style.height = height + 'px'
         this.$refs.contentContainer.style.minHeight = height + 'px'
-      }
+      },
+      ...mapMutations({
+        setMobileFlag: 'SET_MOBILE_FLAG'
+      }),
     },
     watch: {
       resize() {
@@ -70,8 +80,9 @@
       }
     },
     components: {
+      TopHeader,
+      BottomFooter,
       ArticleList,
-      RightSearch,
       IconFont
     }
   }
@@ -87,7 +98,7 @@
   .background-wrapper {
     .background {
       width: 100%;
-      background: url('../../assets/bg-3.jpg') no-repeat;
+      background: url('https://cl8023-1255423800.cos.ap-guangzhou.myqcloud.com/bg.jpg') no-repeat;
       background-size: cover;
       background-attachment: fixed;
       display: flex;
@@ -95,7 +106,7 @@
     }
   }
   .txt {
-    position: absolute;
+    position: fixed;
     width: 100%;
     color: $color-white;
     font-size: 32px;
@@ -123,6 +134,7 @@
   }
   .content-container {
     padding: 20px 30px;
+    background: $color-white;
     display: flex;
     position: relative;
     box-sizing: border-box;

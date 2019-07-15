@@ -1,19 +1,23 @@
 <template>
-  <div class="catalog-wrapper" :class="{mobile: mobileFlag}">
-    <div class="month-devide" v-for="(list, key) in catalog" :key="key">
-      <h1 class="month">{{ key }}</h1>
-      <div class="month-data" v-for="(item, i) in list" :key="i">
-        <span class="content day">{{ item.day }}</span>
-        <div class="content link">
-          <span class="title" @click="goDetail(item)">{{ item.title }}</span>
-          <span class="view">{{ item.view }} 浏览</span>
-        </div>
-      </div>
+  <div>
+    <top-header ref="topHeader"></top-header>
+    <div class="catalog-wrapper" :class="{mobile: mobileFlag}">
+      <el-timeline>
+        <el-timeline-item v-for="(list, key) in catalog" :key="key" :timestamp="key" placement="top">
+          <el-card class="catalog-card" v-for="(item, i) in list" :key="i" @click.native="goDetail(item)">
+            <h4>{{ item.title }}</h4>
+            <p>浏览量 {{ item.view }}，最后编辑于 {{ item.updateTime }}</p>
+          </el-card>
+        </el-timeline-item>
+      </el-timeline>
     </div>
+    <bottom-footer v-if="!mobileFlag"></bottom-footer>
   </div>
 </template>
 
 <script>
+  import TopHeader from '@/components/front/TopHeader'
+  import BottomFooter from '@/components/front/BottomFooter'
   import { apiUrl } from '@/serviceAPI.config.js'
   import { dateFormat } from '@/common/js/tool.js'
   import { computeStyleMixin } from '@/common/js/mixin.js'
@@ -41,9 +45,9 @@
           if (res.data.code === 200) {
             let data = res.data.message
             data.forEach(ele => {
-              let time = dateFormat(ele.createTime, 'yyyy-MM')
-              let day = dateFormat(ele.createTime, 'yyyy-MM-dd').split('-')[2]
-              ele.day = day
+              let time = dateFormat(ele.createTime, 'yyyy-MM-dd')
+              ele.createTime = dateFormat(ele.createTime, 'yyyy-MM-dd hh:mm')
+              ele.updateTime = ele.updateTime ? dateFormat(ele.updateTime, 'yyyy-MM-dd hh:mm') : ele.createTime
               if (!this.catalog[time]) {
                 this.$set(this.catalog, time, [])
               }
@@ -57,6 +61,10 @@
       goDetail(article) {
         this.$router.push(`/article/${article._id}`)
       }
+    },
+    components: {
+      TopHeader,
+      BottomFooter
     }
   }
 </script>
@@ -65,53 +73,25 @@
   @import '@/common/css/variable.scss';
   .catalog-wrapper {
     text-align: left;
+    width: 70%;
+    margin: 100px auto 0;
     &.mobile {
       padding: 60px 10px 10px 10px;
     }
   }
-  .month-devide {
-    .month {
+  .catalog-card {
+    margin-bottom: 10px;
+    cursor: pointer;
+    &:hover {
+      border-color: $color-blue;
+    }
+    h4 {
+      font-size: 16px;
       font-weight: bold;
-      font-size: 22px;
       margin-bottom: 10px;
     }
-    .month-data {
-      border-left: 1px solid $color-gray;
-      border-right: 1px solid $color-gray;
-      border-bottom: 1px solid $color-gray;
-      display: flex;
-      &:nth-child(2) {
-        border-top: 1px solid $color-gray;
-      }
-      &:nth-child(odd) {
-        background: #f9f9f9;
-      }
-      &:hover {
-        background: #f9f9f9;
-      }
-    }
-  }
-  .content {
-    padding: 10px;
-    &.day {
-      border-right: 1px solid $color-gray;
-    }
-    &.link {
-      width: 100%;
-      display: inline-block;
-      position: relative;
-      .title {
-        cursor: pointer;
-        &:hover {
-          text-decoration: underline;
-          color: $color-red;
-        }
-      }
-      .view {
-        font-size: 14px;
-        color: $color-deepgray;
-        margin-left: 20px;
-      }
+    p {
+      color: $color-gray;
     }
   }
 </style>

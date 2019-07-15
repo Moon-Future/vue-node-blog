@@ -9,5 +9,15 @@ module.exports = {
         }
       }
     }
+  },
+  productionSourceMap: false,
+  configureWebpack: {
+    externals: {
+      'vue': 'Vue',
+      'vue-router': 'VueRouter',
+      'axios': 'axios',
+      'vuex': 'Vuex',
+      'element-ui': 'ELEMENT',
+     },
   }
 }

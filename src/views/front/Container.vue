@@ -31,7 +31,7 @@
         topIcon: 'icon-top-static',
         // video: require('@/assets/bg-video.mp4'),
         videoFlag: false,
-        bgPicture: require('@/assets/bg-2.jpg'),
+        // bgPicture: require('@/assets/bg.jpg'),
         homeFlag: true,
         resize: false,
         chapterData: [],
