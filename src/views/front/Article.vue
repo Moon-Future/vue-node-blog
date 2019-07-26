@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="articel-page">
+    <div class="scroll-progress"></div>
     <left-entry :chapterData="chapterData" @leftEntry="leftEntry"></left-entry>
     <div class="article-container" ref="articleContainer">
       <top-header ref="topHeader"></top-header>
@@ -135,6 +136,25 @@
 
 <style lang="scss" scoped>
   @import '@/common/css/variable.scss';
+  .articel-page {
+    position: relative;
+  }
+  .scroll-progress {
+    position: absolute;
+    top: 0; right: 0; left: 0; bottom: 0;
+    background: linear-gradient(to right top, #0A74DA 50%, transparent 50%) no-repeat;
+    background-size: 100% calc(100% - 100vh + 5px);
+    z-index: 999;
+    pointer-events: none;
+    mix-blend-mode: darken;
+    &::after {
+      content: '';
+      position: fixed;
+      top: 3px; bottom: 0; right: 0; left: 0;
+      background: #fff;
+      z-index: 1;
+    }
+  }
   .article-container {
     position: relative;
   }
