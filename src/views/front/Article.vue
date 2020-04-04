@@ -1,6 +1,6 @@
 <template>
   <div class="articel-page">
-    <div class="scroll-progress"></div>
+    <div class="scroll-progress" v-if="!mobileFlag"></div>
     <left-entry :chapterData="chapterData" @leftEntry="leftEntry"></left-entry>
     <div class="article-container" ref="articleContainer">
       <top-header ref="topHeader"></top-header>
@@ -138,6 +138,7 @@
   @import '@/common/css/variable.scss';
   .articel-page {
     position: relative;
+    background: $color-white;
   }
   .scroll-progress {
     position: absolute;
@@ -159,7 +160,7 @@
     position: relative;
   }
   .article-detail {
-    background: $color-white;
+    // background: $color-white;
     width: 80%;
     margin: auto;
     padding: 20px;

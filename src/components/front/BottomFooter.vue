@@ -19,6 +19,7 @@
     color: $color-black;
     display: flex;
     justify-content: center;
+    background: #f5f5f5;
     .rights {
       margin-right: 10px;
     }

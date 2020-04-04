@@ -23,15 +23,15 @@
         navList: [
           {name: '主页', to: '/'},
           {name: '目录', to: '/catalog'},
-          {name: 'BLOG', to: '/'},
-          {name: '其他', to: '/'},
+          // {name: 'BLOG', to: '/'},
+          // {name: '其他', to: '/'},
           {name: '关于', to: '/'}
         ],
         activeIndex: -1,
         activeMap: {
           'Home': 0,
           'Catalog': 1,
-          'Article': 2,
+          'Article': -1,
           'Other': 3,
           'About': 4
         },
@@ -164,11 +164,20 @@
     }
     // 适应移动端
     &.mobile {
+      background: $color-white;
       ul {
         width: 100%;
         justify-content: flex-end;
         li {
           margin: 0 10px;
+        }
+        a {
+          color: $color-black;
+        }
+      }
+      .nav-border {
+        &.active {
+          background-color: $color-red;
         }
       }
     }

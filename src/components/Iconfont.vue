@@ -32,6 +32,7 @@
 <style lang="scss" scoped>
   .icon-container {
     display: inline;
+    cursor: pointer;
     .has-margin {
       margin: 0 10px;
     }

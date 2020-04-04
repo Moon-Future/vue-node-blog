@@ -74,9 +74,11 @@
   .catalog-wrapper {
     text-align: left;
     width: 70%;
-    margin: 100px auto 0;
+    padding-top: 100px;
+    margin: auto;
     &.mobile {
       padding: 60px 10px 10px 10px;
+      width: 95%;
     }
   }
   .catalog-card {

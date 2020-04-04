@@ -76,15 +76,16 @@
 <style lang="scss" scoped>
   @import '@/common/css/variable.scss';
   .article-list {
-    width: 80%;
-    margin: auto;
+    width: 70%;
+    margin: 0 auto;
     .article-wrapper {
       display: flex;
-      box-shadow: 0px 0px 5px $color-white;
-      padding: 10px 10px 30px 10px;
+      background: $color-white;
+      box-shadow: 0 0 5px 5px rgba(0,0,0,.01);
+      padding: 20px;
       margin-bottom: 20px;
       overflow: hidden;
-      border-bottom: 1px solid #ddd;
+      border-radius: 4px;
       .text {
         text-align: left;
         margin-right: 10px;
