@@ -25,7 +25,7 @@
           {name: '目录', to: '/catalog'},
           // {name: 'BLOG', to: '/'},
           // {name: '其他', to: '/'},
-          {name: '关于', to: '/'}
+          {name: '关于', to: '/about'}
         ],
         activeIndex: -1,
         activeMap: {

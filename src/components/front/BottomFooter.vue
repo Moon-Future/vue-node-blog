@@ -20,6 +20,8 @@
     display: flex;
     justify-content: center;
     background: #f5f5f5;
+    position: relative;
+    z-index: 99;
     .rights {
       margin-right: 10px;
     }

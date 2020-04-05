@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <top-header ref="topHeader"></top-header>
-    <div :class="['preloader', {'displayn': imgLoad || mobileFlag}]" :style="{height: height}" >
+    <div :class="['preloader', {'displayn': imgLoad || mobileFlag}]" :style="{height: height}" v-if="!hasLoad" >
       <div :class="['loader', {'displayn': loadered}]" ></div>
     </div>
     <div class="background-wrapper" v-if="!mobileFlag">
@@ -10,7 +10,8 @@
         <p>{{ verseText }} <span :class="{'dom-hidden': finished}">|</span> </p>
       </div>
     </div>
-    <div :class="['content-container', {'displayn': !imgLoad && !mobileFlag, mobile: mobileFlag}]" ref="contentContainer">
+    <div :style="{height: hMask}"></div>
+    <div :class="['content-container', {mobile: mobileFlag}]" ref="contentContainer">
       <div class="content-container-1">
         <article-list></article-list>
         <right-content></right-content>
@@ -39,12 +40,14 @@
         finished: false,
         imgLoad: false,
         loadered: false,
-        height: 0
-        // verse: ''
+        hasLoad: false,
+        height: 0,
+        hMask: 0
       }
     },
     created() {
       this.setMobile()
+      this.hasLoad = sessionStorage.getItem('hasLoad')
     },
     mounted() {
       if (!this.mobileFlag) {
@@ -70,9 +73,16 @@
         const width = document.documentElement.clientWidth
         const self = this
         this.height = height + 'px'
+        this.hMask = height + 'px'
         this.$refs.background.style.height = height + 'px'
         this.$refs.contentContainer.style.minHeight = height + 'px'
+        if (this.imgloader) {
+          self.loadered = true
+          self.imgLoad = true
+          return
+        }
         this.$refs.background.onload = function() {
+          sessionStorage.setItem('hasLoad', '1')
           self.loadered = true
           let timer = setInterval(() => {
             if (height > 0) {
@@ -127,6 +137,7 @@
     width: 100%;
   }
   .background-wrapper {
+    position: fixed;
     background: $color-gray-1;
     .background {
       width: 100%;
