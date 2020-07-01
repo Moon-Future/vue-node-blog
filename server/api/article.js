@@ -43,25 +43,25 @@ router.post('/insertArticle', async (ctx) => {
       })
     }
     let htmlTags = html.match(/.*|<(.|\n)*?<\/.*>.*/g)
-    let summary = ''
-    let count = 0
-    let limit = 0
-    for(let i = 0, len = htmlTags.length; i < len; i++) {
-      if (htmlTags[i] === '') {
-        summary += '\n'
-      }
-      if (htmlTags[i].match(/^<(.)/)) {
-        let tag = htmlTags[i].match(/^<(.)/)[1]
-        if (tag === 'h') {
-          count += 1
-        }
-        if (count > limit && tag === 'h') {
-          break
-        }
-      }
-      summary += htmlTags[i]
-    }
-    summary = summary.replace(/\'/g, '"')
+    let summary = data.summary
+    // let count = 0
+    // let limit = 0
+    // for(let i = 0, len = htmlTags.length; i < len; i++) {
+    //   if (htmlTags[i] === '') {
+    //     summary += '\n'
+    //   }
+    //   if (htmlTags[i].match(/^<(.)/)) {
+    //     let tag = htmlTags[i].match(/^<(.)/)[1]
+    //     if (tag === 'h') {
+    //       count += 1
+    //     }
+    //     if (count > limit && tag === 'h') {
+    //       break
+    //     }
+    //   }
+    //   summary += htmlTags[i]
+    // }
+    // summary = summary.replace(/\'/g, '"')
     if (data.id === '-1') {
       // 新增
       const article = new Article({

@@ -10,6 +10,10 @@
       <div class="title">
         标题：<input type="text" v-model="title" :title="title">
       </div>
+      <div class="summary">
+        <div class="summary-title">概要：</div>
+        <el-input type="textarea" rows="5" v-model="summary"></el-input>
+      </div>
       <markdown-editor v-model="content" ref="markdownEditor"></markdown-editor>
       <div class="tag">
         标签：
@@ -32,8 +36,8 @@
         </div>
       </div>
       <div class="submit">
-        <el-button type="success" @click="submit(1)" v-if="userInfo.root === 1">发布</el-button>
-        <el-button type="primary" @click="submit(2)">存稿</el-button>
+        <el-button type="success" @click="submit(1)" :loading="loading" v-if="userInfo.root === 1">发布</el-button>
+        <el-button type="primary" @click="submit(2)" :loading="loading">存稿</el-button>
       </div>
     </div>
   </div>
@@ -70,7 +74,9 @@
             codeSyntaxHighlighting: true, // 开启代码高亮 
             highlightingTheme: 'vs'
           }
-        }
+        },
+        summary: '',
+        loading: false
       }
     },
     created() {
@@ -92,6 +98,7 @@
             const message = res.data.message
             if (res.data.code === 200) {
               this.title = message[0].title
+              this.summary = message[0].summary
               this.tagSel = message[0].tag
               this.content = message[0].content
               this.tagSel.forEach(ele => {
@@ -134,21 +141,27 @@
         });
       },
       submit(state) {
-        if (this.title === '' || this.content === '') {
+        if (this.loading) {
+          return
+        }
+        if (this.title === '' || this.summary === '' || this.content === '') {
           this.$message.error('提交失败,请完善内容')
           return
         }
+        this.loading = true
         this.$http.post(apiUrl.insertArticle, {
           data: {
             id: this.id,
             originTitle: this.originTitle,
             user: this.userInfo.id,
             title: this.title,
+            summary: this.summary,
             content: this.content,
             tags: this.tagSel,
             state
           }
         }).then((res) => {
+          this.loading = false
           if (res.data.code === 200) {
             this.$message.success(res.data.message);
             this.$router.push('/admin/articles')
@@ -175,6 +188,13 @@
         font-size: 20px;
         text-align: center;
         min-width: 100px;
+      }
+    }
+    .summary {
+      display: flex;
+      padding: 10px;
+      .summary-title {
+        flex: 0 0 auto;
       }
     }
     .markdown-editor {

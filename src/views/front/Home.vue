@@ -192,7 +192,7 @@
     &.mobile {
       padding: initial;
       .content-container-1 {
-        width: 95%;
+        width: 100%;
       }
     }
   }

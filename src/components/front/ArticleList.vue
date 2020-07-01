@@ -1,6 +1,6 @@
 <template>
   <div class="article-list" :class="{mobile: mobileFlag}">
-    <div class="article-wrapper" v-for="(article, i) in articleList" :key="i">
+    <div class="article-wrapper" v-for="(article, i) in articleList" :key="i" @click="goDetail(article, true)">
       <div class="text">
         <div class="title" @click="goDetail(article)">{{ article.title }}</div>
         <div class="message">
@@ -12,7 +12,7 @@
           </div>
         </div>
         <div class="markdown-body markdownSummary" v-html="article.summary"></div>
-        <div class="readall" @click="goDetail(article)">阅读全文 »</div>
+        <div class="readall" v-if="!mobileFlag" @click="goDetail(article)">阅读全文 »</div>
       </div>
       <div class="picture" v-if="!mobileFlag">
         <img v-lazy="`https://source.unsplash.com/200x200/weekly?water,${i}`" alt="pic">
@@ -63,7 +63,10 @@
           }
         })
       },
-      goDetail(article) {
+      goDetail(article, flag) {
+        if (flag && !this.mobileFlag) {
+          return
+        }
         this.$router.push(`/article/${article._id}`)
       }
     },
@@ -94,6 +97,7 @@
         .title {
           font-weight: bold;
           font-size: 22px;
+          line-height: 30px;
           color: $color-black;
           margin-bottom: 5px;
           &:hover {
@@ -132,6 +136,7 @@
         position: relative;
         width: 200px;
         height: 200px;
+        flex: 0 0 auto;
       }
     }
     &.mobile {

@@ -174,6 +174,7 @@
     }
     &.mobile {
       padding: 60px 10px 10px 10px;
+      width: 95%;
     }
   }
   .back-to-top {

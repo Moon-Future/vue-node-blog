@@ -2,10 +2,11 @@
 // import Router from 'vue-router'
 import Home from './views/front/Home.vue'
 import Admin from './views/admin/Admin.vue'
+import { apiUrl } from '@/serviceAPI.config.js'
 
 Vue.use(VueRouter)
 
-export default new VueRouter({
+const router = new VueRouter({
   // mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -47,23 +48,59 @@ export default new VueRouter({
       path: '/admin',
       name: 'Admin',
       component: Admin,
+      meta: {
+        requireAuth: true
+      },
       children: [
         {
           path: 'selfinfo',
           name: 'SelfInfo',
+          meta: {
+            requireAuth: true
+          },
           component: () => import('@/views/admin/SelfInfo.vue')
         },
         {
           path: 'articles',
           name: 'Articles',
+          meta: {
+            requireAuth: true
+          },
           component: () => import('@/views/admin/ArticleList.vue')
         },
         {
           path: 'markdown',
           name: 'Markdown',
+          meta: {
+            requireAuth: true
+          },
           component: () => import('@/views/admin/Markdown.vue')
         }
       ]
     },
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requireAuth) {
+    axios.post(apiUrl.getSession).then(res => {
+      if (res.data.code === 200) {
+        next()
+      } else {
+        next({path: '/'})
+      }
+    })
+  } else if (to.name === 'Login') {
+    axios.post(apiUrl.getSession).then(res => {
+      if (res.data.code === 200) {
+        next({path: '/admin/selfinfo'})
+      } else {
+        next()
+      }
+    })
+  } else {
+    next()
+  }
+})
+
+export default router

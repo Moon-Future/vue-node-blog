@@ -38,29 +38,29 @@ throw er; // Unhandled 'error' event
 .....</code></pre><p>可以在D:\my-blog\config\index.js里修改端口  </p>
 <pre><code><span class="hljs-attribute">dev</span>: {
 
-<span class="yaml">    <span class="hljs-string">//</span> <span class="hljs-string">Paths</span>
-<span class="hljs-attr">    assetsSubDirectory:</span> <span class="hljs-string">'static'</span><span class="hljs-string">,</span>
-<span class="hljs-attr">    assetsPublicPath:</span> <span class="hljs-string">'/'</span><span class="hljs-string">,</span>
-<span class="hljs-attr">    proxyTable:</span> <span class="hljs-string">{},</span>
+<span class="less">    <span class="hljs-comment">// Paths</span>
+    <span class="hljs-attribute">assetsSubDirectory</span>: <span class="hljs-string">'static'</span>,
+    <span class="hljs-attribute">assetsPublicPath</span>: <span class="hljs-string">'/'</span>,
+    <span class="hljs-attribute">proxyTable</span>: {},
 
-    <span class="hljs-string">//</span> <span class="hljs-string">Various</span> <span class="hljs-string">Dev</span> <span class="hljs-string">Server</span> <span class="hljs-string">settings</span>
-<span class="hljs-attr">    host:</span> <span class="hljs-string">'localhost'</span><span class="hljs-string">,</span> <span class="hljs-string">//</span> <span class="hljs-string">can</span> <span class="hljs-string">be</span> <span class="hljs-string">overwritten</span> <span class="hljs-string">by</span> <span class="hljs-string">process.env.HOST</span>
-<span class="hljs-attr">    port:</span> <span class="hljs-number">8080</span><span class="hljs-string">,</span> <span class="hljs-string">//</span> <span class="hljs-string">can</span> <span class="hljs-string">be</span> <span class="hljs-string">overwritten</span> <span class="hljs-string">by</span> <span class="hljs-string">process.env.PORT,</span> <span class="hljs-string">if</span> <span class="hljs-string">port</span> <span class="hljs-string">is</span> <span class="hljs-string">in</span> <span class="hljs-string">use,</span> <span class="hljs-string">a</span> <span class="hljs-string">free</span> <span class="hljs-string">one</span> <span class="hljs-string">will</span> <span class="hljs-string">be</span> <span class="hljs-string">determined</span>
-<span class="hljs-attr">    autoOpenBrowser:</span> <span class="hljs-literal">false</span><span class="hljs-string">,</span>
-<span class="hljs-attr">    errorOverlay:</span> <span class="hljs-literal">true</span><span class="hljs-string">,</span>
-<span class="hljs-attr">    notifyOnErrors:</span> <span class="hljs-literal">true</span><span class="hljs-string">,</span>
-<span class="hljs-attr">    poll:</span> <span class="hljs-literal">false</span><span class="hljs-string">,</span> <span class="hljs-string">//</span> <span class="hljs-attr">https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-</span>
+    <span class="hljs-comment">// Various Dev Server settings</span>
+    <span class="hljs-attribute">host</span>: <span class="hljs-string">'localhost'</span>, <span class="hljs-comment">// can be overwritten by process.env.HOST</span>
+    <span class="hljs-attribute">port</span>: <span class="hljs-number">8080</span>, <span class="hljs-comment">// can be overwritten by process.env.PORT, if port is in use, a free one will be determined</span>
+    <span class="hljs-attribute">autoOpenBrowser</span>: false,
+    <span class="hljs-attribute">errorOverlay</span>: true,
+    <span class="hljs-attribute">notifyOnErrors</span>: true,
+    <span class="hljs-attribute">poll</span>: false, <span class="hljs-comment">// https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-</span>
 
-    <span class="hljs-string">//</span> <span class="hljs-attr">https://webpack.js.org/configuration/devtool/#development</span>
-<span class="hljs-attr">    devtool:</span> <span class="hljs-string">'cheap-module-eval-source-map'</span><span class="hljs-string">,</span>
+    <span class="hljs-comment">// https://webpack.js.org/configuration/devtool/#development</span>
+    <span class="hljs-attribute">devtool</span>: <span class="hljs-string">'cheap-module-eval-source-map'</span>,
 
-    <span class="hljs-string">//</span> <span class="hljs-string">If</span> <span class="hljs-string">you</span> <span class="hljs-string">have</span> <span class="hljs-string">problems</span> <span class="hljs-string">debugging</span> <span class="hljs-string">vue-files</span> <span class="hljs-string">in</span> <span class="hljs-string">devtools,</span>
-    <span class="hljs-string">//</span> <span class="hljs-string">set</span> <span class="hljs-string">this</span> <span class="hljs-string">to</span> <span class="hljs-literal">false</span> <span class="hljs-bullet">-</span> <span class="hljs-string">it</span> <span class="hljs-string">*may*</span> <span class="hljs-string">help</span>
-    <span class="hljs-string">//</span> <span class="hljs-attr">https://vue-loader.vuejs.org/en/options.html#cachebusting</span>
-<span class="hljs-attr">    cacheBusting:</span> <span class="hljs-literal">true</span><span class="hljs-string">,</span>
+    <span class="hljs-comment">// If you have problems debugging vue-files in devtools,</span>
+    <span class="hljs-comment">// set this to false - it *may* help</span>
+    <span class="hljs-comment">// https://vue-loader.vuejs.org/en/options.html#cachebusting</span>
+    <span class="hljs-attribute">cacheBusting</span>: true,
 
-<span class="hljs-attr">    cssSourceMap:</span> <span class="hljs-literal">true</span>
-  <span class="hljs-string">},</span></span></code></pre><p>启动成功后：</p>
+    <span class="hljs-attribute">cssSourceMap</span>: true
+  },</span></code></pre><p>启动成功后：</p>
 <pre><code>...
 DONE  Compiled successfully <span class="hljs-keyword">in</span> <span class="hljs-number">2597</span>ms                                                          
 I  Your application <span class="hljs-keyword">is</span> running here: http:<span class="hljs-comment">//localhost:8080</span></code></pre><p> <img src="http://otr9a8wg0.bkt.clouddn.com/17-7-28/73659113.jpg" alt="启动成功"></p>
@@ -157,12 +157,12 @@ Vue.use(Router)
     <span class="hljs-comment">// },</span>
     {
       <span class="hljs-attr">path</span>: <span class="hljs-string">'/'</span>, <span class="hljs-comment">// http://localhost:8080/#/</span>
-      name: <span class="hljs-string">'Home'</span>,
+      <span class="hljs-attr">name</span>: <span class="hljs-string">'Home'</span>,
       <span class="hljs-attr">component</span>: Home
     },
     {
       <span class="hljs-attr">path</span>: <span class="hljs-string">'/blog'</span>, <span class="hljs-comment">// http://localhost:8080/#/blog</span>
-      name: <span class="hljs-string">'Blog'</span>,
+      <span class="hljs-attr">name</span>: <span class="hljs-string">'Blog'</span>,
       <span class="hljs-attr">component</span>: Blog
     }
   ]
@@ -455,52 +455,52 @@ router.post(<span class="hljs-string">'/setValue'</span>, <span class="hljs-func
 <span class="hljs-keyword">const</span> express = <span class="hljs-keyword">require</span>(<span class="hljs-string">'express'</span>);
 <span class="hljs-keyword">const</span> app = express();
 
-app.<span class="hljs-keyword">use</span>(bodyParser.json());
+app.<span class="hljs-keyword">use</span>(<span class="hljs-title">bodyParser</span>.<span class="hljs-title">json</span>());
 
 <span class="hljs-comment">// 后端api路由</span>
-app.<span class="hljs-keyword">use</span>(<span class="hljs-string">'/api'</span>, routerApi);
+app.<span class="hljs-keyword">use</span>('/<span class="hljs-title">api</span>', <span class="hljs-title">routerApi</span>);
 
 <span class="hljs-comment">// 监听端口</span>
 app.listen(<span class="hljs-number">3000</span>);
 console.log(<span class="hljs-string">'success listen at port:3000......'</span>);</code></pre>
 <p>在 /scr/components/pages/Blog.vue 文件中写入下面代码测试</p>
-<pre><code class="language-js"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">""</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">el-input</span> <span class="hljs-attr">v-model</span>=<span class="hljs-string">"inpContent"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">el-input</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">el-button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"primary"</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">"getValue"</span>&gt;</span>获取数据<span class="hljs-tag">&lt;/<span class="hljs-name">el-button</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">el-button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"primary"</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">"setValue"</span>&gt;</span>添加数据<span class="hljs-tag">&lt;/<span class="hljs-name">el-button</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
+<pre><code class="language-js"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span>
+  </span><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">""</span>&gt;</span>
+    </span><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">el-input</span> <span class="hljs-attr">v-model</span>=<span class="hljs-string">"inpContent"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">el-input</span>&gt;</span></span><span class="xml">
+    </span><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">el-button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"primary"</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">"getValue"</span>&gt;</span>获取数据<span class="hljs-tag">&lt;/<span class="hljs-name">el-button</span>&gt;</span></span><span class="xml">
+    </span><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">el-button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"primary"</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">"setValue"</span>&gt;</span>添加数据<span class="hljs-tag">&lt;/<span class="hljs-name">el-button</span>&gt;</span></span><span class="xml">
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><span class="xml">
+<span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span>
 
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
-  <span class="hljs-attr">name</span>: <span class="hljs-string">'blog'</span>,
+<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> </span></span><span class="xquery">{
+ <span class="hljs-built_in"> name</span>: <span class="hljs-string">'blog'</span>,
   data() {
     <span class="hljs-keyword">return</span> {
-      <span class="hljs-attr">inpContent</span>: <span class="hljs-string">''</span>
-    }
+      inpContent: <span class="hljs-string">''</span>
+    }</span><span class="xml">
   },
-  <span class="hljs-attr">methods</span>: {
+  methods: </span><span class="xquery">{
     getValue() {
-      <span class="hljs-comment">// axios.get('/', {params: ''})</span>
-      <span class="hljs-keyword">this</span>.$http.get(<span class="hljs-string">'/api/getValue'</span>, {
-        <span class="hljs-attr">params</span>: {<span class="hljs-attr">id</span>: <span class="hljs-number">1</span>}
-      }).then( <span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> {
-        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'res'</span>, res);
-        <span class="hljs-keyword">this</span>.inpContent = res.data[<span class="hljs-number">0</span>].name;
-      })
+      // axios.get(<span class="hljs-string">'/'</span>, {params: <span class="hljs-string">''</span>}</span><span class="xml"><span class="actionscript">)
+      <span class="hljs-keyword">this</span>.$http.get(<span class="hljs-string">'/api/getValue'</span>, </span></span><span class="xquery">{
+        params: <span class="hljs-built_in">{id</span>: <span class="hljs-number">1</span>}</span><span class="xml"><span class="javascript">
+      }).then( <span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> </span></span><span class="xquery">{
+        console.log(<span class="hljs-string">'res'</span>, res);
+        this.inpContent = res.data[<span class="hljs-number">0</span>]<span class="hljs-built_in">.name</span>;
+      }</span><span class="xml">)
     },
-    setValue() {
-      <span class="hljs-comment">// axios.post('/', {})</span>
-      <span class="hljs-keyword">this</span>.$http.post(<span class="hljs-string">'/api/setValue'</span>, {
-        <span class="hljs-attr">id</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">name</span>: <span class="hljs-keyword">this</span>.inpContent
-      }).then( <span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> {
-        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'res'</span>, res);
-      })
+    setValue() </span><span class="xquery">{
+      // axios.post(<span class="hljs-string">'/'</span>, {}</span><span class="xml"><span class="actionscript">)
+      <span class="hljs-keyword">this</span>.$http.post(<span class="hljs-string">'/api/setValue'</span>, </span></span><span class="xquery">{
+       <span class="hljs-built_in"> id</span>: <span class="hljs-number">1</span>,<span class="hljs-built_in"> name</span>: this.inpContent
+      }</span><span class="xml"><span class="javascript">).then( <span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> </span></span><span class="xquery">{
+        console.log(<span class="hljs-string">'res'</span>, res);
+      }</span><span class="xml">)
     }
   }
 }
-</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+<span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span></code></pre>
 <ul>
 <li>get：第二个参数（可选）是一个对象，以 params 为属性，将条件数据传到后台，后台通过 req.query 可以获得 params 对应的值</li>
 <li>post：第二个参数（可选）也是一个对象，属性任意，将提交数据传到后台，后台通过 req.body 可以获得这个对象，req.body 数据的解析需要用到包 body-parser，在 index.js 中引入 use 即可。</li>

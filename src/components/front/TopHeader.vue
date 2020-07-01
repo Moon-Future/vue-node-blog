@@ -154,7 +154,7 @@
     &.content-nav {
       background-color: #fff;
       color: $color-black;
-      border-bottom: 3px solid #ddd;
+      border-bottom: 1px solid #ddd;
       a {
         color: $color-black;
       }

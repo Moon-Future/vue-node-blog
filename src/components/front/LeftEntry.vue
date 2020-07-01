@@ -8,8 +8,8 @@
         <h1>目录</h1>
       </div>
       <div class="catalog-wrapper">
-        <ul v-for="data in chapterData" :key="data.id">
-          <li><a :href="'#' + data.id" @click="goTitle" >{{ data.label }}</a></li>
+        <ul class="catalog-item" v-for="data in chapterData" :key="data.id">
+          <!-- <li><a :href="'#' + data.id" @click="goTitle" >{{ data.label }}</a></li>
           <ul v-for="child1 in data.children" :key="child1.id">
             <li><a :href="'#' + child1.id" @click="goTitle" >{{ child1.label }}</a></li>
             <ul v-for="child2 in child1.children" :key="child2.id">
@@ -20,6 +20,22 @@
                   <li><a :href="'#' + child4.id" @click="goTitle" >{{ child4.label }}</a></li>
                   <ul v-for="child5 in child4.children" :key="child5.id">
                     <li><a :href="'#' + child5.id" @click="goTitle" >{{ child5.label }}</a></li>
+                  </ul>
+                </ul>
+              </ul>
+            </ul>
+          </ul> -->
+          <li :class="{ 'li-hover': !mobileFlag }" @click="goTitle(data.id)">{{ data.label }}</li>
+          <ul v-for="child1 in data.children" :key="child1.id">
+            <li :class="{ 'li-hover': !mobileFlag }" @click="goTitle(child1.id)">{{ child1.label }}</li>
+            <ul v-for="child2 in child1.children" :key="child2.id">
+              <li :class="{ 'li-hover': !mobileFlag }" @click="goTitle(child2.id)">{{ child2.label }}</li>
+              <ul v-for="child3 in child2.children" :key="child3.id">
+                <li :class="{ 'li-hover': !mobileFlag }" @click="goTitle(child3.id)">{{ child3.label }}</li>
+                <ul v-for="child4 in child3.children" :key="child4.id">
+                  <li :class="{ 'li-hover': !mobileFlag }" @click="goTitle(child4.id)">{{ child4.label }}</li>
+                  <ul v-for="child5 in child4.children" :key="child5.id">
+                    <li :class="{ 'li-hover': !mobileFlag }" @click="goTitle(child5.id)">{{ child5.label }}</li>
                   </ul>
                 </ul>
               </ul>
@@ -56,7 +72,7 @@
       ])
     },
     created() {
-      this.routeWWatch()
+      this.routeWatch()
       if (this.mobileFlag) {
         this.showFlag = true
       }
@@ -66,7 +82,7 @@
         this.openFlag = !this.openFlag
         this.$emit('leftEntry', {flag: this.openFlag, width: 250})
       },
-      routeWWatch() {
+      routeWatch() {
         if (this.$route.name === 'Article') {
           this.showFlag = true
         } else {
@@ -77,7 +93,8 @@
           this.showFlag = true
         }
       },
-      goTitle() {
+      goTitle(id) {
+        document.getElementById(id).scrollIntoView()
         setTimeout(() => {
           const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
           document.documentElement.scrollTop = document.body.scrollTop = scrollTop - 60
@@ -86,7 +103,7 @@
     },
     watch: {
       $route() {
-        this.routeWWatch()
+        this.routeWatch()
       }
     },
     components: {
@@ -101,7 +118,7 @@
   .left-entry {
     position: fixed;
     z-index: 200;
-    color: $color-blue;
+    color: $color-black;
     height: 100%;
     .icon-btn {
       cursor: pointer;
@@ -125,7 +142,7 @@
         left: 210px;
       }
       &:hover {
-        color: $color-blue;
+        color: $color-black;
         background: #f3f5f7;
       }
     }
@@ -144,32 +161,40 @@
     background: $color-shallowgray;
     text-align: left;
     padding-left: 10px;
-    border-bottom: 3px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    h1 {
+      font-weight: bold;
+    }
   }
   .catalog-wrapper {
     width: 100%;
     text-align: left;
-    color: $color-blue;
+    color: $color-black;
     position: absolute;
     top: 50px;
     bottom: 0;
     overflow: auto;
     ul {
-      margin: 5px 0;
       text-indent: 15px;
-      li a {
+      li {
         display: block;
         font-size: 12px;
         line-height: 16px;
-        padding: 5px;
-        color: $color-blue;
-        &:hover {
-          background: #ddd;
-        }
+        padding: 6px 10px;
+        color: $color-black;
+        cursor: pointer;
+      }
+      li.li-hover:hover {
+        background: #edf6ff;
       }
     }
     &>ul {
       text-indent: 0;
+    }
+    ul.catalog-item:first-child {
+      >li:first-child {
+        padding-top: 6px;
+      }
     }
   }
 </style>
